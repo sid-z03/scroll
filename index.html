@@ -415,9 +415,10 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
     <div class="fade-up" id="frames">
       <div class="sec-head"><span class="sec-label">FRAMES</span></div>
       <div class="frames-grid">
+        <!-- Replace with working video URLs -->
         <div class="frame-card"><video autoplay loop muted playsinline preload="auto"><source src="vd/v1.mp4" type="video/mp4"></video></div>
         <div class="frame-card"><video autoplay loop muted playsinline preload="auto"><source src="vd/v2.mp4" type="video/mp4"></video></div>
-        <div class="frame-card"><video autoplay loop muted playsinline preload="auto"><source src="vd/v7.mp4" type="video/mp4"></video></div>
+         <div class="frame-card"><video autoplay loop muted playsinline preload="auto"><source src="vd/v7.mp4" type="video/mp4"></video></div>
         <div class="frame-card"><img data-src="images/i2.jpeg" alt="Frame"></div>
         <div class="frame-card"><img data-src="images/i3.jpeg" alt="Frame"></div>
         <div class="frame-card"><img data-src="images/i4.jpeg" alt="Frame"></div>
@@ -465,12 +466,12 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
 (function(){
   'use strict';
   const FILMS = [
-    { title: "#90's Middle Class Biopic", tagline: "A nostalgic trip down memory lane.", year: "2024", type: "TV Series", director: "Aditya Haasan", producer: "Chandru Krishnamurthy", studio: "Sky Nine Pictures", streaming: ["Netflix"], imdb: "https://www.imdb.com/title/tt29764006/", trailerYT: "7zzlOolbhFY", poster: "images/poster-90s.jpg", dop: "Director of Photography" },
+    { title: "#90's Middle Class Biopic", tagline: "A nostalgic trip down memory lane.", year: "2024", type: "TV Series", director: "Aditya Haasan", producer: "Chandru Krishnamurthy", studio: "Sky Nine Pictures", streaming: ["Netflix"], imdb: "https://www.imdb.com/title/tt29764006/", trailerYT: "https://youtu.be/7zzlOolbhFY?si=Kt-HotHhKU16r6ap", poster: "images/poster-90s.jpg", dop: "Director of Photography" },
     { title: "Goodachari 2", tagline: "The spy returns", year: "2026", type: "Feature Film", director: "Sashi Kiran Tikka", producer: "Bunny Vas", studio: "GA2 Pictures", streaming: ["In Theatres"], imdb: "https://www.imdb.com/", trailerYT: "", poster: "images/g2.png", dop: "Director of Photography" },
     { title: "EPIC", tagline: "An epic saga", year: "2026", type: "Feature Film", director: "TBA", producer: "TBA", studio: "TBA", streaming: ["Coming Soon"], imdb: "https://www.imdb.com/", trailerYT: "", poster: "images/poster-epic.png", dop: "Cinematographer" },
     { title: "Kadaseela Biriyani", tagline: "A tale of love", year: "2021", type: "Feature Film", director: "Muthukumaran Rajagopalan", producer: "Chandru Krishnamurthy", studio: "Sky Nine Pictures", streaming: ["Netflix"], imdb: "https://www.imdb.com/title/tt13614116/", trailerYT: "F6f_UGv2XyE", poster: "images/kb.jpg", dop: "Director of Photography" },
     { title: "Theatre", tagline: "Behind the curtain", year: "2025", type: "Feature Film", director: "TBA", producer: "TBA", studio: "TBA", streaming: ["Coming Soon"], imdb: "https://www.imdb.com/", trailerYT: "", poster: "images/th.jpg", dop: "Cinematographer" },
-    { title: "Bro", tagline: "Brothers in arms", year: "2021", type: "Feature Film", director: "TBA", producer: "TBA", studio: "TBA", streaming: ["TBA"], imdb: "https://www.imdb.com/", trailerYT: "", poster: "images/bro.jpg", dop: "Director of Photography" }
+    { title: "Bro", tagline: "Brothers in arms", year: "2021", type: "Feature Film", director: "TBA", producer: "TBA", studio: "TBA", streaming: ["TBA"], imdb: "https://www.imdb.com/", trailerYT: "", poster: "images/bro.png", dop: "Director of Photography" }
   ];
 
   const dot=document.querySelector('.cursor-dot'), ring=document.querySelector('.cursor-ring');
