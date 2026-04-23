@@ -156,7 +156,16 @@ body.hover-active .cursor-ring { width: 56px; height: 56px; border-color: rgba(2
 .intro-sub { font-size:clamp(.48rem,1vw,.6rem); letter-spacing:.42em; text-transform:uppercase; color:rgba(201,165,90,.55); }
 
 /* FLOATING CTA */
-.cta-float { position:fixed; bottom:clamp(20px,3vh,32px); right:clamp(20px,3vw,36px); z-index:2000; display:flex; align-items:center; gap:10px; padding:12px 20px 12px 18px; background:rgba(10,10,10,.85); border:1px solid rgba(201,165,90,.28); border-radius:2px; backdrop-filter:blur(12px); text-decoration:none; opacity:0; transform:translateY(12px); transition:opacity .4s, transform .4s; }
+.cta-float { 
+  position:fixed; bottom:clamp(20px,3vh,32px); right:clamp(20px,3vw,36px); 
+  z-index:2000; display:flex; align-items:center; gap:10px; 
+  padding:12px 20px 12px 18px; background:rgba(10,10,10,.85); 
+  border:1px solid rgba(201,165,90,.28); border-radius:2px; 
+  backdrop-filter:blur(12px); text-decoration:none; 
+  opacity:0; transform:translateY(12px); 
+  transition:opacity .4s, transform .4s; 
+  cursor:pointer;
+}
 .cta-float.visible { opacity:1; transform:translateY(0); }
 .cta-float:hover { background:rgba(20,18,14,.95); border-color:rgba(201,165,90,.6); }
 .cta-text { font-size:.58rem; font-weight:500; letter-spacing:.28em; text-transform:uppercase; color:rgba(255,255,255,.72); }
@@ -179,22 +188,16 @@ body.hover-active .cursor-ring { width: 56px; height: 56px; border-color: rgba(2
 
 .fc-card { position:relative; flex:0 0 var(--fc-card-w); height:100%; overflow:hidden; scroll-snap-align:start; border-right:1px solid rgba(255,255,255,.06); cursor:pointer; }
 .fc-card:last-child { border-right:none; }
-
-/* PERFORMANCE: Use transform instead of scale on img to avoid repaints */
 .fc-card-inner { position:absolute; inset:0; overflow:hidden; }
 .fc-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transform:scale(1.0); transition:transform .6s cubic-bezier(0.25,0.46,0.45,0.94); will-change:transform; }
 .fc-card:hover .fc-img { transform:scale(1.06); }
 
-/* Shimmer placeholder while image loads */
+/* Shimmer placeholder - removed to avoid flicker, replaced with solid bg */
 .fc-card::before {
   content:''; position:absolute; inset:0; z-index:1;
-  background: linear-gradient(90deg, #111 0%, #1a1a1a 50%, #111 100%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
+  background: #111;
+  display: none; /* disable shimmer for better perceived speed */
 }
-.fc-card.loaded::before { display:none; }
-@keyframes shimmer { 0%{background-position:200% 0;} 100%{background-position:-200% 0;} }
-
 .fc-card::after { content:''; position:absolute; inset:0; z-index:2; background:linear-gradient(to bottom, transparent 35%, rgba(0,0,0,.18) 62%, rgba(0,0,0,.88) 100%); pointer-events:none; }
 
 .fc-info { position:absolute; bottom:0; left:0; right:0; z-index:3; padding:clamp(14px,2.2vw,26px) clamp(14px,2.2vw,24px) clamp(16px,2.2vw,22px); }
@@ -202,210 +205,74 @@ body.hover-active .cursor-ring { width: 56px; height: 56px; border-color: rgba(2
 .fc-card:hover .fc-rule { width:40px; }
 .fc-title { font-family:'Cormorant Garamond',serif; font-size:clamp(.9rem,1.6vw,1.4rem); font-weight:500; letter-spacing:.06em; line-height:1.15; color:#fff; text-transform:uppercase; margin-bottom:5px; }
 .fc-role { font-size:clamp(.44rem,.78vw,.56rem); letter-spacing:.28em; text-transform:uppercase; color:rgba(255,255,255,.48); }
-.fc-year { position:absolute; top:12px; right:12px; z-index:3; font-size:.5rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.75); background:rgba(5,5,5,.62); border:1px solid rgba(255,255,255,.12); padding:3px 9px; opacity:0; transition:opacity .25s; }
-.fc-card:hover .fc-year { opacity:1; }
+.fc-year { position:absolute; top:12px; right:12px; z-index:3; font-size:.5rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.75); background:rgba(5,5,5,.62); border:1px solid rgba(255,255,255,.12); padding:3px 9px; opacity:1; transition:opacity .25s; }
 .fc-num { position:absolute; top:14px; left:16px; z-index:3; font-family:'Cormorant Garamond',serif; font-size:clamp(.75rem,1.2vw,1rem); font-weight:300; color:rgba(255,255,255,.28); }
 .fc-counter { position:absolute; bottom:20px; left:clamp(20px,3vw,40px); z-index:11; display:flex; align-items:baseline; gap:5px; pointer-events:none; opacity:.6; }
 .fc-cur { font-family:'Cormorant Garamond',serif; font-size:clamp(1.5rem,3vw,2.5rem); font-weight:300; line-height:1; color:rgba(255,255,255,.85); }
 .fc-sep { font-size:clamp(.5rem,.8vw,.65rem); letter-spacing:.18em; color:rgba(255,255,255,.22); }
 .fc-tot { font-size:clamp(.5rem,.8vw,.65rem); letter-spacing:.18em; color:rgba(255,255,255,.28); }
 
-/* Click hint on cards */
-.fc-click-hint {
-  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-  z-index:3; opacity:0; transition:opacity .3s;
-  display:flex; flex-direction:column; align-items:center; gap:8px;
-  pointer-events:none;
-}
+.fc-click-hint { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); z-index:3; opacity:0; transition:opacity .3s; display:flex; flex-direction:column; align-items:center; gap:8px; pointer-events:none; }
 .fc-card:hover .fc-click-hint { opacity:1; }
-.fc-click-icon {
-  width:48px; height:48px; border-radius:50%;
-  background:rgba(255,255,255,.12); backdrop-filter:blur(8px);
-  border:1px solid rgba(255,255,255,.2);
-  display:flex; align-items:center; justify-content:center;
-}
+.fc-click-icon { width:48px; height:48px; border-radius:50%; background:rgba(255,255,255,.12); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.2); display:flex; align-items:center; justify-content:center; }
 .fc-click-icon svg { width:20px; height:20px; fill:none; stroke:#fff; stroke-width:1.5; }
 .fc-click-label { font-size:.46rem; letter-spacing:.3em; text-transform:uppercase; color:rgba(255,255,255,.7); }
 
-/* =============================================
-   MOVIE DETAIL MODAL
-   ============================================= */
-.movie-modal-overlay {
-  position:fixed; inset:0; z-index:10000;
-  background:rgba(0,0,0,0); backdrop-filter:blur(0px);
-  pointer-events:none;
-  transition:background .4s ease, backdrop-filter .4s ease;
-}
-.movie-modal-overlay.open {
-  background:rgba(0,0,0,.85);
-  backdrop-filter:blur(20px);
-  pointer-events:all;
-}
-
-.movie-modal {
-  position:fixed; inset:0; z-index:10001;
-  display:flex; align-items:center; justify-content:center;
-  padding:clamp(16px,3vw,40px);
-  pointer-events:none;
-  opacity:0; transform:translateY(32px);
-  transition:opacity .45s cubic-bezier(0.22,1,0.36,1), transform .45s cubic-bezier(0.22,1,0.36,1);
-}
+/* MOVIE DETAIL MODAL */
+.movie-modal-overlay { position:fixed; inset:0; z-index:10000; background:rgba(0,0,0,0); backdrop-filter:blur(0px); pointer-events:none; transition:background .4s ease, backdrop-filter .4s ease; }
+.movie-modal-overlay.open { background:rgba(0,0,0,.85); backdrop-filter:blur(20px); pointer-events:all; }
+.movie-modal { position:fixed; inset:0; z-index:10001; display:flex; align-items:center; justify-content:center; padding:clamp(16px,3vw,40px); pointer-events:none; opacity:0; transform:translateY(32px); transition:opacity .45s cubic-bezier(0.22,1,0.36,1), transform .45s cubic-bezier(0.22,1,0.36,1); }
 .movie-modal.open { pointer-events:all; opacity:1; transform:translateY(0); }
-
-.mm-panel {
-  width:100%; max-width:960px; max-height:90vh;
-  background:#0a0a0a; border:1px solid rgba(255,255,255,.08);
-  overflow-y:auto; overflow-x:hidden;
-  position:relative;
-  scrollbar-width:thin; scrollbar-color:rgba(201,165,90,.3) transparent;
-}
+.mm-panel { width:100%; max-width:960px; max-height:90vh; background:#0a0a0a; border:1px solid rgba(255,255,255,.08); overflow-y:auto; overflow-x:hidden; position:relative; scrollbar-width:thin; scrollbar-color:rgba(201,165,90,.3) transparent; }
 .mm-panel::-webkit-scrollbar { width:3px; }
 .mm-panel::-webkit-scrollbar-thumb { background:rgba(201,165,90,.3); }
-
-/* Close button */
-.mm-close {
-  position:absolute; top:16px; right:16px; z-index:10;
-  width:36px; height:36px; border-radius:50%;
-  background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1);
-  display:flex; align-items:center; justify-content:center;
-  cursor:pointer; transition:background .2s, border-color .2s;
-}
+.mm-close { position:absolute; top:16px; right:16px; z-index:10; width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background .2s, border-color .2s; }
 .mm-close:hover { background:rgba(255,255,255,.12); border-color:rgba(201,165,90,.5); }
 .mm-close svg { width:14px; height:14px; stroke:#fff; stroke-width:1.5; fill:none; }
-
-/* Hero image area */
-.mm-hero {
-  position:relative; width:100%; aspect-ratio:16/9;
-  overflow:hidden; flex-shrink:0;
-}
-.mm-hero-img {
-  width:100%; height:100%; object-fit:cover;
-  transform:scale(1.04); transition:transform 6s ease-out;
-}
+.mm-hero { position:relative; width:100%; aspect-ratio:16/9; overflow:hidden; flex-shrink:0; }
+.mm-hero-img { width:100%; height:100%; object-fit:cover; transform:scale(1.04); transition:transform 6s ease-out; }
 .movie-modal.open .mm-hero-img { transform:scale(1); }
-.mm-hero-overlay {
-  position:absolute; inset:0;
-  background:linear-gradient(to bottom, rgba(0,0,0,.1) 0%, rgba(0,0,0,.05) 40%, rgba(10,10,10,.95) 100%);
-}
-.mm-hero-badge {
-  position:absolute; top:16px; left:16px;
-  font-size:.46rem; letter-spacing:.28em; text-transform:uppercase;
-  color:rgba(201,165,90,.8); background:rgba(10,10,10,.7);
-  border:1px solid rgba(201,165,90,.2); padding:4px 10px;
-  backdrop-filter:blur(8px);
-}
-
-/* Content */
+.mm-hero-overlay { position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,.1) 0%, rgba(0,0,0,.05) 40%, rgba(10,10,10,.95) 100%); }
+.mm-hero-badge { position:absolute; top:16px; left:16px; font-size:.46rem; letter-spacing:.28em; text-transform:uppercase; color:rgba(201,165,90,.8); background:rgba(10,10,10,.7); border:1px solid rgba(201,165,90,.2); padding:4px 10px; backdrop-filter:blur(8px); }
 .mm-body { padding:clamp(20px,3.5vw,40px) clamp(20px,3.5vw,40px) clamp(24px,4vw,48px); }
-
 .mm-top { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:24px; flex-wrap:wrap; }
-
-.mm-title-block {}
-.mm-title {
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(1.6rem,3.5vw,3rem); font-weight:600;
-  letter-spacing:.03em; text-transform:uppercase;
-  color:#fff; line-height:1; margin-bottom:10px;
-}
-.mm-tagline {
-  font-size:clamp(.6rem,.85vw,.72rem); letter-spacing:.28em;
-  text-transform:uppercase; color:rgba(201,165,90,.65);
-  font-style:italic;
-}
-
+.mm-title-block { }
+.mm-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.6rem,3.5vw,3rem); font-weight:600; letter-spacing:.03em; text-transform:uppercase; color:#fff; line-height:1; margin-bottom:10px; }
+.mm-tagline { font-size:clamp(.6rem,.85vw,.72rem); letter-spacing:.28em; text-transform:uppercase; color:rgba(201,165,90,.65); font-style:italic; }
 .mm-actions { display:flex; gap:10px; align-items:center; flex-shrink:0; }
-.mm-btn {
-  display:flex; align-items:center; gap:8px;
-  padding:9px 16px;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.05);
-  font-family:'Josefin Sans',sans-serif;
-  font-size:.52rem; letter-spacing:.2em; text-transform:uppercase;
-  color:rgba(255,255,255,.6); cursor:pointer;
-  transition:background .2s, border-color .2s, color .2s;
-}
+.mm-btn { display:flex; align-items:center; gap:8px; padding:9px 16px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.05); font-family:'Josefin Sans',sans-serif; font-size:.52rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.6); cursor:pointer; transition:background .2s, border-color .2s, color .2s; }
 .mm-btn:hover { background:rgba(255,255,255,.1); border-color:rgba(201,165,90,.5); color:#fff; }
 .mm-btn svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:1.5; }
 .mm-btn.gold { border-color:rgba(201,165,90,.4); color:var(--gold-mid); }
 .mm-btn.gold:hover { background:rgba(201,165,90,.1); border-color:var(--gold-bright); color:var(--gold-bright); }
-
-/* Divider rule */
 .mm-rule { width:100%; height:1px; background:var(--border); margin:20px 0; }
-
-/* Meta grid */
-.mm-meta-grid {
-  display:grid; grid-template-columns:repeat(auto-fill, minmax(160px,1fr));
-  gap:20px 28px; margin-bottom:24px;
-}
-.mm-meta-item {}
+.mm-meta-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(160px,1fr)); gap:20px 28px; margin-bottom:24px; }
 .mm-meta-label { font-size:.5rem; letter-spacing:.28em; text-transform:uppercase; color:rgba(255,255,255,.3); margin-bottom:5px; }
 .mm-meta-value { font-size:clamp(.72rem,.9vw,.82rem); color:rgba(255,255,255,.75); line-height:1.4; }
 .mm-meta-value.gold { color:var(--gold-mid); }
-
-/* IMDB badge */
-.imdb-badge {
-  display:inline-flex; align-items:center; gap:7px;
-  padding:6px 12px;
-  background:#f5c518; border-radius:2px;
-  font-family:'Josefin Sans',sans-serif;
-  font-size:.6rem; font-weight:600; letter-spacing:.1em;
-  color:#000; text-decoration:none;
-  transition:opacity .2s, transform .15s;
-}
+.imdb-badge { display:inline-flex; align-items:center; gap:7px; padding:6px 12px; background:#f5c518; border-radius:2px; font-family:'Josefin Sans',sans-serif; font-size:.6rem; font-weight:600; letter-spacing:.1em; color:#000; text-decoration:none; transition:opacity .2s, transform .15s; }
 .imdb-badge:hover { opacity:.9; transform:translateY(-1px); }
 .imdb-badge svg { width:14px; height:14px; fill:#000; }
-
-/* Streaming */
 .mm-streaming { margin-bottom:24px; }
 .mm-streaming-label { font-size:.52rem; letter-spacing:.28em; text-transform:uppercase; color:rgba(255,255,255,.3); margin-bottom:12px; }
 .mm-platforms { display:flex; flex-wrap:wrap; gap:10px; }
-.mm-platform {
-  padding:7px 16px; border:1px solid rgba(255,255,255,.1);
-  background:rgba(255,255,255,.04);
-  font-size:.54rem; letter-spacing:.18em; text-transform:uppercase;
-  color:rgba(255,255,255,.55); transition:all .2s;
-}
+.mm-platform { padding:7px 16px; border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.04); font-size:.54rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.55); transition:all .2s; }
 .mm-platform:hover { border-color:rgba(201,165,90,.4); color:rgba(201,165,90,.9); background:rgba(201,165,90,.05); }
-
-/* Trailer section */
 .mm-trailer-section { margin-top:28px; }
 .mm-trailer-label { font-size:.52rem; letter-spacing:.28em; text-transform:uppercase; color:rgba(255,255,255,.3); margin-bottom:12px; display:flex; align-items:center; gap:10px; }
-.mm-trailer-label::after { content:''; flex:1; height:1px; background:var(--border); }
 .mm-trailer-wrap { position:relative; width:100%; aspect-ratio:16/9; background:#000; overflow:hidden; }
 .mm-trailer-wrap iframe { position:absolute; inset:0; width:100%; height:100%; border:none; }
-/* Trailer placeholder when no video */
-.mm-trailer-placeholder {
-  position:absolute; inset:0;
-  background:linear-gradient(135deg, #0d0d0d, #111);
-  display:flex; flex-direction:column;
-  align-items:center; justify-content:center; gap:12px;
-}
+.mm-trailer-placeholder { position:absolute; inset:0; background:linear-gradient(135deg, #0d0d0d, #111); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; }
 .mm-trailer-placeholder svg { width:48px; height:48px; opacity:.2; fill:none; stroke:var(--gold-mid); stroke-width:1; }
-.mm-trailer-placeholder p { font-size:.54rem; letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,.2); }
-
-/* Share toast */
-.share-toast {
-  position:fixed; bottom:80px; left:50%; transform:translateX(-50%) translateY(10px);
-  z-index:20000;
-  background:rgba(20,20,20,.95); border:1px solid rgba(201,165,90,.3);
-  padding:10px 20px; backdrop-filter:blur(12px);
-  font-size:.56rem; letter-spacing:.2em; text-transform:uppercase;
-  color:rgba(255,255,255,.8);
-  opacity:0; transition:opacity .3s, transform .3s;
-  pointer-events:none;
-}
+.share-toast { position:fixed; bottom:80px; left:50%; transform:translateX(-50%) translateY(10px); z-index:20000; background:rgba(20,20,20,.95); border:1px solid rgba(201,165,90,.3); padding:10px 20px; backdrop-filter:blur(12px); font-size:.56rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.8); opacity:0; transition:opacity .3s, transform .3s; pointer-events:none; }
 .share-toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
 /* FRAMES */
 .frames-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:clamp(.5rem,1.4vw,1.4rem); margin-bottom:clamp(40px,6vw,70px); }
 .frame-card { aspect-ratio:16/10; overflow:hidden; background:#0f0f0f; position:relative; }
-
-/* Frame shimmer */
-.frame-card::before { content:''; position:absolute; inset:0; z-index:1; background:linear-gradient(90deg,#111 0%,#1a1a1a 50%,#111 100%); background-size:200% 100%; animation:shimmer 1.5s infinite; }
-.frame-card.loaded::before { display:none; }
-
-.frame-card img, .frame-card video { width:100%; height:100%; object-fit:cover; transform:scale(1.04); transition:transform .5s ease; will-change:transform; }
-.frame-card:hover img, .frame-card:hover video { transform:scale(1.08); }
+.frame-card::before { content:''; position:absolute; inset:0; z-index:1; background: #111; display: none; }
+.frame-card img, .frame-card video { width:100%; height:100%; object-fit:cover; transform:scale(1.02); transition:transform .5s ease; will-change:transform; }
+.frame-card:hover img, .frame-card:hover video { transform:scale(1.06); }
 
 /* ABOUT + CONTACT */
 .about-contact { display:grid; grid-template-columns:1fr 1fr; gap:clamp(2rem,5vw,5rem); padding-top:clamp(28px,4.5vw,48px); border-top:1px solid var(--border); margin-bottom:clamp(44px,7vw,88px); }
@@ -414,29 +281,21 @@ body.hover-active .cursor-ring { width: 56px; height: 56px; border-color: rgba(2
 .contact-items { display:flex; flex-direction:column; gap:1.1rem; }
 .c-line { border-bottom:1px solid var(--border); padding-bottom:.65rem; }
 .c-label { font-size:.56rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.28); margin-bottom:.26rem; }
-.c-val { font-size:clamp(.76rem,.9vw,.86rem); color:rgba(255,255,255,.62); transition:color .2s; }
+.c-val { font-size:clamp(.76rem,.9vw,.86rem); color:rgba(255,255,255,.62); transition:color .2s; cursor:pointer; }
 .c-val:hover { color:#fff; }
 .socials { display:flex; gap:1.6rem; margin-top:.3rem; }
 .socials a { font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.36); transition:color .2s; }
 .socials a:hover { color:#fff; }
-
-/* MARQUEE */
 .marquee { overflow:hidden; white-space:nowrap; padding:10px 0; border-top:1px solid rgba(255,255,255,.04); border-bottom:1px solid rgba(255,255,255,.04); }
 .marquee-inner { display:inline-flex; gap:26px; animation:marq 28s linear infinite; font-size:.54rem; letter-spacing:.24em; text-transform:uppercase; color:rgba(255,255,255,.2); }
 .mdot { color:rgba(201,165,90,.38); }
 @keyframes marq { from{transform:translateX(0);} to{transform:translateX(-50%);} }
-
-/* FOOTER */
 footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px solid rgba(255,255,255,.04); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; font-size:.56rem; letter-spacing:.1em; color:rgba(255,255,255,.2); }
 .foot-links { display:flex; gap:1.8rem; }
 .foot-links a { color:rgba(255,255,255,.26); transition:color .2s; }
 .foot-links a:hover { color:#fff; }
-
-/* FADE-UP */
 .fade-up { opacity:0; transform:translateY(20px); transition:opacity .6s ease, transform .6s ease; }
 .fade-up.visible { opacity:1; transform:translateY(0); }
-
-/* RESPONSIVE */
 @media (max-width:1100px) { :root { --fc-card-w: clamp(260px,55vw,480px); } }
 @media (max-width:900px) {
   :root { --sidenav-w:0px; --fc-card-w:80vw; }
@@ -475,19 +334,15 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
   </div>
 </div>
 
-<!-- MOVIE DETAIL MODAL -->
 <div class="movie-modal-overlay" id="mm-overlay"></div>
 <div class="movie-modal" id="mm-modal" role="dialog" aria-modal="true" aria-label="Film details">
   <div class="mm-panel" id="mm-panel">
     <button class="mm-close" id="mm-close" aria-label="Close">
       <svg viewBox="0 0 14 14"><path d="M1 1l12 12M13 1L1 13" stroke-linecap="round"/></svg>
     </button>
-    <!-- Dynamic content injected here -->
     <div id="mm-content"></div>
   </div>
 </div>
-
-<!-- Share toast -->
 <div class="share-toast" id="share-toast">Link copied to clipboard</div>
 
 <nav class="sidenav" id="sidenav">
@@ -526,13 +381,12 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
     <div class="scroll-cue"><div class="scroll-cue-line"></div><span class="scroll-cue-text">SCROLL</span></div>
   </section>
 
-  <!-- SHOWREEL -->
   <div class="wrap">
     <div class="fade-up" id="showreel">
       <div class="sec-head"><span class="sec-label">SHOWREEL</span></div>
       <div class="reel-wrap">
         <div class="vimeo-wrapper">
-          <iframe src="https://player.vimeo.com/video/1185745228?autoplay=1&loop=1&title=0&byline=0&portrait=0&background=0&muted=0&dnt=1&controls=1" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe>
+          <iframe src="https://player.vimeo.com/video/1185748770?autoplay=1&loop=1&title=0&byline=0&portrait=0&background=0&muted=0&dnt=1&controls=1" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe>
         </div>
       </div>
       <p class="reel-caption">CINEMATOGRAPHY SHOWREEL</p>
@@ -547,98 +401,23 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
 
   <div class="film-credits-section fade-up" id="fc-section">
     <div class="fc-track" id="fc-track">
-
-      <div class="fc-card" data-film="0" tabindex="0" role="button" aria-label="View details for #90's Middle Class Biopic">
-        <div class="fc-card-inner">
-          <img class="fc-img" data-src="images/poster-90s.jpg" alt="#90s Middle Class Biopic">
-        </div>
-        <span class="fc-num">01</span>
-        <div class="fc-year">2024</div>
-        <div class="fc-info"><div class="fc-rule"></div><div class="fc-title">#90's Middle Class Biopic</div><div class="fc-role">Director of Photography &nbsp;·&nbsp; TV Series</div></div>
-        <div class="fc-click-hint">
-          <div class="fc-click-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg></div>
-          <span class="fc-click-label">View Details</span>
-        </div>
-      </div>
-
-      <div class="fc-card" data-film="1" tabindex="0" role="button" aria-label="View details for Goodachari 2">
-        <div class="fc-card-inner">
-          <img class="fc-img" data-src="images/g2.png" alt="Goodachari 2">
-        </div>
-        <span class="fc-num">02</span>
-        <div class="fc-year">2026</div>
-        <div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Goodachari 2</div><div class="fc-role">Director of Photography &nbsp;·&nbsp; Film</div></div>
-        <div class="fc-click-hint">
-          <div class="fc-click-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg></div>
-          <span class="fc-click-label">View Details</span>
-        </div>
-      </div>
-
-      <div class="fc-card" data-film="2" tabindex="0" role="button" aria-label="View details for EPIC">
-        <div class="fc-card-inner">
-          <img class="fc-img" data-src="images/poster-epic.png" alt="EPIC">
-        </div>
-        <span class="fc-num">03</span>
-        <div class="fc-year">2026</div>
-        <div class="fc-info"><div class="fc-rule"></div><div class="fc-title">EPIC</div><div class="fc-role">Cinematographer &nbsp;·&nbsp; Film</div></div>
-        <div class="fc-click-hint">
-          <div class="fc-click-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg></div>
-          <span class="fc-click-label">View Details</span>
-        </div>
-      </div>
-
-      <div class="fc-card" data-film="3" tabindex="0" role="button" aria-label="View details for Kadaseela Biriyani">
-        <div class="fc-card-inner">
-          <img class="fc-img" data-src="images/kb.jpg" alt="Kadaseela Biriyani">
-        </div>
-        <span class="fc-num">04</span>
-        <div class="fc-year">2021</div>
-        <div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Kadaseela Biriyani</div><div class="fc-role">Director of Photography &nbsp;·&nbsp; Film</div></div>
-        <div class="fc-click-hint">
-          <div class="fc-click-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg></div>
-          <span class="fc-click-label">View Details</span>
-        </div>
-      </div>
-
-      <div class="fc-card" data-film="4" tabindex="0" role="button" aria-label="View details for Theatre">
-        <div class="fc-card-inner">
-          <img class="fc-img" data-src="images/th.jpg" alt="Theatre">
-        </div>
-        <span class="fc-num">05</span>
-        <div class="fc-year">2025</div>
-        <div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Theatre</div><div class="fc-role">Cinematographer &nbsp;·&nbsp; Film</div></div>
-        <div class="fc-click-hint">
-          <div class="fc-click-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg></div>
-          <span class="fc-click-label">View Details</span>
-        </div>
-      </div>
-
-     
-
-      <div class="fc-card" data-film="6" tabindex="0" role="button" aria-label="View details for Bro">
-        <div class="fc-card-inner">
-          <img class="fc-img" data-src="images/bro.jpg" alt="Bro">
-        </div>
-        <span class="fc-num">07</span>
-        <div class="fc-year">2021</div>
-        <div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Bro</div><div class="fc-role">Director of Photography &nbsp;·&nbsp; Film</div></div>
-        <div class="fc-click-hint">
-          <div class="fc-click-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg></div>
-          <span class="fc-click-label">View Details</span>
-        </div>
-      </div>
-
+      <div class="fc-card" data-film="0" tabindex="0"><div class="fc-card-inner"><img class="fc-img" data-src="images/poster-90s.jpg" alt="#90s Middle Class Biopic"></div><span class="fc-num">01</span><div class="fc-year">2024</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">#90's Middle Class Biopic</div><div class="fc-role">Director of Photography &nbsp;·&nbsp; TV Series</div></div><div class="fc-click-hint"><div class="fc-click-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg></div><span class="fc-click-label">View Details</span></div></div>
+      <div class="fc-card" data-film="1" tabindex="0"><div class="fc-card-inner"><img class="fc-img" data-src="images/g2.png" alt="Goodachari 2"></div><span class="fc-num">02</span><div class="fc-year">2026</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Goodachari 2</div><div class="fc-role">Director of Photography &nbsp;·&nbsp; Film</div></div><div class="fc-click-hint"><div class="fc-click-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg></div><span class="fc-click-label">View Details</span></div></div>
+      <div class="fc-card" data-film="2" tabindex="0"><div class="fc-card-inner"><img class="fc-img" data-src="images/poster-epic.png" alt="EPIC"></div><span class="fc-num">03</span><div class="fc-year">2026</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">EPIC</div><div class="fc-role">Cinematographer &nbsp;·&nbsp; Film</div></div><div class="fc-click-hint"><div class="fc-click-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg></div><span class="fc-click-label">View Details</span></div></div>
+      <div class="fc-card" data-film="3" tabindex="0"><div class="fc-card-inner"><img class="fc-img" data-src="images/kb.jpg" alt="Kadaseela Biriyani"></div><span class="fc-num">04</span><div class="fc-year">2021</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Kadaseela Biriyani</div><div class="fc-role">Director of Photography &nbsp;·&nbsp; Film</div></div><div class="fc-click-hint"><div class="fc-click-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg></div><span class="fc-click-label">View Details</span></div></div>
+      <div class="fc-card" data-film="4" tabindex="0"><div class="fc-card-inner"><img class="fc-img" data-src="images/th.jpg" alt="Theatre"></div><span class="fc-num">05</span><div class="fc-year">2025</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Theatre</div><div class="fc-role">Cinematographer &nbsp;·&nbsp; Film</div></div><div class="fc-click-hint"><div class="fc-click-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg></div><span class="fc-click-label">View Details</span></div></div>
+      <div class="fc-card" data-film="5" tabindex="0"><div class="fc-card-inner"><img class="fc-img" data-src="images/bro.jpg" alt="Bro"></div><span class="fc-num">06</span><div class="fc-year">2021</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Bro</div><div class="fc-role">Director of Photography &nbsp;·&nbsp; Film</div></div><div class="fc-click-hint"><div class="fc-click-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg></div><span class="fc-click-label">View Details</span></div></div>
     </div>
-    <div class="fc-counter"><span class="fc-cur">01</span><span class="fc-sep">/</span><span class="fc-tot">07</span></div>
+    <div class="fc-counter"><span class="fc-cur">01</span><span class="fc-sep">/</span><span class="fc-tot">06</span></div>
   </div>
 
   <div class="wrap">
     <div class="fade-up" id="frames">
       <div class="sec-head"><span class="sec-label">FRAMES</span></div>
       <div class="frames-grid">
-        <div class="frame-card"><video autoplay loop muted playsinline preload="none"><source data-src="vd/v1.mp4" type="video/mp4"></video></div>
-        <div class="frame-card"><video autoplay loop muted playsinline preload="none"><source data-src="vd/v2.mp4" type="video/mp4"></video></div>
-        <div class="frame-card"><video autoplay loop muted playsinline preload="none"><source data-src="vd/v7.mp4" type="video/mp4"></video></div>
+        <div class="frame-card"><video autoplay loop muted playsinline preload="auto"><source src="vd/v1.mp4" type="video/mp4"></video></div>
+        <div class="frame-card"><video autoplay loop muted playsinline preload="auto"><source src="vd/v2.mp4" type="video/mp4"></video></div>
+        <div class="frame-card"><video autoplay loop muted playsinline preload="auto"><source src="vd/v7.mp4" type="video/mp4"></video></div>
         <div class="frame-card"><img data-src="images/i2.jpeg" alt="Frame"></div>
         <div class="frame-card"><img data-src="images/i3.jpeg" alt="Frame"></div>
         <div class="frame-card"><img data-src="images/i4.jpeg" alt="Frame"></div>
@@ -665,7 +444,7 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
         </div>
         <div class="contact-items" id="contact">
           <div class="c-line" style="border:none;padding:0;margin-bottom:.6rem;"><span class="sec-label">CONTACT</span></div>
-          <div class="c-line"><div class="c-label">EMAIL</div><a href="mailto:azeem.dop09@gmail.com" class="c-val">azeem.dop09@gmail.com →</a></div>
+          <div class="c-line"><div class="c-label">EMAIL</div><a href="mailto:azeem.dop09@gmail.com" class="c-val" id="email-link">azeem.dop09@gmail.com →</a></div>
           <div class="c-line"><div class="c-label">BASED</div><div class="c-val">Hyderabad, India </div></div>
           <div class="c-line"><div class="c-label">SOCIAL</div><div class="socials"><a href="https://www.instagram.com/az_dop?igsh=MW0wMmN2aXJsZ2hxcQ==" target="_blank">INSTAGRAM</a><a href="https://vimeo.com/user5599169" target="_blank">VIMEO</a></div></div>
           <div class="c-line"><div class="c-label">OPEN TO</div><div class="c-val" style="font-size:.74rem">Feature Film · Short Film · Commercial · Collaborations</div></div>
@@ -674,378 +453,78 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
     </div>
   </div>
 
-  <div class="marquee">
-    <div class="marquee-inner">
-      <span>Natural Light</span><span class="mdot">·</span><span>Camera Operation</span><span class="mdot">·</span><span>Lens Design</span><span class="mdot">·</span><span>Colour Grading</span><span class="mdot">·</span><span>Visual Storytelling</span><span class="mdot">·</span><span>Feature Film</span><span class="mdot">·</span><span>Short Film</span><span class="mdot">·</span><span>Hyderabad / India</span><span class="mdot">·</span><span>Natural Light</span><span class="mdot">·</span><span>Camera Operation</span><span class="mdot">·</span><span>Lens Design</span><span class="mdot">·</span><span>Colour Grading</span><span class="mdot">·</span><span>Visual Storytelling</span><span class="mdot">·</span><span>Feature Film</span><span class="mdot">·</span><span>Short Film</span><span class="mdot">·</span><span>Hyderabad / India</span><span class="mdot">·</span>
-    </div>
-  </div>
+  <div class="marquee"><div class="marquee-inner"><span>Natural Light</span><span class="mdot">·</span><span>Camera Operation</span><span class="mdot">·</span><span>Lens Design</span><span class="mdot">·</span><span>Colour Grading</span><span class="mdot">·</span><span>Visual Storytelling</span><span class="mdot">·</span><span>Feature Film</span><span class="mdot">·</span><span>Short Film</span><span class="mdot">·</span><span>Hyderabad / India</span><span class="mdot">·</span><span>Natural Light</span><span class="mdot">·</span><span>Camera Operation</span><span class="mdot">·</span><span>Lens Design</span><span class="mdot">·</span><span>Colour Grading</span><span class="mdot">·</span><span>Visual Storytelling</span><span class="mdot">·</span><span>Feature Film</span><span class="mdot">·</span><span>Short Film</span><span class="mdot">·</span><span>Hyderabad / India</span><span class="mdot">·</span></div></div>
 
-  <footer>
-    <span>AZEEM MOHAMMAD</span>
-    <div class="foot-links"><a href="https://www.instagram.com/az_dop?igsh=MW0wMmN2aXJsZ2hxcQ==" target="_blank">INSTAGRAM</a><a href="https://vimeo.com/user5599169" target="_blank">VIMEO</a><a href="mailto:azeem.dop09@gmail.com">EMAIL</a></div>
-    <span>© 2025</span>
-  </footer>
+  <footer><span>AZEEM MOHAMMAD</span><div class="foot-links"><a href="https://www.instagram.com/az_dop?igsh=MW0wMmN2aXJsZ2hxcQ==" target="_blank">INSTAGRAM</a><a href="https://vimeo.com/user5599169" target="_blank">VIMEO</a><a href="mailto:azeem.dop09@gmail.com">EMAIL</a></div><span>© 2025</span></footer>
 
-  <a href="#contact" class="cta-float" id="cta-float"><span class="cta-text">Let's work</span><span class="cta-arrow">→</span></a>
+  <div class="cta-float" id="cta-float"><span class="cta-text">Let's work</span><span class="cta-arrow">→</span></div>
 </main>
 </div>
 
 <script>
 (function(){
   'use strict';
-
-  /* ─── FILM DATA ─────────────────────────────────────── */
   const FILMS = [
-    {
-      title: "#90's Middle Class Biopic",
-      tagline: "A nostalgic trip down memory lane, delving into the everyday life of a middle-class family.",
-      year: "2024",
-      type: "TV Series",
-      director: "Aditya Haasan",
-      streaming: ["Netflix"],
-      imdb: "https://www.imdb.com/title/tt29764006/?ref_=ext_shr_lnk",
-      trailerYT: "https://youtu.be/7zzlOolbhFY?si=AVn_Xm4Eqvq50dTy", // Add YouTube video ID if available e.g. "dQw4w9WgXcQ"
-      poster: "images/poster-90s.jpg",
-      dop: "Director of Photography"
-    },
-    {
-      title: "Goodachari 2",
-      tagline: "The spy returns",
-      year: "2026",
-      type: "Feature Film",
-      director: "Sashi Kiran Tikka",
-      producer: "Bunny Vas",
-      studio: "GA2 Pictures",
-      streaming: ["In Theatres"],
-      imdb: "https://www.imdb.com/",
-      trailerYT: "",
-      poster: "images/g2.png",
-      dop: "Director of Photography"
-    },
-    {
-      title: "EPIC",
-      tagline: "An epic saga",
-      year: "2026",
-      type: "Feature Film",
-      director: "TBA",
-      producer: "TBA",
-      studio: "TBA",
-      streaming: ["Coming Soon"],
-      imdb: "https://www.imdb.com/",
-      trailerYT: "",
-      poster: "images/poster-epic.png",
-      dop: "Cinematographer"
-    },
-    {
-      title: "Kadaseela Biriyani",
-      tagline: "A tale of love and longing",
-      year: "2021",
-      type: "Feature Film",
-      director: "Muthukumaran Rajagopalan",
-      producer: "Chandru Krishnamurthy",
-      studio: "Sky Nine Pictures",
-      streaming: ["Netflix"],
-      imdb: "https://www.imdb.com/title/tt13614116/",
-      trailerYT: "F6f_UGv2XyE",
-      poster: "images/kb.jpg",
-      dop: "Director of Photography"
-    },
-    {
-      title: "Theatre",
-      tagline: "Behind the curtain",
-      year: "2025",
-      type: "Feature Film",
-      director: "TBA",
-      producer: "TBA",
-      studio: "TBA",
-      streaming: ["Coming Soon"],
-      imdb: "https://www.imdb.com/",
-      trailerYT: "",
-      poster: "images/th.jpg",
-      dop: "Cinematographer"
-    },
-    {
-      title: "Bro",
-      tagline: "Brothers in arms",
-      year: "2021",
-      type: "Feature Film",
-      director: "TBA",
-      producer: "TBA",
-      studio: "TBA",
-      streaming: ["TBA"],
-      imdb: "https://www.imdb.com/",
-      trailerYT: "",
-      poster: "images/bro.jpg",
-      dop: "Director of Photography"
-    }
+    { title: "#90's Middle Class Biopic", tagline: "A nostalgic trip down memory lane.", year: "2024", type: "TV Series", director: "Aditya Haasan", producer: "Chandru Krishnamurthy", studio: "Sky Nine Pictures", streaming: ["Netflix"], imdb: "https://www.imdb.com/title/tt29764006/", trailerYT: "7zzlOolbhFY", poster: "images/poster-90s.jpg", dop: "Director of Photography" },
+    { title: "Goodachari 2", tagline: "The spy returns", year: "2026", type: "Feature Film", director: "Sashi Kiran Tikka", producer: "Bunny Vas", studio: "GA2 Pictures", streaming: ["In Theatres"], imdb: "https://www.imdb.com/", trailerYT: "", poster: "images/g2.png", dop: "Director of Photography" },
+    { title: "EPIC", tagline: "An epic saga", year: "2026", type: "Feature Film", director: "TBA", producer: "TBA", studio: "TBA", streaming: ["Coming Soon"], imdb: "https://www.imdb.com/", trailerYT: "", poster: "images/poster-epic.png", dop: "Cinematographer" },
+    { title: "Kadaseela Biriyani", tagline: "A tale of love", year: "2021", type: "Feature Film", director: "Muthukumaran Rajagopalan", producer: "Chandru Krishnamurthy", studio: "Sky Nine Pictures", streaming: ["Netflix"], imdb: "https://www.imdb.com/title/tt13614116/", trailerYT: "F6f_UGv2XyE", poster: "images/kb.jpg", dop: "Director of Photography" },
+    { title: "Theatre", tagline: "Behind the curtain", year: "2025", type: "Feature Film", director: "TBA", producer: "TBA", studio: "TBA", streaming: ["Coming Soon"], imdb: "https://www.imdb.com/", trailerYT: "", poster: "images/th.jpg", dop: "Cinematographer" },
+    { title: "Bro", tagline: "Brothers in arms", year: "2021", type: "Feature Film", director: "TBA", producer: "TBA", studio: "TBA", streaming: ["TBA"], imdb: "https://www.imdb.com/", trailerYT: "", poster: "images/bro.jpg", dop: "Director of Photography" }
   ];
 
-  /* ─── CUSTOM CURSOR ─────────────────────────────────── */
-  const dot  = document.querySelector('.cursor-dot');
-  const ring = document.querySelector('.cursor-ring');
-  if (dot && ring && window.matchMedia('(pointer:fine)').matches && window.innerWidth > 900) {
-    let mx=0, my=0, rx=0, ry=0, raf;
-    document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; dot.style.left=mx+'px'; dot.style.top=my+'px'; }, {passive:true});
-    function tick(){
-      rx += (mx-rx)*.15; ry += (my-ry)*.15;
-      ring.style.left=rx+'px'; ring.style.top=ry+'px';
-      raf = requestAnimationFrame(tick);
-    }
-    tick();
-    const interactive = 'a,button,.fc-card,.frame-card,.sec-link,.cta-float,.snav,.mm-close,.mm-btn,.imdb-badge,.mm-platform';
-    document.addEventListener('mouseover', e => {
-      if(e.target.closest(interactive)) document.body.classList.add('hover-active');
-    });
-    document.addEventListener('mouseout', e => {
-      if(e.target.closest(interactive)) document.body.classList.remove('hover-active');
-    });
-    document.addEventListener('mouseleave', ()=>{ dot.style.opacity='0'; ring.style.opacity='0'; });
-    document.addEventListener('mouseenter', ()=>{ dot.style.opacity='1'; ring.style.opacity='1'; });
-  } else if (dot && ring) { dot.remove(); ring.remove(); }
+  const dot=document.querySelector('.cursor-dot'), ring=document.querySelector('.cursor-ring');
+  if(dot&&ring&&window.matchMedia('(pointer:fine)').matches&&window.innerWidth>900){ let mx=0,my=0,rx=0,ry=0; document.addEventListener('mousemove',e=>{ mx=e.clientX; my=e.clientY; dot.style.left=mx+'px'; dot.style.top=my+'px'; },{passive:true}); (function tick(){ rx+=(mx-rx)*.15; ry+=(my-ry)*.15; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(tick); })(); const sel='a,button,.fc-card,.frame-card,.sec-link,.cta-float,.snav,.mm-close,.mm-btn,.imdb-badge'; document.addEventListener('mouseover',e=>{ if(e.target.closest(sel)) document.body.classList.add('hover-active'); }); document.addEventListener('mouseout',e=>{ if(e.target.closest(sel)) document.body.classList.remove('hover-active'); }); } else if(dot&&ring){ dot.remove(); ring.remove(); }
 
-  /* ─── LOADER ────────────────────────────────────────── */
-  const loader = document.getElementById('intro-loader');
-  const ctaBtn = document.getElementById('cta-float');
-  setTimeout(() => {
-    loader && loader.classList.add('done');
-    ctaBtn && ctaBtn.classList.add('visible');
-    setTimeout(() => loader && loader.remove(), 700);
-  }, 1400);
+  const loader=document.getElementById('intro-loader'), ctaBtn=document.getElementById('cta-float');
+  setTimeout(()=>{ loader&&loader.classList.add('done'); ctaBtn&&ctaBtn.classList.add('visible'); setTimeout(()=>loader&&loader.remove(),700); },1400);
 
-  /* ─── MOBILE NAV ────────────────────────────────────── */
-  const topnav = document.getElementById('topnav');
-  const burger = document.getElementById('burger');
-  const mm_nav = document.getElementById('mobile-menu');
-  window.addEventListener('scroll', () => topnav?.classList.toggle('scrolled', scrollY>60), {passive:true});
-  burger?.addEventListener('click', () => {
-    const o = mm_nav.classList.toggle('open');
-    burger.classList.toggle('open', o);
-    document.body.style.overflow = o ? 'hidden' : '';
-  });
-  mm_nav?.querySelectorAll('a').forEach(l => l.addEventListener('click', () => {
-    mm_nav.classList.remove('open'); burger?.classList.remove('open'); document.body.style.overflow='';
-  }));
+  const topnav=document.getElementById('topnav'), burger=document.getElementById('burger'), mmNav=document.getElementById('mobile-menu');
+  window.addEventListener('scroll',()=>topnav?.classList.toggle('scrolled',scrollY>60),{passive:true});
+  burger?.addEventListener('click',()=>{ const o=mmNav.classList.toggle('open'); burger.classList.toggle('open',o); document.body.style.overflow=o?'hidden':''; });
+  mmNav?.querySelectorAll('a').forEach(l=>l.addEventListener('click',()=>{ mmNav.classList.remove('open'); burger?.classList.remove('open'); document.body.style.overflow=''; }));
 
-  /* ─── ACTIVE NAV ────────────────────────────────────── */
-  const sections = ['hero','credits','frames','about','contact'];
-  const snavLinks = document.querySelectorAll('.snav');
-  function setActive(){
-    let current='hero';
-    sections.forEach(id => {
-      const el=document.getElementById(id);
-      if(el && el.getBoundingClientRect().top <= window.innerHeight*.45) current=id;
-    });
-    snavLinks.forEach(a => {
-      a.classList.toggle('active', a.getAttribute('href').replace('#','')=== current);
+  const sections=['hero','credits','frames','about','contact'], snavLinks=document.querySelectorAll('.snav');
+  function setActive(){ let current='hero'; sections.forEach(id=>{ const el=document.getElementById(id); if(el&&el.getBoundingClientRect().top<=window.innerHeight*.45) current=id; }); snavLinks.forEach(a=>{ a.classList.toggle('active',a.getAttribute('href').replace('#','')===current); }); }
+  window.addEventListener('scroll',setActive,{passive:true}); setActive();
+
+  const fadeIO=new IntersectionObserver(entries=>{ entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); fadeIO.unobserve(e.target); } }); },{threshold:.08});
+  document.querySelectorAll('.fade-up').forEach(el=>fadeIO.observe(el));
+
+  const imgIO=new IntersectionObserver((entries,obs)=>{ entries.forEach(e=>{ if(!e.isIntersecting) return; const el=e.target; if(el.tagName==='IMG'){ const src=el.dataset.src; if(src){ el.src=src; el.closest('.fc-card,.frame-card')?.classList.add('loaded'); } } obs.unobserve(el); }); },{rootMargin:'200px 0px 200px 0px'});
+  document.querySelectorAll('img[data-src]').forEach(img=>imgIO.observe(img));
+
+  const fcTrack=document.getElementById('fc-track'), fcCur=document.querySelector('.fc-cur'), fcTot=document.querySelector('.fc-tot');
+  if(fcTrack&&fcCur){ const cards=fcTrack.querySelectorAll('.fc-card'); if(fcTot) fcTot.textContent=String(cards.length).padStart(2,'0'); fcTrack.addEventListener('scroll',()=>{ const w=cards[0]?.offsetWidth||1; const idx=Math.round(fcTrack.scrollLeft/w)+1; fcCur.textContent=String(Math.min(idx,cards.length)).padStart(2,'0'); },{passive:true}); }
+
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{ a.addEventListener('click',function(e){ const t=document.querySelector(this.getAttribute('href')); if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth',block:'start'}); } }); });
+
+  // Modal logic
+  const overlay=document.getElementById('mm-overlay'), modal=document.getElementById('mm-modal'), panel=document.getElementById('mm-panel'), closeBtn=document.getElementById('mm-close'), content=document.getElementById('mm-content'), toast=document.getElementById('share-toast');
+  let activeFilm=null, toastTimer=null;
+  function buildModalHTML(film){
+    const trailer=film.trailerYT?`<iframe src="https://www.youtube.com/embed/${film.trailerYT}?rel=0&modestbranding=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`:`<div class="mm-trailer-placeholder"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M10 8l6 4-6 4V8z" stroke-linecap="round" stroke-linejoin="round"/></svg><p>Trailer not yet available</p></div>`;
+    const platforms=film.streaming.map(p=>`<span class="mm-platform">${p}</span>`).join('');
+    return `<div class="mm-hero"><img class="mm-hero-img" src="${film.poster}" alt="${film.title}" loading="eager"><div class="mm-hero-overlay"></div><span class="mm-hero-badge">${film.type} · ${film.year}</span></div><div class="mm-body"><div class="mm-top"><div class="mm-title-block"><h2 class="mm-title">${film.title}</h2><p class="mm-tagline">${film.tagline}</p></div><div class="mm-actions"><a href="${film.imdb}" target="_blank" rel="noopener" class="imdb-badge" title="View on IMDb"><svg viewBox="0 0 40 20" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="20" fill="#f5c518" rx="3"/><text x="3" y="15" font-family="Arial Black,sans-serif" font-size="13" font-weight="900" fill="#000">IMDb</text></svg></a><button class="mm-btn" id="mm-share-btn" title="Share"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98" stroke-linecap="round"/></svg>Share</button></div></div><div class="mm-rule"></div><div class="mm-meta-grid"><div class="mm-meta-item"><div class="mm-meta-label">Directed by</div><div class="mm-meta-value">${film.director}</div></div><div class="mm-meta-item"><div class="mm-meta-label">Produced by</div><div class="mm-meta-value">${film.producer}</div></div><div class="mm-meta-item"><div class="mm-meta-label">Production</div><div class="mm-meta-value">${film.studio}</div></div><div class="mm-meta-item"><div class="mm-meta-label">Year</div><div class="mm-meta-value gold">${film.year}</div></div><div class="mm-meta-item"><div class="mm-meta-label">Azeem's Role</div><div class="mm-meta-value gold">${film.dop}</div></div></div><div class="mm-streaming"><div class="mm-streaming-label">Streaming Now On</div><div class="mm-platforms">${platforms}</div></div><div class="mm-trailer-section"><div class="mm-trailer-label">Official Trailer</div><div class="mm-trailer-wrap">${trailer}</div></div></div>`;
+  }
+  function openModal(idx){ const film=FILMS[idx]; if(!film) return; activeFilm=idx; content.innerHTML=buildModalHTML(film); document.body.style.overflow='hidden'; overlay.classList.add('open'); requestAnimationFrame(()=>{ modal.classList.add('open'); panel.scrollTop=0; }); document.getElementById('mm-share-btn')?.addEventListener('click',()=>shareFilm(film)); }
+  function closeModal(){ modal.classList.remove('open'); overlay.classList.remove('open'); document.body.style.overflow=''; setTimeout(()=>{ content.innerHTML=''; activeFilm=null; },450); }
+  function shareFilm(film){ const text=`${film.title} (${film.year}) — Cinematography by Azeem Mohammad`; const url=window.location.href; if(navigator.share){ navigator.share({ title:film.title, text, url }).catch(()=>{}); } else { navigator.clipboard.writeText(url+' — '+text).then(()=>showToast('Link copied to clipboard')).catch(()=>showToast('Share: '+url)); } }
+  function showToast(msg){ toast.textContent=msg; toast.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>toast.classList.remove('show'),2800); }
+  document.querySelectorAll('.fc-card').forEach(card=>{ card.addEventListener('click',()=>{ const idx=parseInt(card.dataset.film,10); if(!isNaN(idx)) openModal(idx); }); card.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); const idx=parseInt(card.dataset.film,10); if(!isNaN(idx)) openModal(idx); } }); });
+  closeBtn?.addEventListener('click',closeModal); overlay.addEventListener('click',closeModal); document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&activeFilm!==null) closeModal(); }); panel?.addEventListener('click',e=>e.stopPropagation());
+
+  // FIX: Let's work button opens email
+  const workBtn = document.getElementById('cta-float');
+  if(workBtn) {
+    workBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = 'mailto:azeem.dop09@gmail.com?subject=Let%27s%20work%20together&body=Hello%20Azeem%2C%0A%0AI%20saw%20your%20portfolio%20and%20would%20love%20to%20collaborate.';
     });
   }
-  window.addEventListener('scroll', setActive, {passive:true});
-  setActive();
-
-  /* ─── FADE-UP ────────────────────────────────────────── */
-  const fadeIO = new IntersectionObserver(entries => {
-    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); fadeIO.unobserve(e.target); } });
-  }, {threshold:.08, rootMargin:'0px 0px -40px 0px'});
-  document.querySelectorAll('.fade-up').forEach(el => fadeIO.observe(el));
-
-  /* ─── LAZY LOAD IMAGES (IntersectionObserver) ─────── */
-  // Prioritised: load images near viewport with rootMargin buffer
-  const imgIO = new IntersectionObserver((entries, obs) => {
-    entries.forEach(e => {
-      if(!e.isIntersecting) return;
-      const el = e.target;
-      if(el.tagName === 'IMG') {
-        const src = el.dataset.src;
-        if(!src) return;
-        const tmp = new Image();
-        tmp.onload = () => { el.src = src; el.closest('.fc-card,.frame-card')?.classList.add('loaded'); };
-        tmp.onerror = () => { el.closest('.fc-card,.frame-card')?.classList.add('loaded'); };
-        tmp.src = src;
-      } else if(el.tagName === 'SOURCE') {
-        el.src = el.dataset.src;
-        const video = el.parentElement;
-        video.load();
-        video.play().catch(()=>{});
-        video.closest('.frame-card')?.classList.add('loaded');
-      }
-      obs.unobserve(el);
-    });
-  }, {rootMargin:'300px 0px 300px 0px'});
-
-  document.querySelectorAll('img[data-src]').forEach(img => imgIO.observe(img));
-  document.querySelectorAll('source[data-src]').forEach(src => imgIO.observe(src));
-
-  /* ─── FC TRACK COUNTER ──────────────────────────────── */
-  const fcTrack = document.getElementById('fc-track');
-  const fcCur   = document.querySelector('.fc-cur');
-  const fcTot   = document.querySelector('.fc-tot');
-  if(fcTrack && fcCur) {
-    const cards = fcTrack.querySelectorAll('.fc-card');
-    if(fcTot) fcTot.textContent = String(cards.length).padStart(2,'0');
-    fcTrack.addEventListener('scroll', () => {
-      const w = cards[0]?.offsetWidth || 1;
-      const idx = Math.round(fcTrack.scrollLeft / w) + 1;
-      fcCur.textContent = String(Math.min(idx, cards.length)).padStart(2,'0');
-    }, {passive:true});
-  }
-
-  /* ─── SMOOTH SCROLL ─────────────────────────────────── */
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', function(e){
-      const t = document.querySelector(this.getAttribute('href'));
-      if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth',block:'start'}); }
-    });
-  });
-
-  /* ─── MOVIE MODAL ───────────────────────────────────── */
-  const overlay   = document.getElementById('mm-overlay');
-  const modal     = document.getElementById('mm-modal');
-  const panel     = document.getElementById('mm-panel');
-  const closeBtn  = document.getElementById('mm-close');
-  const content   = document.getElementById('mm-content');
-  const toast     = document.getElementById('share-toast');
-  let activeFilm  = null;
-  let toastTimer  = null;
-
-  function buildModalHTML(film) {
-    const trailer = film.trailerYT
-      ? `<iframe src="https://www.youtube.com/embed/${film.trailerYT}?rel=0&modestbranding=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
-      : `<div class="mm-trailer-placeholder">
-           <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M10 8l6 4-6 4V8z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-           <p>Trailer not yet available</p>
-         </div>`;
-
-    const platforms = film.streaming.map(p =>
-      `<span class="mm-platform">${p}</span>`
-    ).join('');
-
-    return `
-      <div class="mm-hero">
-        <img class="mm-hero-img" src="${film.poster}" alt="${film.title}" loading="eager">
-        <div class="mm-hero-overlay"></div>
-        <span class="mm-hero-badge">${film.type} · ${film.year}</span>
-      </div>
-      <div class="mm-body">
-        <div class="mm-top">
-          <div class="mm-title-block">
-            <h2 class="mm-title">${film.title}</h2>
-            <p class="mm-tagline">${film.tagline}</p>
-          </div>
-          <div class="mm-actions">
-            <a href="${film.imdb}" target="_blank" rel="noopener" class="imdb-badge" title="View on IMDb">
-              <svg viewBox="0 0 40 20" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="20" fill="#f5c518" rx="3"/><text x="3" y="15" font-family="Arial Black,sans-serif" font-size="13" font-weight="900" fill="#000">IMDb</text></svg>
-            </a>
-            <button class="mm-btn" id="mm-share-btn" title="Share">
-              <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98" stroke-linecap="round"/></svg>
-              Share
-            </button>
-          </div>
-        </div>
-
-        <div class="mm-rule"></div>
-
-        <div class="mm-meta-grid">
-          <div class="mm-meta-item">
-            <div class="mm-meta-label">Directed by</div>
-            <div class="mm-meta-value">${film.director}</div>
-          </div>
-          <div class="mm-meta-item">
-            <div class="mm-meta-label">Produced by</div>
-            <div class="mm-meta-value">${film.producer}</div>
-          </div>
-          <div class="mm-meta-item">
-            <div class="mm-meta-label">Production</div>
-            <div class="mm-meta-value">${film.studio}</div>
-          </div>
-          <div class="mm-meta-item">
-            <div class="mm-meta-label">Year</div>
-            <div class="mm-meta-value gold">${film.year}</div>
-          </div>
-          <div class="mm-meta-item">
-            <div class="mm-meta-label">Azeem's Role</div>
-            <div class="mm-meta-value gold">${film.dop}</div>
-          </div>
-        </div>
-
-        <div class="mm-streaming">
-          <div class="mm-streaming-label">Streaming Now On</div>
-          <div class="mm-platforms">${platforms}</div>
-        </div>
-
-        <div class="mm-trailer-section">
-          <div class="mm-trailer-label">Official Trailer</div>
-          <div class="mm-trailer-wrap">${trailer}</div>
-        </div>
-      </div>
-    `;
-  }
-
-  function openModal(filmIdx) {
-    const film = FILMS[filmIdx];
-    if(!film) return;
-    activeFilm = filmIdx;
-    content.innerHTML = buildModalHTML(film);
-    document.body.style.overflow = 'hidden';
-    overlay.classList.add('open');
-    requestAnimationFrame(() => {
-      modal.classList.add('open');
-      panel.scrollTop = 0;
-    });
-
-    // Wire share button
-    document.getElementById('mm-share-btn')?.addEventListener('click', () => shareFilm(film));
-  }
-
-  function closeModal() {
-    modal.classList.remove('open');
-    overlay.classList.remove('open');
-    document.body.style.overflow = '';
-    // Remove iframes to stop playback
-    setTimeout(() => {
-      content.innerHTML = '';
-      activeFilm = null;
-    }, 450);
-  }
-
-  function shareFilm(film) {
-    const text = `${film.title} (${film.year}) — Cinematography by Azeem Mohammad`;
-    const url = window.location.href;
-    if(navigator.share) {
-      navigator.share({ title: film.title, text, url }).catch(()=>{});
-    } else {
-      navigator.clipboard.writeText(url + ' — ' + text).then(() => showToast('Link copied to clipboard')).catch(() => showToast('Share: ' + url));
-    }
-  }
-
-  function showToast(msg) {
-    toast.textContent = msg;
-    toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
-  }
-
-  // Attach click events to fc-cards
-  document.querySelectorAll('.fc-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const idx = parseInt(card.dataset.film, 10);
-      if(!isNaN(idx)) openModal(idx);
-    });
-    card.addEventListener('keydown', e => {
-      if(e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        const idx = parseInt(card.dataset.film, 10);
-        if(!isNaN(idx)) openModal(idx);
-      }
-    });
-  });
-
-  closeBtn?.addEventListener('click', closeModal);
-  overlay.addEventListener('click', closeModal);
-  document.addEventListener('keydown', e => { if(e.key === 'Escape' && activeFilm !== null) closeModal(); });
-
-  // Prevent panel clicks from closing modal
-  panel?.addEventListener('click', e => e.stopPropagation());
-
+  // Also ensure email in contact works
+  const emailLink = document.getElementById('email-link');
+  if(emailLink) emailLink.href = 'mailto:azeem.dop09@gmail.com';
 })();
 </script>
 </body>
