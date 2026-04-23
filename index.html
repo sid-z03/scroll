@@ -35,23 +35,81 @@ body {
   font-weight: 300;
   line-height: 1.6;
   overflow-x: hidden;
+  cursor: none; /* Hide default cursor for custom cursor */
 }
 
-/* DISABLE CUSTOM CURSOR ON DESKTOP FOR PERFORMANCE - using default cursor */
-@media (min-width: 901px) {
-  body, a, button, .fc-card, .frame-card { cursor: auto; }
+/* PRELOAD CRITICAL IMAGES - prevents layout shift */
+.hero-bg-img {
+  background-image: url('images/t1.png');
+  background-size: cover;
+  background-position: center center;
+}
+
+/* LAZY LOADING OPTIMIZATION */
+img, video {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 300px;
+}
+
+/* Custom Cursor - Premium Design */
+.cursor-dot {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(135deg, #ffd060, #c9a040);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s ease, height 0.2s ease, background 0.2s ease;
+  box-shadow: 0 0 8px rgba(255,208,96,0.6);
+}
+
+.cursor-ring {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border: 1.5px solid rgba(255,208,96,0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width 0.25s ease, height 0.25s ease, border-color 0.2s ease, opacity 0.2s ease;
+  backdrop-filter: blur(2px);
+}
+
+/* Hover effect for interactive elements */
+a:hover ~ .cursor-ring,
+button:hover ~ .cursor-ring,
+.fc-card:hover ~ .cursor-ring,
+.frame-card:hover ~ .cursor-ring,
+[data-cursor-hover]:hover ~ .cursor-ring {
+  width: 56px;
+  height: 56px;
+  border-color: rgba(255,208,96,0.9);
+  background: rgba(255,208,96,0.05);
+  backdrop-filter: blur(4px);
+}
+
+/* Direct hover styles for cursor (JS will handle) */
+body.hover-active .cursor-dot {
+  width: 12px;
+  height: 12px;
+  background: #ffd060;
+  box-shadow: 0 0 12px rgba(255,208,96,0.8);
+}
+
+body.hover-active .cursor-ring {
+  width: 56px;
+  height: 56px;
+  border-color: rgba(255,208,96,0.8);
+  background: rgba(255,208,96,0.08);
 }
 
 img { display:block; width:100%; height:100%; object-fit:cover; }
 a { text-decoration:none; color:inherit; }
 
-/* ═══════════════════════════
-   PROGRESS BAR - REMOVED FOR PERFORMANCE
-═══════════════════════════ */
-
-/* ═══════════════════════════
-   SIDE NAV (simplified)
-═══════════════════════════ */
+/* SIDE NAV */
 .sidenav {
   position: fixed;
   top: 0; left: 0; bottom: 0;
@@ -155,9 +213,7 @@ a { text-decoration:none; color:inherit; }
   flex-shrink: 0;
 }
 
-/* ═══════════════════════════
-   MOBILE TOP NAV
-═══════════════════════════ */
+/* MOBILE TOP NAV */
 .topnav {
   display: none;
   position: fixed; top:0; left:0; right:0; z-index:1000;
@@ -180,6 +236,7 @@ a { text-decoration:none; color:inherit; }
 .topnav-burger {
   display: flex; flex-direction: column; gap: 5px;
   background: none; border: none; padding: 4px;
+  cursor: pointer;
 }
 .topnav-burger span {
   display: block; width: 22px; height: 1px;
@@ -204,16 +261,12 @@ a { text-decoration:none; color:inherit; }
 }
 .mobile-menu a:hover { color: #fff; }
 
-/* ═══════════════════════════
-   PAGE LAYOUT
-═══════════════════════════ */
+/* PAGE LAYOUT */
 .page-body {
   margin-left: var(--sidenav-w);
 }
 
-/* ═══════════════════════════
-   HERO - simplified for performance
-═══════════════════════════ */
+/* HERO */
 .hero {
   position: relative;
   width: 100%;
@@ -231,11 +284,9 @@ a { text-decoration:none; color:inherit; }
 .hero-bg-img {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
-  background-image: url('images/t1.png');
-  background-size: cover;
-  background-position: center center;
   opacity: 0.85;
   transform: scale(1.02);
+  transition: transform 8s ease-out;
 }
 .hero-bg::after {
   content: '';
@@ -306,18 +357,14 @@ a { text-decoration:none; color:inherit; }
   50%     { opacity:1; }
 }
 
-/* ═══════════════════════════
-   CONTENT WRAPPER
-═══════════════════════════ */
+/* CONTENT WRAPPER */
 .wrap {
   max-width: 1360px;
   margin: 0 auto;
   padding: 0 clamp(24px, 4.5vw, 64px);
 }
 
-/* ═══════════════════════════
-   SECTION HEADER
-═══════════════════════════ */
+/* SECTION HEADER */
 .sec-head {
   display: flex; justify-content: space-between; align-items: center;
   padding-bottom: 11px; border-bottom: 1px solid var(--border);
@@ -340,9 +387,7 @@ a { text-decoration:none; color:inherit; }
 .sec-link:hover { color: rgba(255,255,255,.7); }
 .sec-link:hover::after { width: 44px; background: rgba(255,255,255,.6); }
 
-/* ═══════════════════════════════════
-   INTRO LOADER - simplified
-═══════════════════════════════════ */
+/* INTRO LOADER */
 #intro-loader {
   position: fixed; inset: 0; z-index: 99999;
   background: var(--bg);
@@ -387,9 +432,7 @@ a { text-decoration:none; color:inherit; }
   color: rgba(201,165,90,.55);
 }
 
-/* ═══════════════════════════════════
-   FLOATING CTA
-═══════════════════════════════════ */
+/* FLOATING CTA */
 .cta-float {
   position: fixed;
   bottom: clamp(20px,3vh,32px);
@@ -425,7 +468,7 @@ a { text-decoration:none; color:inherit; }
 }
 .cta-float:hover .cta-arrow { transform: translateX(4px); color: var(--gold-bright); }
 
-/* SHOWREEL - VIMEO EMBED (with sound support) */
+/* SHOWREEL - VIMEO */
 .reel-wrap {
   position: relative;
   width: 100%;
@@ -446,7 +489,7 @@ a { text-decoration:none; color:inherit; }
   text-transform:uppercase; color:rgba(255,255,255,.16); margin-top:10px;
 }
 
-/* FILM CREDITS - SIMPLIFIED FOR SMOOTH SCROLL */
+/* FILM CREDITS */
 .film-credits-section {
   position: relative;
   width: calc(100vw - var(--sidenav-w));
@@ -517,7 +560,7 @@ a { text-decoration:none; color:inherit; }
 .fc-sep { font-size: clamp(.5rem, .8vw, .65rem); letter-spacing: .18em; color: rgba(255,255,255,.22); }
 .fc-tot { font-size: clamp(.5rem, .8vw, .65rem); letter-spacing: .18em; color: rgba(255,255,255,.28); }
 
-/* FRAMES - LAZY LOAD */
+/* FRAMES */
 .frames-grid {
   display:grid; grid-template-columns: repeat(2,1fr);
   gap: clamp(.5rem,1.4vw,1.4rem);
@@ -597,7 +640,7 @@ footer {
 .foot-links a { color:rgba(255,255,255,.26); transition:color .2s; }
 .foot-links a:hover { color:#fff; }
 
-/* FADE-UP - SIMPLIFIED */
+/* FADE-UP */
 .fade-up {
   opacity:0; transform:translateY(20px);
   transition: opacity .6s ease, transform .6s ease;
@@ -616,6 +659,8 @@ footer {
   .about-contact { grid-template-columns:1fr; gap:2.2rem; }
   .frames-grid { gap:.65rem; }
   .film-credits-section { width: 100vw; }
+  body { cursor: auto; }
+  .cursor-dot, .cursor-ring { display: none; }
 }
 @media (max-width:600px) {
   :root { --fc-card-w: 88vw; }
@@ -626,6 +671,10 @@ footer {
 </style>
 </head>
 <body>
+
+<!-- Custom Cursor Elements -->
+<div class="cursor-dot"></div>
+<div class="cursor-ring"></div>
 
 <div id="intro-loader"><div class="intro-inner"><div class="intro-monogram"><span class="intro-a">A</span><span class="intro-m">M</span></div><div class="intro-line"></div><div class="intro-sub">DIRECTOR OF PHOTOGRAPHY</div></div></div>
 
@@ -654,7 +703,7 @@ footer {
     <div class="scroll-cue"><div class="scroll-cue-line"></div><span class="scroll-cue-text">SCROLL</span></div>
   </section>
 
-<!-- SHOWREEL - VIMEO with sound support -->
+<!-- SHOWREEL -->
 <div class="wrap"><div class="fade-up" id="showreel"><div class="sec-head"><span class="sec-label">SHOWREEL</span></div>
   <div class="reel-wrap"><div class="vimeo-wrapper"><iframe src="https://player.vimeo.com/video/1185745228?autoplay=1&loop=1&title=0&byline=0&portrait=0&background=0&muted=0&dnt=1&controls=1" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div>
   <p class="reel-caption">CINEMATOGRAPHY SHOWREEL</p></div></div>
@@ -663,13 +712,13 @@ footer {
 
   <div class="film-credits-section fade-up" id="fc-section">
     <div class="fc-track" id="fc-track">
-      <div class="fc-card"><img class="fc-img" src="images/poster-90s.jpg" alt="#90s Middle Class Biopic" loading="lazy"><span class="fc-num">01</span><div class="fc-year">2024</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">#90's Middle Class Biopic</div><div class="fc-role">Director of Photography &nbsp;·&nbsp; TV Series</div></div></div>
-      <div class="fc-card"><img class="fc-img" src="images/poster-g2.png" alt="Goodachari 2" loading="lazy"><span class="fc-num">02</span><div class="fc-year">2026</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Goodachari 2</div><div class="fc-role">Director of Photography &nbsp;·&nbsp; Film</div></div></div>
-      <div class="fc-card"><img class="fc-img" src="images/poster-epic.png" alt="EPIC" loading="lazy"><span class="fc-num">03</span><div class="fc-year">2026</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">EPIC</div><div class="fc-role">Cinematographer &nbsp;·&nbsp; Film</div></div></div>
-      <div class="fc-card"><img class="fc-img" src="images/kb.jpg" alt="Kadaseela Biriyani" loading="lazy"><span class="fc-num">04</span><div class="fc-year">2021</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Kadaseela Biriyani</div><div class="fc-role">Director of Photography &nbsp;·&nbsp; Film</div></div></div>
-      <div class="fc-card"><img class="fc-img" src="images/th.jpg" alt="Theatre" loading="lazy"><span class="fc-num">05</span><div class="fc-year">2025</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Theatre</div><div class="fc-role">Cinematographer &nbsp;·&nbsp; Film</div></div></div>
-      <div class="fc-card"><img class="fc-img" src="images/sin.png" alt="Sin" loading="lazy"><span class="fc-num">06</span><div class="fc-year">2020</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Sin</div><div class="fc-role">Cinematographer &nbsp;·&nbsp; TV Series</div></div></div>
-      <div class="fc-card"><img class="fc-img" src="images/bro.jpg" alt="Bro" loading="lazy"><span class="fc-num">07</span><div class="fc-year">2021</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Bro</div><div class="fc-role">Director of Photography &nbsp;·&nbsp; Film</div></div></div>
+      <div class="fc-card"><img class="fc-img" src="images/poster-90s.jpg" alt="#90s Middle Class Biopic" loading="lazy" decoding="async"><span class="fc-num">01</span><div class="fc-year">2024</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">#90's Middle Class Biopic</div><div class="fc-role">Director of Photography &nbsp;·&nbsp; TV Series</div></div></div>
+      <div class="fc-card"><img class="fc-img" src="images/poster-g2.png" alt="Goodachari 2" loading="lazy" decoding="async"><span class="fc-num">02</span><div class="fc-year">2026</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Goodachari 2</div><div class="fc-role">Director of Photography &nbsp;·&nbsp; Film</div></div></div>
+      <div class="fc-card"><img class="fc-img" src="images/poster-epic.png" alt="EPIC" loading="lazy" decoding="async"><span class="fc-num">03</span><div class="fc-year">2026</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">EPIC</div><div class="fc-role">Cinematographer &nbsp;·&nbsp; Film</div></div></div>
+      <div class="fc-card"><img class="fc-img" src="images/kb.jpg" alt="Kadaseela Biriyani" loading="lazy" decoding="async"><span class="fc-num">04</span><div class="fc-year">2021</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Kadaseela Biriyani</div><div class="fc-role">Director of Photography &nbsp;·&nbsp; Film</div></div></div>
+      <div class="fc-card"><img class="fc-img" src="images/th.jpg" alt="Theatre" loading="lazy" decoding="async"><span class="fc-num">05</span><div class="fc-year">2025</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Theatre</div><div class="fc-role">Cinematographer &nbsp;·&nbsp; Film</div></div></div>
+      <div class="fc-card"><img class="fc-img" src="images/sin.png" alt="Sin" loading="lazy" decoding="async"><span class="fc-num">06</span><div class="fc-year">2020</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Sin</div><div class="fc-role">Cinematographer &nbsp;·&nbsp; TV Series</div></div></div>
+      <div class="fc-card"><img class="fc-img" src="images/bro.jpg" alt="Bro" loading="lazy" decoding="async"><span class="fc-num">07</span><div class="fc-year">2021</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Bro</div><div class="fc-role">Director of Photography &nbsp;·&nbsp; Film</div></div></div>
     </div>
     <div class="fc-counter"><span class="fc-cur">01</span><span class="fc-sep">/</span><span class="fc-tot">07</span></div>
   </div>
@@ -679,15 +728,15 @@ footer {
       <div class="frame-card"><video autoplay loop muted playsinline preload="none"><source src="vd/v1.mp4" type="video/mp4"></video></div>
       <div class="frame-card"><video autoplay loop muted playsinline preload="none"><source src="vd/v2.mp4" type="video/mp4"></video></div>
       <div class="frame-card"><video autoplay loop muted playsinline preload="none"><source src="vd/v7.mp4" type="video/mp4"></video></div>
-      <div class="frame-card"><img src="images/i2.jpeg" alt="Frame" loading="lazy"></div>
-      <div class="frame-card"><img src="images/i3.jpeg" alt="Frame" loading="lazy"></div>
-      <div class="frame-card"><img src="images/i4.jpeg" alt="Frame" loading="lazy"></div>
-      <div class="frame-card"><img src="images/i5.jpeg" alt="Frame" loading="lazy"></div>
-      <div class="frame-card"><img src="images/i6.jpeg" alt="Frame" loading="lazy"></div>
-      <div class="frame-card"><img src="images/i7.jpeg" alt="Frame" loading="lazy"></div>
-      <div class="frame-card"><img src="images/i8.jpeg" alt="Frame" loading="lazy"></div>
-      <div class="frame-card"><img src="images/i9.jpeg" alt="Frame" loading="lazy"></div>
-      <div class="frame-card"><img src="images/i10.jpeg" alt="Frame" loading="lazy"></div>
+      <div class="frame-card"><img src="images/i2.jpeg" alt="Frame" loading="lazy" decoding="async"></div>
+      <div class="frame-card"><img src="images/i3.jpeg" alt="Frame" loading="lazy" decoding="async"></div>
+      <div class="frame-card"><img src="images/i4.jpeg" alt="Frame" loading="lazy" decoding="async"></div>
+      <div class="frame-card"><img src="images/i5.jpeg" alt="Frame" loading="lazy" decoding="async"></div>
+      <div class="frame-card"><img src="images/i6.jpeg" alt="Frame" loading="lazy" decoding="async"></div>
+      <div class="frame-card"><img src="images/i7.jpeg" alt="Frame" loading="lazy" decoding="async"></div>
+      <div class="frame-card"><img src="images/i8.jpeg" alt="Frame" loading="lazy" decoding="async"></div>
+      <div class="frame-card"><img src="images/i9.jpeg" alt="Frame" loading="lazy" decoding="async"></div>
+      <div class="frame-card"><img src="images/i10.jpeg" alt="Frame" loading="lazy" decoding="async"></div>
     </div>
   </div>
 
@@ -702,8 +751,67 @@ footer {
 </div>
 
 <script>
-// Minimal, performance-focused JavaScript
+// High-performance script with custom cursor and optimized loading
 (function(){
+  // Custom Cursor Logic
+  const cursorDot = document.querySelector('.cursor-dot');
+  const cursorRing = document.querySelector('.cursor-ring');
+  let mouseX = 0, mouseY = 0;
+  let ringX = 0, ringY = 0;
+  
+  if (cursorDot && cursorRing && window.innerWidth > 900) {
+    // Track mouse position
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursorDot.style.left = mouseX + 'px';
+      cursorDot.style.top = mouseY + 'px';
+    });
+    
+    // Smooth ring follow with lerp
+    function animateRing() {
+      ringX += (mouseX - ringX) * 0.15;
+      ringY += (mouseY - ringY) * 0.15;
+      cursorRing.style.left = ringX + 'px';
+      cursorRing.style.top = ringY + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+    
+    // Hover effect on interactive elements
+    const interactiveElements = document.querySelectorAll('a, button, .fc-card, .frame-card, .sec-link, .cta-float, .snav');
+    interactiveElements.forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        document.body.classList.add('hover-active');
+        cursorDot.style.width = '12px';
+        cursorDot.style.height = '12px';
+        cursorRing.style.width = '56px';
+        cursorRing.style.height = '56px';
+        cursorRing.style.borderColor = 'rgba(255,208,96,0.8)';
+        cursorRing.style.background = 'rgba(255,208,96,0.08)';
+      });
+      el.addEventListener('mouseleave', () => {
+        document.body.classList.remove('hover-active');
+        cursorDot.style.width = '8px';
+        cursorDot.style.height = '8px';
+        cursorRing.style.width = '40px';
+        cursorRing.style.height = '40px';
+        cursorRing.style.borderColor = 'rgba(255,208,96,0.5)';
+        cursorRing.style.background = 'none';
+      });
+    });
+    
+    // Hide cursor when leaving window
+    document.addEventListener('mouseleave', () => {
+      cursorDot.style.opacity = '0';
+      cursorRing.style.opacity = '0';
+    });
+    document.addEventListener('mouseenter', () => {
+      cursorDot.style.opacity = '1';
+      cursorRing.style.opacity = '1';
+    });
+  }
+
   // Simple loader dismiss
   const loader = document.getElementById('intro-loader');
   const ctaBtn = document.getElementById('cta-float');
@@ -739,13 +847,14 @@ footer {
   }, { threshold:.1 });
   document.querySelectorAll('.fade-up').forEach(el => fadeIO.observe(el));
 
-  // Film credits scroll counter (simple)
+  // Film credits scroll counter
   const fcTrack = document.getElementById('fc-track');
   const fcCur = document.querySelector('.fc-cur');
   if(fcTrack && fcCur) {
     const cards = fcTrack.querySelectorAll('.fc-card');
     const total = cards.length;
-    document.querySelector('.fc-tot').textContent = String(total).padStart(2,'0');
+    const totalSpan = document.querySelector('.fc-tot');
+    if(totalSpan) totalSpan.textContent = String(total).padStart(2,'0');
     fcTrack.addEventListener('scroll', () => {
       const cardW = cards[0]?.offsetWidth || 1;
       const idx = Math.round(fcTrack.scrollLeft / cardW) + 1;
@@ -763,6 +872,19 @@ footer {
       }
     });
   });
+  
+  // Preload images in viewport only (Intersection Observer for lazy loading)
+  const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+  const imageObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting) {
+        const img = entry.target;
+        img.loading = 'eager';
+        imageObserver.unobserve(img);
+      }
+    });
+  }, { rootMargin: '200px' });
+  lazyImages.forEach(img => imageObserver.observe(img));
 })();
 </script>
 </body>
