@@ -23,10 +23,7 @@
   --sidenav-w:   72px;
 }
 
-html { 
-  scroll-behavior: smooth;
-  scroll-padding-top: 20px;
-}
+html { scroll-behavior: smooth; scroll-padding-top: 20px; }
 
 body {
   background: var(--bg);
@@ -35,648 +32,463 @@ body {
   font-weight: 300;
   line-height: 1.6;
   overflow-x: hidden;
-  cursor: none; /* Hide default cursor for custom cursor */
-}
-
-/* PRELOAD CRITICAL IMAGES - prevents layout shift */
-.hero-bg-img {
-  background-image: url('images/t1.png');
-  background-size: cover;
-  background-position: center center;
-}
-
-/* LAZY LOADING OPTIMIZATION */
-img, video {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 300px;
-}
-
-/* Custom Cursor - Premium Design */
-.cursor-dot {
-  position: fixed;
-  width: 8px;
-  height: 8px;
-  background: linear-gradient(135deg, #ffd060, #c9a040);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  transition: width 0.2s ease, height 0.2s ease, background 0.2s ease;
-  box-shadow: 0 0 8px rgba(255,208,96,0.6);
-}
-
-.cursor-ring {
-  position: fixed;
-  width: 40px;
-  height: 40px;
-  border: 1.5px solid rgba(255,208,96,0.5);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9998;
-  transform: translate(-50%, -50%);
-  transition: width 0.25s ease, height 0.25s ease, border-color 0.2s ease, opacity 0.2s ease;
-  backdrop-filter: blur(2px);
-}
-
-/* Hover effect for interactive elements */
-a:hover ~ .cursor-ring,
-button:hover ~ .cursor-ring,
-.fc-card:hover ~ .cursor-ring,
-.frame-card:hover ~ .cursor-ring,
-[data-cursor-hover]:hover ~ .cursor-ring {
-  width: 56px;
-  height: 56px;
-  border-color: rgba(255,208,96,0.9);
-  background: rgba(255,208,96,0.05);
-  backdrop-filter: blur(4px);
-}
-
-/* Direct hover styles for cursor (JS will handle) */
-body.hover-active .cursor-dot {
-  width: 12px;
-  height: 12px;
-  background: #ffd060;
-  box-shadow: 0 0 12px rgba(255,208,96,0.8);
-}
-
-body.hover-active .cursor-ring {
-  width: 56px;
-  height: 56px;
-  border-color: rgba(255,208,96,0.8);
-  background: rgba(255,208,96,0.08);
+  cursor: none;
 }
 
 img { display:block; width:100%; height:100%; object-fit:cover; }
 a { text-decoration:none; color:inherit; }
 
+/* PERFORMANCE: will-change only where needed, contain layout */
+.fc-card, .frame-card { contain: layout style paint; }
+
+/* Custom Cursor */
+.cursor-dot {
+  position: fixed; width: 8px; height: 8px;
+  background: linear-gradient(135deg, #ffd060, #c9a040);
+  border-radius: 50%; pointer-events: none; z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width .2s ease, height .2s ease, background .2s ease;
+  box-shadow: 0 0 8px rgba(255,208,96,0.6);
+  will-change: left, top;
+}
+.cursor-ring {
+  position: fixed; width: 40px; height: 40px;
+  border: 1.5px solid rgba(255,208,96,0.5);
+  border-radius: 50%; pointer-events: none; z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width .25s ease, height .25s ease, border-color .2s ease, opacity .2s ease, background .2s ease;
+  will-change: left, top;
+}
+body.hover-active .cursor-dot { width: 12px; height: 12px; background: #ffd060; box-shadow: 0 0 12px rgba(255,208,96,0.8); }
+body.hover-active .cursor-ring { width: 56px; height: 56px; border-color: rgba(255,208,96,0.8); background: rgba(255,208,96,0.08); }
+
 /* SIDE NAV */
 .sidenav {
-  position: fixed;
-  top: 0; left: 0; bottom: 0;
-  width: var(--sidenav-w);
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
+  position: fixed; top:0; left:0; bottom:0;
+  width: var(--sidenav-w); z-index: 1000;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: space-between;
   padding: 28px 0;
   border-right: 1px solid var(--border);
-  background: rgba(5,5,5,.60);
-  backdrop-filter: blur(18px);
+  background: rgba(5,5,5,.60); backdrop-filter: blur(18px);
 }
-
 .sidenav-logo {
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.15rem; font-weight: 600; letter-spacing: .06em;
   background: linear-gradient(160deg, var(--gold-bright), var(--gold-dark));
   -webkit-background-clip: text; background-clip: text; color: transparent;
-  flex-shrink: 0;
-  line-height: 1;
+  flex-shrink: 0; line-height: 1;
 }
-
-.sidenav-links {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  flex: 1;
-  width: 100%;
-  padding: 12px 0;
-  gap: 0;
-}
-
-.sidenav-links li {
-  width: 100%;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
-}
-
-.sidenav-links a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  padding: 6px 0;
-}
-
-.sidenav-links a span {
-  font-size: .52rem;
-  font-weight: 500;
-  letter-spacing: .32em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.32);
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  transition: color .25s, letter-spacing .25s;
-  white-space: nowrap;
-  display: block;
-}
-
-.sidenav-links a::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 50%;
-  transform: translateY(-50%) scaleY(0);
-  width: 2px; height: 22px;
-  background: linear-gradient(to bottom, var(--gold-bright), var(--gold-dark));
-  border-radius: 0 1px 1px 0;
-  transition: transform .25s;
-}
-
-.sidenav-links a:hover span,
-.sidenav-links a.active span {
-  color: rgba(255,255,255,.9);
-  letter-spacing: .38em;
-}
-.sidenav-links a:hover::before,
-.sidenav-links a.active::before {
-  transform: translateY(-50%) scaleY(1);
-}
-
-.sidenav-divider {
-  width: 1px;
-  height: 32px;
-  background: linear-gradient(to bottom, transparent, rgba(255,255,255,.12), transparent);
-  flex-shrink: 0;
-}
-
-.sidenav-copy {
-  font-size: .44rem; letter-spacing: .22em;
-  text-transform: uppercase; color: rgba(255,255,255,.18);
-  writing-mode: vertical-rl; transform: rotate(180deg);
-  flex-shrink: 0;
-}
+.sidenav-links { list-style:none; display:flex; flex-direction:column; align-items:center; justify-content:space-evenly; flex:1; width:100%; padding:12px 0; }
+.sidenav-links li { width:100%; flex:1; display:flex; align-items:center; justify-content:center; min-height:44px; }
+.sidenav-links a { display:flex; align-items:center; justify-content:center; width:100%; height:100%; position:relative; padding:6px 0; }
+.sidenav-links a span { font-size:.52rem; font-weight:500; letter-spacing:.32em; text-transform:uppercase; color:rgba(255,255,255,.32); writing-mode:vertical-rl; transform:rotate(180deg); transition:color .25s, letter-spacing .25s; white-space:nowrap; display:block; }
+.sidenav-links a::before { content:''; position:absolute; left:0; top:50%; transform:translateY(-50%) scaleY(0); width:2px; height:22px; background:linear-gradient(to bottom, var(--gold-bright), var(--gold-dark)); border-radius:0 1px 1px 0; transition:transform .25s; }
+.sidenav-links a:hover span, .sidenav-links a.active span { color:rgba(255,255,255,.9); letter-spacing:.38em; }
+.sidenav-links a:hover::before, .sidenav-links a.active::before { transform:translateY(-50%) scaleY(1); }
+.sidenav-divider { width:1px; height:32px; background:linear-gradient(to bottom, transparent, rgba(255,255,255,.12), transparent); flex-shrink:0; }
+.sidenav-copy { font-size:.44rem; letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,.18); writing-mode:vertical-rl; transform:rotate(180deg); flex-shrink:0; }
 
 /* MOBILE TOP NAV */
-.topnav {
-  display: none;
-  position: fixed; top:0; left:0; right:0; z-index:1000;
-  padding: 16px 20px;
-  justify-content: space-between; align-items: center;
-  background: rgba(5,5,5,.0);
-  transition: background .4s, padding .3s;
-}
-.topnav.scrolled {
-  background: rgba(5,5,5,.92);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--border);
-}
-.topnav-logo {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.2rem; font-weight: 600; letter-spacing: .08em;
-  background: linear-gradient(135deg, var(--gold-bright), var(--gold-dark));
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-}
-.topnav-burger {
-  display: flex; flex-direction: column; gap: 5px;
-  background: none; border: none; padding: 4px;
-  cursor: pointer;
-}
-.topnav-burger span {
-  display: block; width: 22px; height: 1px;
-  background: rgba(255,255,255,.6);
-  transition: transform .3s, opacity .3s;
-}
-.topnav-burger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-.topnav-burger.open span:nth-child(2) { opacity: 0; }
-.topnav-burger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
-
-.mobile-menu {
-  display: none; position: fixed; inset: 0;
-  background: rgba(5,5,5,.97); z-index: 999;
-  flex-direction: column; justify-content: center; align-items: center;
-  gap: 2.2rem; opacity: 0; pointer-events: none; transition: opacity .3s;
-}
-.mobile-menu.open { display: flex; opacity: 1; pointer-events: all; }
-.mobile-menu a {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(2rem, 9vw, 3rem); font-weight: 300; letter-spacing: .14em;
-  text-transform: uppercase; color: rgba(255,255,255,.55); transition: color .2s;
-}
-.mobile-menu a:hover { color: #fff; }
+.topnav { display:none; position:fixed; top:0; left:0; right:0; z-index:1000; padding:16px 20px; justify-content:space-between; align-items:center; background:rgba(5,5,5,0); transition:background .4s, padding .3s; }
+.topnav.scrolled { background:rgba(5,5,5,.92); backdrop-filter:blur(14px); border-bottom:1px solid var(--border); }
+.topnav-logo { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:600; letter-spacing:.08em; background:linear-gradient(135deg, var(--gold-bright), var(--gold-dark)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.topnav-burger { display:flex; flex-direction:column; gap:5px; background:none; border:none; padding:4px; cursor:pointer; }
+.topnav-burger span { display:block; width:22px; height:1px; background:rgba(255,255,255,.6); transition:transform .3s, opacity .3s; }
+.topnav-burger.open span:nth-child(1) { transform:translateY(6px) rotate(45deg); }
+.topnav-burger.open span:nth-child(2) { opacity:0; }
+.topnav-burger.open span:nth-child(3) { transform:translateY(-6px) rotate(-45deg); }
+.mobile-menu { display:none; position:fixed; inset:0; background:rgba(5,5,5,.97); z-index:999; flex-direction:column; justify-content:center; align-items:center; gap:2.2rem; opacity:0; pointer-events:none; transition:opacity .3s; }
+.mobile-menu.open { display:flex; opacity:1; pointer-events:all; }
+.mobile-menu a { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,9vw,3rem); font-weight:300; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.55); transition:color .2s; }
+.mobile-menu a:hover { color:#fff; }
 
 /* PAGE LAYOUT */
-.page-body {
-  margin-left: var(--sidenav-w);
-}
+.page-body { margin-left: var(--sidenav-w); }
 
 /* HERO */
 .hero {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16/9;
-  min-height: min(56.25vw, 96vh);
-  display: flex;
-  align-items: center;
-  background: var(--bg);
-  overflow: hidden;
+  position:relative; width:100%;
+  aspect-ratio:16/9; min-height:min(56.25vw,96vh);
+  display:flex; align-items:center;
+  background:var(--bg); overflow:hidden;
 }
-
-.hero-bg {
-  position: absolute; inset: 0; z-index: 0;
-}
+.hero-bg { position:absolute; inset:0; z-index:0; }
 .hero-bg-img {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  opacity: 0.85;
-  transform: scale(1.02);
-  transition: transform 8s ease-out;
+  position:absolute; inset:0; width:100%; height:100%;
+  background-image: url('images/t3.png');
+  background-size:cover; background-position:center center;
+  opacity:0.85; transform:scale(1.02);
+  transition:transform 8s ease-out;
 }
-.hero-bg::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(110deg, rgba(5,5,5,.65) 0%, rgba(5,5,5,.35) 48%, rgba(5,5,5,.02) 100%);
-  pointer-events: none;
-}
-
-.hero-content {
-  position: relative; z-index: 2;
-  padding: 0 clamp(28px, 5vw, 72px);
-  max-width: 820px;
-}
-
-.hero-eyebrow {
-  font-size: clamp(.48rem, .9vw, .6rem);
-  letter-spacing: .42em; text-transform: uppercase;
-  color: var(--gold-muted);
-  margin-bottom: clamp(10px, 1.8vw, 20px);
-}
-
-.hero-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 700; letter-spacing: -.015em; line-height: .88;
-  text-transform: uppercase;
-}
-.hero-name .line1 {
-  display: block;
-  font-size: clamp(2.6rem, 7vw, 6.8rem);
-  color: #ffffff;
-}
-.hero-name .line2 {
-  display: block;
-  font-size: clamp(2.6rem, 7vw, 6.8rem);
-  color: rgba(255,255,255,.32);
-}
-
-.hero-rule {
-  width: clamp(60px,9vw,110px);
-  height: 1px;
-  background: linear-gradient(to right, rgba(201,165,90,.65), transparent);
-  margin: clamp(14px, 2.2vw, 22px) 0;
-}
-
-.hero-dop {
-  font-size: clamp(.5rem, .95vw, .65rem); letter-spacing: .4em;
-  text-transform: uppercase; color: rgba(201,165,90,.68);
-  white-space: nowrap;
-}
-
-.scroll-cue {
-  position: absolute; bottom: clamp(20px,3.5vh,40px); right: clamp(20px,3vw,48px); z-index: 2;
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-}
-.scroll-cue-line {
-  width: 1px; height: 34px;
-  background: linear-gradient(to bottom, rgba(201,165,90,.6), transparent);
-  animation: scrollPulse 2s ease-in-out infinite;
-}
-.scroll-cue-text {
-  font-size: .46rem; letter-spacing: .28em; text-transform: uppercase;
-  color: rgba(201,165,90,.38);
-  writing-mode: vertical-rl; transform: rotate(180deg);
-}
-
-@keyframes scrollPulse {
-  0%,100% { opacity:.3; }
-  50%     { opacity:1; }
-}
+.hero-bg::after { content:''; position:absolute; inset:0; background:linear-gradient(110deg, rgba(5,5,5,.65) 0%, rgba(5,5,5,.35) 48%, rgba(5,5,5,.02) 100%); pointer-events:none; }
+.hero-content { position:relative; z-index:2; padding:0 clamp(28px,5vw,72px); max-width:820px; }
+.hero-eyebrow { font-size:clamp(.48rem,.9vw,.6rem); letter-spacing:.42em; text-transform:uppercase; color:var(--gold-muted); margin-bottom:clamp(10px,1.8vw,20px); }
+.hero-name { font-family:'Cormorant Garamond',serif; font-weight:700; letter-spacing:-.015em; line-height:.88; text-transform:uppercase; }
+.hero-name .line1 { display:block; font-size:clamp(2.6rem,7vw,6.8rem); color:#ffffff; }
+.hero-name .line2 { display:block; font-size:clamp(2.6rem,7vw,6.8rem); color:rgba(255,255,255,.32); }
+.hero-rule { width:clamp(60px,9vw,110px); height:1px; background:linear-gradient(to right, rgba(201,165,90,.65), transparent); margin:clamp(14px,2.2vw,22px) 0; }
+.hero-dop { font-size:clamp(.5rem,.95vw,.65rem); letter-spacing:.4em; text-transform:uppercase; color:rgba(201,165,90,.68); white-space:nowrap; }
+.scroll-cue { position:absolute; bottom:clamp(20px,3.5vh,40px); right:clamp(20px,3vw,48px); z-index:2; display:flex; flex-direction:column; align-items:center; gap:8px; }
+.scroll-cue-line { width:1px; height:34px; background:linear-gradient(to bottom, rgba(201,165,90,.6), transparent); animation:scrollPulse 2s ease-in-out infinite; }
+.scroll-cue-text { font-size:.46rem; letter-spacing:.28em; text-transform:uppercase; color:rgba(201,165,90,.38); writing-mode:vertical-rl; transform:rotate(180deg); }
+@keyframes scrollPulse { 0%,100%{opacity:.3;} 50%{opacity:1;} }
 
 /* CONTENT WRAPPER */
-.wrap {
-  max-width: 1360px;
-  margin: 0 auto;
-  padding: 0 clamp(24px, 4.5vw, 64px);
-}
+.wrap { max-width:1360px; margin:0 auto; padding:0 clamp(24px,4.5vw,64px); }
 
 /* SECTION HEADER */
-.sec-head {
-  display: flex; justify-content: space-between; align-items: center;
-  padding-bottom: 11px; border-bottom: 1px solid var(--border);
-  margin: clamp(48px,7vw,80px) 0 clamp(18px,2.5vw,30px);
-}
-.sec-label {
-  font-size: .62rem; font-weight: 500; letter-spacing: .34em;
-  text-transform: uppercase; color: var(--gold-muted);
-}
-.sec-link {
-  font-size: .56rem; letter-spacing: .2em; text-transform: uppercase;
-  color: rgba(255,255,255,.26); display: flex; align-items: center; gap: 10px;
-  transition: color .2s;
-}
-.sec-link::after {
-  content: ''; width: 28px; height: 1px;
-  background: rgba(255,255,255,.26); display: block;
-  transition: width .3s, background .2s;
-}
-.sec-link:hover { color: rgba(255,255,255,.7); }
-.sec-link:hover::after { width: 44px; background: rgba(255,255,255,.6); }
+.sec-head { display:flex; justify-content:space-between; align-items:center; padding-bottom:11px; border-bottom:1px solid var(--border); margin:clamp(48px,7vw,80px) 0 clamp(18px,2.5vw,30px); }
+.sec-label { font-size:.62rem; font-weight:500; letter-spacing:.34em; text-transform:uppercase; color:var(--gold-muted); }
+.sec-link { font-size:.56rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.26); display:flex; align-items:center; gap:10px; transition:color .2s; }
+.sec-link::after { content:''; width:28px; height:1px; background:rgba(255,255,255,.26); display:block; transition:width .3s, background .2s; }
+.sec-link:hover { color:rgba(255,255,255,.7); }
+.sec-link:hover::after { width:44px; background:rgba(255,255,255,.6); }
 
 /* INTRO LOADER */
-#intro-loader {
-  position: fixed; inset: 0; z-index: 99999;
-  background: var(--bg);
-  display: flex; align-items: center; justify-content: center;
-  pointer-events: all;
-}
-#intro-loader.done {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .6s ease;
-}
-
-.intro-inner {
-  display: flex; flex-direction: column;
-  align-items: center; gap: 16px;
-  text-align: center;
-}
-
-.intro-monogram {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(5rem, 14vw, 11rem);
-  font-weight: 600; line-height: 1;
-  display: flex; gap: .04em;
-}
-.intro-a {
-  background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold-dark) 100%);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-}
-.intro-m {
-  color: rgba(255,255,255,.22);
-}
-
-.intro-line {
-  width: clamp(60px,12vw,160px);
-  height: 1px;
-  background: linear-gradient(to right, transparent, rgba(201,165,90,.5), transparent);
-}
-
-.intro-sub {
-  font-size: clamp(.48rem, 1vw, .6rem);
-  letter-spacing: .42em; text-transform: uppercase;
-  color: rgba(201,165,90,.55);
-}
+#intro-loader { position:fixed; inset:0; z-index:99999; background:var(--bg); display:flex; align-items:center; justify-content:center; pointer-events:all; transition:opacity .6s ease; }
+#intro-loader.done { opacity:0; pointer-events:none; }
+.intro-inner { display:flex; flex-direction:column; align-items:center; gap:16px; text-align:center; }
+.intro-monogram { font-family:'Cormorant Garamond',serif; font-size:clamp(5rem,14vw,11rem); font-weight:600; line-height:1; display:flex; gap:.04em; }
+.intro-a { background:linear-gradient(135deg, var(--gold-bright) 0%, var(--gold-dark) 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.intro-m { color:rgba(255,255,255,.22); }
+.intro-line { width:clamp(60px,12vw,160px); height:1px; background:linear-gradient(to right, transparent, rgba(201,165,90,.5), transparent); }
+.intro-sub { font-size:clamp(.48rem,1vw,.6rem); letter-spacing:.42em; text-transform:uppercase; color:rgba(201,165,90,.55); }
 
 /* FLOATING CTA */
-.cta-float {
-  position: fixed;
-  bottom: clamp(20px,3vh,32px);
-  right: clamp(20px,3vw,36px);
-  z-index: 2000;
-  display: flex; align-items: center; gap: 10px;
-  padding: 12px 20px 12px 18px;
-  background: rgba(10,10,10,.85);
-  border: 1px solid rgba(201,165,90,.28);
-  border-radius: 2px;
-  backdrop-filter: blur(12px);
-  text-decoration: none;
-  opacity: 0; transform: translateY(12px);
-  transition: opacity .4s, transform .4s;
-}
-.cta-float.visible {
-  opacity: 1; transform: translateY(0);
-}
-.cta-float:hover {
-  background: rgba(20,18,14,.95);
-  border-color: rgba(201,165,90,.6);
-}
-.cta-text {
-  font-size: .58rem; font-weight: 500;
-  letter-spacing: .28em; text-transform: uppercase;
-  color: rgba(255,255,255,.72);
-}
-.cta-arrow {
-  font-size: .7rem;
-  color: var(--gold-mid);
-  transition: transform .25s;
-  display: inline-block;
-}
-.cta-float:hover .cta-arrow { transform: translateX(4px); color: var(--gold-bright); }
+.cta-float { position:fixed; bottom:clamp(20px,3vh,32px); right:clamp(20px,3vw,36px); z-index:2000; display:flex; align-items:center; gap:10px; padding:12px 20px 12px 18px; background:rgba(10,10,10,.85); border:1px solid rgba(201,165,90,.28); border-radius:2px; backdrop-filter:blur(12px); text-decoration:none; opacity:0; transform:translateY(12px); transition:opacity .4s, transform .4s; }
+.cta-float.visible { opacity:1; transform:translateY(0); }
+.cta-float:hover { background:rgba(20,18,14,.95); border-color:rgba(201,165,90,.6); }
+.cta-text { font-size:.58rem; font-weight:500; letter-spacing:.28em; text-transform:uppercase; color:rgba(255,255,255,.72); }
+.cta-arrow { font-size:.7rem; color:var(--gold-mid); transition:transform .25s; display:inline-block; }
+.cta-float:hover .cta-arrow { transform:translateX(4px); color:var(--gold-bright); }
 
-/* SHOWREEL - VIMEO */
-.reel-wrap {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16/9;
-  background: #000;
-  overflow: hidden;
-}
-.vimeo-wrapper {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-}
-.vimeo-wrapper iframe {
-  width: 100%; height: 100%;
-  border: none;
-}
-.reel-caption {
-  text-align:center; font-size:.54rem; letter-spacing:.2em;
-  text-transform:uppercase; color:rgba(255,255,255,.16); margin-top:10px;
-}
+/* SHOWREEL */
+.reel-wrap { position:relative; width:100%; aspect-ratio:16/9; background:#000; overflow:hidden; }
+.vimeo-wrapper { position:absolute; inset:0; width:100%; height:100%; }
+.vimeo-wrapper iframe { width:100%; height:100%; border:none; }
+.reel-caption { text-align:center; font-size:.54rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.16); margin-top:10px; }
 
 /* FILM CREDITS */
-.film-credits-section {
-  position: relative;
-  width: calc(100vw - var(--sidenav-w));
-  overflow: hidden;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+.film-credits-section { position:relative; width:calc(100vw - var(--sidenav-w)); overflow:hidden; border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+:root { --fc-card-w: clamp(260px,38vw,580px); }
+.fc-track { display:flex; gap:0; overflow-x:auto; overflow-y:hidden; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:thin; height:calc(var(--fc-card-w) * 1.5); align-items:stretch; scroll-behavior:smooth; }
+.fc-track::-webkit-scrollbar { height:3px; }
+.fc-track::-webkit-scrollbar-track { background:rgba(255,255,255,.05); }
+.fc-track::-webkit-scrollbar-thumb { background:rgba(201,165,90,.4); border-radius:3px; }
+
+.fc-card { position:relative; flex:0 0 var(--fc-card-w); height:100%; overflow:hidden; scroll-snap-align:start; border-right:1px solid rgba(255,255,255,.06); cursor:pointer; }
+.fc-card:last-child { border-right:none; }
+
+/* PERFORMANCE: Use transform instead of scale on img to avoid repaints */
+.fc-card-inner { position:absolute; inset:0; overflow:hidden; }
+.fc-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transform:scale(1.0); transition:transform .6s cubic-bezier(0.25,0.46,0.45,0.94); will-change:transform; }
+.fc-card:hover .fc-img { transform:scale(1.06); }
+
+/* Shimmer placeholder while image loads */
+.fc-card::before {
+  content:''; position:absolute; inset:0; z-index:1;
+  background: linear-gradient(90deg, #111 0%, #1a1a1a 50%, #111 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+.fc-card.loaded::before { display:none; }
+@keyframes shimmer { 0%{background-position:200% 0;} 100%{background-position:-200% 0;} }
+
+.fc-card::after { content:''; position:absolute; inset:0; z-index:2; background:linear-gradient(to bottom, transparent 35%, rgba(0,0,0,.18) 62%, rgba(0,0,0,.88) 100%); pointer-events:none; }
+
+.fc-info { position:absolute; bottom:0; left:0; right:0; z-index:3; padding:clamp(14px,2.2vw,26px) clamp(14px,2.2vw,24px) clamp(16px,2.2vw,22px); }
+.fc-rule { width:24px; height:1px; background:linear-gradient(to right, var(--gold-mid), var(--gold-deep)); margin-bottom:9px; transition:width .3s; }
+.fc-card:hover .fc-rule { width:40px; }
+.fc-title { font-family:'Cormorant Garamond',serif; font-size:clamp(.9rem,1.6vw,1.4rem); font-weight:500; letter-spacing:.06em; line-height:1.15; color:#fff; text-transform:uppercase; margin-bottom:5px; }
+.fc-role { font-size:clamp(.44rem,.78vw,.56rem); letter-spacing:.28em; text-transform:uppercase; color:rgba(255,255,255,.48); }
+.fc-year { position:absolute; top:12px; right:12px; z-index:3; font-size:.5rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.75); background:rgba(5,5,5,.62); border:1px solid rgba(255,255,255,.12); padding:3px 9px; opacity:0; transition:opacity .25s; }
+.fc-card:hover .fc-year { opacity:1; }
+.fc-num { position:absolute; top:14px; left:16px; z-index:3; font-family:'Cormorant Garamond',serif; font-size:clamp(.75rem,1.2vw,1rem); font-weight:300; color:rgba(255,255,255,.28); }
+.fc-counter { position:absolute; bottom:20px; left:clamp(20px,3vw,40px); z-index:11; display:flex; align-items:baseline; gap:5px; pointer-events:none; opacity:.6; }
+.fc-cur { font-family:'Cormorant Garamond',serif; font-size:clamp(1.5rem,3vw,2.5rem); font-weight:300; line-height:1; color:rgba(255,255,255,.85); }
+.fc-sep { font-size:clamp(.5rem,.8vw,.65rem); letter-spacing:.18em; color:rgba(255,255,255,.22); }
+.fc-tot { font-size:clamp(.5rem,.8vw,.65rem); letter-spacing:.18em; color:rgba(255,255,255,.28); }
+
+/* Click hint on cards */
+.fc-click-hint {
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  z-index:3; opacity:0; transition:opacity .3s;
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  pointer-events:none;
+}
+.fc-card:hover .fc-click-hint { opacity:1; }
+.fc-click-icon {
+  width:48px; height:48px; border-radius:50%;
+  background:rgba(255,255,255,.12); backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.2);
+  display:flex; align-items:center; justify-content:center;
+}
+.fc-click-icon svg { width:20px; height:20px; fill:none; stroke:#fff; stroke-width:1.5; }
+.fc-click-label { font-size:.46rem; letter-spacing:.3em; text-transform:uppercase; color:rgba(255,255,255,.7); }
+
+/* =============================================
+   MOVIE DETAIL MODAL
+   ============================================= */
+.movie-modal-overlay {
+  position:fixed; inset:0; z-index:10000;
+  background:rgba(0,0,0,0); backdrop-filter:blur(0px);
+  pointer-events:none;
+  transition:background .4s ease, backdrop-filter .4s ease;
+}
+.movie-modal-overlay.open {
+  background:rgba(0,0,0,.85);
+  backdrop-filter:blur(20px);
+  pointer-events:all;
 }
 
-:root { --fc-card-w: clamp(260px, 38vw, 580px); }
+.movie-modal {
+  position:fixed; inset:0; z-index:10001;
+  display:flex; align-items:center; justify-content:center;
+  padding:clamp(16px,3vw,40px);
+  pointer-events:none;
+  opacity:0; transform:translateY(32px);
+  transition:opacity .45s cubic-bezier(0.22,1,0.36,1), transform .45s cubic-bezier(0.22,1,0.36,1);
+}
+.movie-modal.open { pointer-events:all; opacity:1; transform:translateY(0); }
 
-.fc-track {
-  display: flex;
-  gap: 0;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  height: calc(var(--fc-card-w) * 1.5);
-  align-items: stretch;
-  scroll-behavior: smooth;
+.mm-panel {
+  width:100%; max-width:960px; max-height:90vh;
+  background:#0a0a0a; border:1px solid rgba(255,255,255,.08);
+  overflow-y:auto; overflow-x:hidden;
+  position:relative;
+  scrollbar-width:thin; scrollbar-color:rgba(201,165,90,.3) transparent;
 }
-.fc-track::-webkit-scrollbar {
-  height: 3px;
+.mm-panel::-webkit-scrollbar { width:3px; }
+.mm-panel::-webkit-scrollbar-thumb { background:rgba(201,165,90,.3); }
+
+/* Close button */
+.mm-close {
+  position:absolute; top:16px; right:16px; z-index:10;
+  width:36px; height:36px; border-radius:50%;
+  background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:background .2s, border-color .2s;
 }
-.fc-track::-webkit-scrollbar-track {
-  background: rgba(255,255,255,.05);
+.mm-close:hover { background:rgba(255,255,255,.12); border-color:rgba(201,165,90,.5); }
+.mm-close svg { width:14px; height:14px; stroke:#fff; stroke-width:1.5; fill:none; }
+
+/* Hero image area */
+.mm-hero {
+  position:relative; width:100%; aspect-ratio:16/9;
+  overflow:hidden; flex-shrink:0;
 }
-.fc-track::-webkit-scrollbar-thumb {
-  background: rgba(201,165,90,.4);
-  border-radius: 3px;
+.mm-hero-img {
+  width:100%; height:100%; object-fit:cover;
+  transform:scale(1.04); transition:transform 6s ease-out;
+}
+.movie-modal.open .mm-hero-img { transform:scale(1); }
+.mm-hero-overlay {
+  position:absolute; inset:0;
+  background:linear-gradient(to bottom, rgba(0,0,0,.1) 0%, rgba(0,0,0,.05) 40%, rgba(10,10,10,.95) 100%);
+}
+.mm-hero-badge {
+  position:absolute; top:16px; left:16px;
+  font-size:.46rem; letter-spacing:.28em; text-transform:uppercase;
+  color:rgba(201,165,90,.8); background:rgba(10,10,10,.7);
+  border:1px solid rgba(201,165,90,.2); padding:4px 10px;
+  backdrop-filter:blur(8px);
 }
 
-.fc-card {
-  position: relative;
-  flex: 0 0 var(--fc-card-w);
-  height: 100%;
-  overflow: hidden;
-  scroll-snap-align: start;
-  border-right: 1px solid rgba(255,255,255,.06);
-}
-.fc-card:last-child { border-right: none; }
+/* Content */
+.mm-body { padding:clamp(20px,3.5vw,40px) clamp(20px,3.5vw,40px) clamp(24px,4vw,48px); }
 
-.fc-card img {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-}
-.fc-img { transform: scale(1.0); transition: transform .5s ease; z-index: 0; }
-.fc-card:hover .fc-img { transform: scale(1.05); }
+.mm-top { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:24px; flex-wrap:wrap; }
 
-.fc-card::after {
-  content: ''; position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(to bottom, transparent 35%, rgba(0,0,0,.18) 62%, rgba(0,0,0,.82) 100%);
-  pointer-events: none;
+.mm-title-block {}
+.mm-title {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.6rem,3.5vw,3rem); font-weight:600;
+  letter-spacing:.03em; text-transform:uppercase;
+  color:#fff; line-height:1; margin-bottom:10px;
+}
+.mm-tagline {
+  font-size:clamp(.6rem,.85vw,.72rem); letter-spacing:.28em;
+  text-transform:uppercase; color:rgba(201,165,90,.65);
+  font-style:italic;
 }
 
-.fc-info { position: absolute; bottom: 0; left: 0; right: 0; z-index: 2; padding: clamp(14px,2.2vw,26px) clamp(14px,2.2vw,24px) clamp(16px,2.2vw,22px); }
-.fc-rule { width: 24px; height: 1px; background: linear-gradient(to right, var(--gold-mid), var(--gold-deep)); margin-bottom: 9px; transition: width .3s; }
-.fc-card:hover .fc-rule { width: 40px; }
-.fc-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(.9rem, 1.6vw, 1.4rem); font-weight: 500; letter-spacing: .06em; line-height: 1.15; color: #fff; text-transform: uppercase; margin-bottom: 5px; }
-.fc-role { font-size: clamp(.44rem, .78vw, .56rem); letter-spacing: .28em; text-transform: uppercase; color: rgba(255,255,255,.48); }
-.fc-year { position: absolute; top: 12px; right: 12px; z-index: 2; font-size: .5rem; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.75); background: rgba(5,5,5,.62); border: 1px solid rgba(255,255,255,.12); padding: 3px 9px; opacity: 0; transition: opacity .25s; }
-.fc-card:hover .fc-year { opacity: 1; }
-.fc-num { position: absolute; top: 14px; left: 16px; z-index: 2; font-family: 'Cormorant Garamond', serif; font-size: clamp(.75rem, 1.2vw, 1rem); font-weight: 300; color: rgba(255,255,255,.28); }
-.fc-counter { position: absolute; bottom: 20px; left: clamp(20px, 3vw, 40px); z-index: 11; display: flex; align-items: baseline; gap: 5px; pointer-events: none; opacity: .6; }
-.fc-cur { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 300; line-height: 1; color: rgba(255,255,255,.85); }
-.fc-sep { font-size: clamp(.5rem, .8vw, .65rem); letter-spacing: .18em; color: rgba(255,255,255,.22); }
-.fc-tot { font-size: clamp(.5rem, .8vw, .65rem); letter-spacing: .18em; color: rgba(255,255,255,.28); }
+.mm-actions { display:flex; gap:10px; align-items:center; flex-shrink:0; }
+.mm-btn {
+  display:flex; align-items:center; gap:8px;
+  padding:9px 16px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.05);
+  font-family:'Josefin Sans',sans-serif;
+  font-size:.52rem; letter-spacing:.2em; text-transform:uppercase;
+  color:rgba(255,255,255,.6); cursor:pointer;
+  transition:background .2s, border-color .2s, color .2s;
+}
+.mm-btn:hover { background:rgba(255,255,255,.1); border-color:rgba(201,165,90,.5); color:#fff; }
+.mm-btn svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:1.5; }
+.mm-btn.gold { border-color:rgba(201,165,90,.4); color:var(--gold-mid); }
+.mm-btn.gold:hover { background:rgba(201,165,90,.1); border-color:var(--gold-bright); color:var(--gold-bright); }
+
+/* Divider rule */
+.mm-rule { width:100%; height:1px; background:var(--border); margin:20px 0; }
+
+/* Meta grid */
+.mm-meta-grid {
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(160px,1fr));
+  gap:20px 28px; margin-bottom:24px;
+}
+.mm-meta-item {}
+.mm-meta-label { font-size:.5rem; letter-spacing:.28em; text-transform:uppercase; color:rgba(255,255,255,.3); margin-bottom:5px; }
+.mm-meta-value { font-size:clamp(.72rem,.9vw,.82rem); color:rgba(255,255,255,.75); line-height:1.4; }
+.mm-meta-value.gold { color:var(--gold-mid); }
+
+/* IMDB badge */
+.imdb-badge {
+  display:inline-flex; align-items:center; gap:7px;
+  padding:6px 12px;
+  background:#f5c518; border-radius:2px;
+  font-family:'Josefin Sans',sans-serif;
+  font-size:.6rem; font-weight:600; letter-spacing:.1em;
+  color:#000; text-decoration:none;
+  transition:opacity .2s, transform .15s;
+}
+.imdb-badge:hover { opacity:.9; transform:translateY(-1px); }
+.imdb-badge svg { width:14px; height:14px; fill:#000; }
+
+/* Streaming */
+.mm-streaming { margin-bottom:24px; }
+.mm-streaming-label { font-size:.52rem; letter-spacing:.28em; text-transform:uppercase; color:rgba(255,255,255,.3); margin-bottom:12px; }
+.mm-platforms { display:flex; flex-wrap:wrap; gap:10px; }
+.mm-platform {
+  padding:7px 16px; border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.04);
+  font-size:.54rem; letter-spacing:.18em; text-transform:uppercase;
+  color:rgba(255,255,255,.55); transition:all .2s;
+}
+.mm-platform:hover { border-color:rgba(201,165,90,.4); color:rgba(201,165,90,.9); background:rgba(201,165,90,.05); }
+
+/* Trailer section */
+.mm-trailer-section { margin-top:28px; }
+.mm-trailer-label { font-size:.52rem; letter-spacing:.28em; text-transform:uppercase; color:rgba(255,255,255,.3); margin-bottom:12px; display:flex; align-items:center; gap:10px; }
+.mm-trailer-label::after { content:''; flex:1; height:1px; background:var(--border); }
+.mm-trailer-wrap { position:relative; width:100%; aspect-ratio:16/9; background:#000; overflow:hidden; }
+.mm-trailer-wrap iframe { position:absolute; inset:0; width:100%; height:100%; border:none; }
+/* Trailer placeholder when no video */
+.mm-trailer-placeholder {
+  position:absolute; inset:0;
+  background:linear-gradient(135deg, #0d0d0d, #111);
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:12px;
+}
+.mm-trailer-placeholder svg { width:48px; height:48px; opacity:.2; fill:none; stroke:var(--gold-mid); stroke-width:1; }
+.mm-trailer-placeholder p { font-size:.54rem; letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,.2); }
+
+/* Share toast */
+.share-toast {
+  position:fixed; bottom:80px; left:50%; transform:translateX(-50%) translateY(10px);
+  z-index:20000;
+  background:rgba(20,20,20,.95); border:1px solid rgba(201,165,90,.3);
+  padding:10px 20px; backdrop-filter:blur(12px);
+  font-size:.56rem; letter-spacing:.2em; text-transform:uppercase;
+  color:rgba(255,255,255,.8);
+  opacity:0; transition:opacity .3s, transform .3s;
+  pointer-events:none;
+}
+.share-toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
 /* FRAMES */
-.frames-grid {
-  display:grid; grid-template-columns: repeat(2,1fr);
-  gap: clamp(.5rem,1.4vw,1.4rem);
-  margin-bottom: clamp(40px,6vw,70px);
-}
-.frame-card {
-  aspect-ratio:16/10; overflow:hidden;
-  background:#0f0f0f;
-}
-.frame-card img, .frame-card video {
-  width:100%; height:100%; object-fit:cover;
-  transform: scale(1.04);
-  transition: transform .4s ease;
-}
-.frame-card:hover img,
-.frame-card:hover video {
-  transform: scale(1.08);
-}
+.frames-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:clamp(.5rem,1.4vw,1.4rem); margin-bottom:clamp(40px,6vw,70px); }
+.frame-card { aspect-ratio:16/10; overflow:hidden; background:#0f0f0f; position:relative; }
+
+/* Frame shimmer */
+.frame-card::before { content:''; position:absolute; inset:0; z-index:1; background:linear-gradient(90deg,#111 0%,#1a1a1a 50%,#111 100%); background-size:200% 100%; animation:shimmer 1.5s infinite; }
+.frame-card.loaded::before { display:none; }
+
+.frame-card img, .frame-card video { width:100%; height:100%; object-fit:cover; transform:scale(1.04); transition:transform .5s ease; will-change:transform; }
+.frame-card:hover img, .frame-card:hover video { transform:scale(1.08); }
 
 /* ABOUT + CONTACT */
-.about-contact {
-  display:grid; grid-template-columns:1fr 1fr;
-  gap: clamp(2rem,5vw,5rem);
-  padding-top: clamp(28px,4.5vw,48px); border-top: 1px solid var(--border);
-  margin-bottom: clamp(44px,7vw,88px);
-}
+.about-contact { display:grid; grid-template-columns:1fr 1fr; gap:clamp(2rem,5vw,5rem); padding-top:clamp(28px,4.5vw,48px); border-top:1px solid var(--border); margin-bottom:clamp(44px,7vw,88px); }
 .about-head { margin-bottom:18px; }
-.about-text p {
-  font-size: clamp(.78rem,.9vw,.88rem); line-height:1.78;
-  color:rgba(255,255,255,.58); margin-bottom:1rem;
-}
+.about-text p { font-size:clamp(.78rem,.9vw,.88rem); line-height:1.78; color:rgba(255,255,255,.58); margin-bottom:1rem; }
 .contact-items { display:flex; flex-direction:column; gap:1.1rem; }
 .c-line { border-bottom:1px solid var(--border); padding-bottom:.65rem; }
-.c-label {
-  font-size:.56rem; letter-spacing:.2em; text-transform:uppercase;
-  color:rgba(255,255,255,.28); margin-bottom:.26rem;
-}
-.c-val {
-  font-size: clamp(.76rem,.9vw,.86rem); color:rgba(255,255,255,.62);
-  transition:color .2s;
-}
+.c-label { font-size:.56rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.28); margin-bottom:.26rem; }
+.c-val { font-size:clamp(.76rem,.9vw,.86rem); color:rgba(255,255,255,.62); transition:color .2s; }
 .c-val:hover { color:#fff; }
 .socials { display:flex; gap:1.6rem; margin-top:.3rem; }
-.socials a {
-  font-size:.62rem; letter-spacing:.14em; text-transform:uppercase;
-  color:rgba(255,255,255,.36); transition:color .2s;
-}
+.socials a { font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.36); transition:color .2s; }
 .socials a:hover { color:#fff; }
 
 /* MARQUEE */
-.marquee {
-  overflow:hidden; white-space:nowrap; padding:10px 0;
-  border-top:1px solid rgba(255,255,255,.04);
-  border-bottom:1px solid rgba(255,255,255,.04);
-}
-.marquee-inner {
-  display:inline-flex; gap:26px;
-  animation: marq 28s linear infinite;
-  font-size:.54rem; letter-spacing:.24em;
-  text-transform:uppercase; color:rgba(255,255,255,.2);
-}
+.marquee { overflow:hidden; white-space:nowrap; padding:10px 0; border-top:1px solid rgba(255,255,255,.04); border-bottom:1px solid rgba(255,255,255,.04); }
+.marquee-inner { display:inline-flex; gap:26px; animation:marq 28s linear infinite; font-size:.54rem; letter-spacing:.24em; text-transform:uppercase; color:rgba(255,255,255,.2); }
 .mdot { color:rgba(201,165,90,.38); }
-@keyframes marq {
-  from { transform:translateX(0); }
-  to   { transform:translateX(-50%); }
-}
+@keyframes marq { from{transform:translateX(0);} to{transform:translateX(-50%);} }
 
 /* FOOTER */
-footer {
-  padding: clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px);
-  border-top:1px solid rgba(255,255,255,.04);
-  display:flex; justify-content:space-between; align-items:center;
-  flex-wrap:wrap; gap:8px;
-  font-size:.56rem; letter-spacing:.1em; color:rgba(255,255,255,.2);
-}
+footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px solid rgba(255,255,255,.04); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; font-size:.56rem; letter-spacing:.1em; color:rgba(255,255,255,.2); }
 .foot-links { display:flex; gap:1.8rem; }
 .foot-links a { color:rgba(255,255,255,.26); transition:color .2s; }
 .foot-links a:hover { color:#fff; }
 
 /* FADE-UP */
-.fade-up {
-  opacity:0; transform:translateY(20px);
-  transition: opacity .6s ease, transform .6s ease;
-}
+.fade-up { opacity:0; transform:translateY(20px); transition:opacity .6s ease, transform .6s ease; }
 .fade-up.visible { opacity:1; transform:translateY(0); }
 
 /* RESPONSIVE */
-@media (max-width:1100px) { :root { --fc-card-w: clamp(260px, 55vw, 480px); } }
+@media (max-width:1100px) { :root { --fc-card-w: clamp(260px,55vw,480px); } }
 @media (max-width:900px) {
-  :root { --sidenav-w: 0px; --fc-card-w: 80vw; }
-  .sidenav  { display: none; }
-  .topnav   { display: flex; }
-  .page-body { margin-left: 0; }
-  .hero { aspect-ratio: unset; min-height: 100svh; }
-  .hero-name .line1, .hero-name .line2 { font-size: clamp(2.4rem, 9vw, 4.5rem); }
+  :root { --sidenav-w:0px; --fc-card-w:80vw; }
+  .sidenav { display:none; }
+  .topnav { display:flex; }
+  .page-body { margin-left:0; }
+  .hero { aspect-ratio:unset; min-height:100svh; }
+  .hero-name .line1, .hero-name .line2 { font-size:clamp(2.4rem,9vw,4.5rem); }
   .about-contact { grid-template-columns:1fr; gap:2.2rem; }
   .frames-grid { gap:.65rem; }
-  .film-credits-section { width: 100vw; }
-  body { cursor: auto; }
-  .cursor-dot, .cursor-ring { display: none; }
+  .film-credits-section { width:100vw; }
+  body { cursor:auto; }
+  .cursor-dot, .cursor-ring { display:none; }
+  .mm-meta-grid { grid-template-columns:repeat(2,1fr); }
 }
 @media (max-width:600px) {
-  :root { --fc-card-w: 88vw; }
+  :root { --fc-card-w:88vw; }
   .frames-grid { gap:.45rem; }
   footer { flex-direction:column; text-align:center; }
   .scroll-cue { display:none; }
+  .mm-top { flex-direction:column; }
+  .mm-meta-grid { grid-template-columns:1fr 1fr; }
 }
 </style>
 </head>
 <body>
 
-<!-- Custom Cursor Elements -->
 <div class="cursor-dot"></div>
 <div class="cursor-ring"></div>
 
-<div id="intro-loader"><div class="intro-inner"><div class="intro-monogram"><span class="intro-a">A</span><span class="intro-m">M</span></div><div class="intro-line"></div><div class="intro-sub">DIRECTOR OF PHOTOGRAPHY</div></div></div>
+<div id="intro-loader">
+  <div class="intro-inner">
+    <div class="intro-monogram"><span class="intro-a">A</span><span class="intro-m">M</span></div>
+    <div class="intro-line"></div>
+    <div class="intro-sub">DIRECTOR OF PHOTOGRAPHY</div>
+  </div>
+</div>
+
+<!-- MOVIE DETAIL MODAL -->
+<div class="movie-modal-overlay" id="mm-overlay"></div>
+<div class="movie-modal" id="mm-modal" role="dialog" aria-modal="true" aria-label="Film details">
+  <div class="mm-panel" id="mm-panel">
+    <button class="mm-close" id="mm-close" aria-label="Close">
+      <svg viewBox="0 0 14 14"><path d="M1 1l12 12M13 1L1 13" stroke-linecap="round"/></svg>
+    </button>
+    <!-- Dynamic content injected here -->
+    <div id="mm-content"></div>
+  </div>
+</div>
+
+<!-- Share toast -->
+<div class="share-toast" id="share-toast">Link copied to clipboard</div>
 
 <nav class="sidenav" id="sidenav">
   <a class="sidenav-logo" href="#hero">AM</a>
@@ -692,199 +504,573 @@ footer {
   <span class="sidenav-copy">© 2025</span>
 </nav>
 
-<nav class="topnav" id="topnav"><a class="topnav-logo" href="#hero">AM</a><button class="topnav-burger" id="burger"><span></span><span></span><span></span></button></nav>
-<div class="mobile-menu" id="mobile-menu"><a href="#hero">Home</a><a href="#credits">Film Credits</a><a href="#frames">Frames</a><a href="#about">About</a><a href="#contact">Contact</a></div>
+<nav class="topnav" id="topnav">
+  <a class="topnav-logo" href="#hero">AM</a>
+  <button class="topnav-burger" id="burger"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#hero">Home</a><a href="#credits">Film Credits</a>
+  <a href="#frames">Frames</a><a href="#about">About</a><a href="#contact">Contact</a>
+</div>
 
 <div class="page-body">
 <main>
   <section class="hero" id="hero">
     <div class="hero-bg"><div class="hero-bg-img"></div></div>
-    <div class="hero-content"><p class="hero-eyebrow">CINEMATOGRAPHER</p><h1 class="hero-name"><span class="line1">AZEEM</span><span class="line2">MOHAMMAD</span></h1><div class="hero-rule"></div><p class="hero-dop">DIRECTOR OF PHOTOGRAPHY</p></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">CINEMATOGRAPHER</p>
+      <h1 class="hero-name"><span class="line1">AZEEM</span><span class="line2">MOHAMMAD</span></h1>
+      <div class="hero-rule"></div>
+      <p class="hero-dop">DIRECTOR OF PHOTOGRAPHY</p>
+    </div>
     <div class="scroll-cue"><div class="scroll-cue-line"></div><span class="scroll-cue-text">SCROLL</span></div>
   </section>
 
-<!-- SHOWREEL -->
-<div class="wrap"><div class="fade-up" id="showreel"><div class="sec-head"><span class="sec-label">SHOWREEL</span></div>
-  <div class="reel-wrap"><div class="vimeo-wrapper"><iframe src="https://player.vimeo.com/video/1185745228?autoplay=1&loop=1&title=0&byline=0&portrait=0&background=0&muted=0&dnt=1&controls=1" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div>
-  <p class="reel-caption">CINEMATOGRAPHY SHOWREEL</p></div></div>
+  <!-- SHOWREEL -->
+  <div class="wrap">
+    <div class="fade-up" id="showreel">
+      <div class="sec-head"><span class="sec-label">SHOWREEL</span></div>
+      <div class="reel-wrap">
+        <div class="vimeo-wrapper">
+          <iframe src="https://player.vimeo.com/video/1185745228?autoplay=1&loop=1&title=0&byline=0&portrait=0&background=0&muted=0&dnt=1&controls=1" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe>
+        </div>
+      </div>
+      <p class="reel-caption">CINEMATOGRAPHY SHOWREEL</p>
+    </div>
+  </div>
 
-  <div class="wrap"><div class="fade-up"><div class="sec-head" id="credits"><span class="sec-label">FILM CREDITS</span><a href="#" class="sec-link">VIEW ALL WORK</a></div></div></div>
+  <div class="wrap">
+    <div class="fade-up">
+      <div class="sec-head" id="credits"><span class="sec-label">FILM CREDITS</span><a href="#" class="sec-link">VIEW ALL WORK</a></div>
+    </div>
+  </div>
 
   <div class="film-credits-section fade-up" id="fc-section">
     <div class="fc-track" id="fc-track">
-      <div class="fc-card"><img class="fc-img" src="images/poster-90s.jpg" alt="#90s Middle Class Biopic" loading="lazy" decoding="async"><span class="fc-num">01</span><div class="fc-year">2024</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">#90's Middle Class Biopic</div><div class="fc-role">Director of Photography &nbsp;·&nbsp; TV Series</div></div></div>
-      <div class="fc-card"><img class="fc-img" src="images/poster-g2.png" alt="Goodachari 2" loading="lazy" decoding="async"><span class="fc-num">02</span><div class="fc-year">2026</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Goodachari 2</div><div class="fc-role">Director of Photography &nbsp;·&nbsp; Film</div></div></div>
-      <div class="fc-card"><img class="fc-img" src="images/poster-epic.png" alt="EPIC" loading="lazy" decoding="async"><span class="fc-num">03</span><div class="fc-year">2026</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">EPIC</div><div class="fc-role">Cinematographer &nbsp;·&nbsp; Film</div></div></div>
-      <div class="fc-card"><img class="fc-img" src="images/kb.jpg" alt="Kadaseela Biriyani" loading="lazy" decoding="async"><span class="fc-num">04</span><div class="fc-year">2021</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Kadaseela Biriyani</div><div class="fc-role">Director of Photography &nbsp;·&nbsp; Film</div></div></div>
-      <div class="fc-card"><img class="fc-img" src="images/th.jpg" alt="Theatre" loading="lazy" decoding="async"><span class="fc-num">05</span><div class="fc-year">2025</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Theatre</div><div class="fc-role">Cinematographer &nbsp;·&nbsp; Film</div></div></div>
-      <div class="fc-card"><img class="fc-img" src="images/sin.png" alt="Sin" loading="lazy" decoding="async"><span class="fc-num">06</span><div class="fc-year">2020</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Sin</div><div class="fc-role">Cinematographer &nbsp;·&nbsp; TV Series</div></div></div>
-      <div class="fc-card"><img class="fc-img" src="images/bro.jpg" alt="Bro" loading="lazy" decoding="async"><span class="fc-num">07</span><div class="fc-year">2021</div><div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Bro</div><div class="fc-role">Director of Photography &nbsp;·&nbsp; Film</div></div></div>
+
+      <div class="fc-card" data-film="0" tabindex="0" role="button" aria-label="View details for #90's Middle Class Biopic">
+        <div class="fc-card-inner">
+          <img class="fc-img" data-src="images/poster-90s.jpg" alt="#90s Middle Class Biopic">
+        </div>
+        <span class="fc-num">01</span>
+        <div class="fc-year">2024</div>
+        <div class="fc-info"><div class="fc-rule"></div><div class="fc-title">#90's Middle Class Biopic</div><div class="fc-role">Director of Photography &nbsp;·&nbsp; TV Series</div></div>
+        <div class="fc-click-hint">
+          <div class="fc-click-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg></div>
+          <span class="fc-click-label">View Details</span>
+        </div>
+      </div>
+
+      <div class="fc-card" data-film="1" tabindex="0" role="button" aria-label="View details for Goodachari 2">
+        <div class="fc-card-inner">
+          <img class="fc-img" data-src="images/poster-g2.png" alt="Goodachari 2">
+        </div>
+        <span class="fc-num">02</span>
+        <div class="fc-year">2026</div>
+        <div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Goodachari 2</div><div class="fc-role">Director of Photography &nbsp;·&nbsp; Film</div></div>
+        <div class="fc-click-hint">
+          <div class="fc-click-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg></div>
+          <span class="fc-click-label">View Details</span>
+        </div>
+      </div>
+
+      <div class="fc-card" data-film="2" tabindex="0" role="button" aria-label="View details for EPIC">
+        <div class="fc-card-inner">
+          <img class="fc-img" data-src="images/poster-epic.png" alt="EPIC">
+        </div>
+        <span class="fc-num">03</span>
+        <div class="fc-year">2026</div>
+        <div class="fc-info"><div class="fc-rule"></div><div class="fc-title">EPIC</div><div class="fc-role">Cinematographer &nbsp;·&nbsp; Film</div></div>
+        <div class="fc-click-hint">
+          <div class="fc-click-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg></div>
+          <span class="fc-click-label">View Details</span>
+        </div>
+      </div>
+
+      <div class="fc-card" data-film="3" tabindex="0" role="button" aria-label="View details for Kadaseela Biriyani">
+        <div class="fc-card-inner">
+          <img class="fc-img" data-src="images/kb.jpg" alt="Kadaseela Biriyani">
+        </div>
+        <span class="fc-num">04</span>
+        <div class="fc-year">2021</div>
+        <div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Kadaseela Biriyani</div><div class="fc-role">Director of Photography &nbsp;·&nbsp; Film</div></div>
+        <div class="fc-click-hint">
+          <div class="fc-click-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg></div>
+          <span class="fc-click-label">View Details</span>
+        </div>
+      </div>
+
+      <div class="fc-card" data-film="4" tabindex="0" role="button" aria-label="View details for Theatre">
+        <div class="fc-card-inner">
+          <img class="fc-img" data-src="images/th.jpg" alt="Theatre">
+        </div>
+        <span class="fc-num">05</span>
+        <div class="fc-year">2025</div>
+        <div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Theatre</div><div class="fc-role">Cinematographer &nbsp;·&nbsp; Film</div></div>
+        <div class="fc-click-hint">
+          <div class="fc-click-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg></div>
+          <span class="fc-click-label">View Details</span>
+        </div>
+      </div>
+
+      <div class="fc-card" data-film="5" tabindex="0" role="button" aria-label="View details for Sin">
+        <div class="fc-card-inner">
+          <img class="fc-img" data-src="images/sin.png" alt="Sin">
+        </div>
+        <span class="fc-num">06</span>
+        <div class="fc-year">2020</div>
+        <div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Sin</div><div class="fc-role">Cinematographer &nbsp;·&nbsp; TV Series</div></div>
+        <div class="fc-click-hint">
+          <div class="fc-click-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg></div>
+          <span class="fc-click-label">View Details</span>
+        </div>
+      </div>
+
+      <div class="fc-card" data-film="6" tabindex="0" role="button" aria-label="View details for Bro">
+        <div class="fc-card-inner">
+          <img class="fc-img" data-src="images/bro.jpg" alt="Bro">
+        </div>
+        <span class="fc-num">07</span>
+        <div class="fc-year">2021</div>
+        <div class="fc-info"><div class="fc-rule"></div><div class="fc-title">Bro</div><div class="fc-role">Director of Photography &nbsp;·&nbsp; Film</div></div>
+        <div class="fc-click-hint">
+          <div class="fc-click-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg></div>
+          <span class="fc-click-label">View Details</span>
+        </div>
+      </div>
+
     </div>
     <div class="fc-counter"><span class="fc-cur">01</span><span class="fc-sep">/</span><span class="fc-tot">07</span></div>
   </div>
 
-  <div class="wrap"><div class="fade-up" id="frames"><div class="sec-head"><span class="sec-label">FRAMES</span></div>
-    <div class="frames-grid">
-      <div class="frame-card"><video autoplay loop muted playsinline preload="none"><source src="vd/v1.mp4" type="video/mp4"></video></div>
-      <div class="frame-card"><video autoplay loop muted playsinline preload="none"><source src="vd/v2.mp4" type="video/mp4"></video></div>
-      <div class="frame-card"><video autoplay loop muted playsinline preload="none"><source src="vd/v7.mp4" type="video/mp4"></video></div>
-      <div class="frame-card"><img src="images/i2.jpeg" alt="Frame" loading="lazy" decoding="async"></div>
-      <div class="frame-card"><img src="images/i3.jpeg" alt="Frame" loading="lazy" decoding="async"></div>
-      <div class="frame-card"><img src="images/i4.jpeg" alt="Frame" loading="lazy" decoding="async"></div>
-      <div class="frame-card"><img src="images/i5.jpeg" alt="Frame" loading="lazy" decoding="async"></div>
-      <div class="frame-card"><img src="images/i6.jpeg" alt="Frame" loading="lazy" decoding="async"></div>
-      <div class="frame-card"><img src="images/i7.jpeg" alt="Frame" loading="lazy" decoding="async"></div>
-      <div class="frame-card"><img src="images/i8.jpeg" alt="Frame" loading="lazy" decoding="async"></div>
-      <div class="frame-card"><img src="images/i9.jpeg" alt="Frame" loading="lazy" decoding="async"></div>
-      <div class="frame-card"><img src="images/i10.jpeg" alt="Frame" loading="lazy" decoding="async"></div>
+  <div class="wrap">
+    <div class="fade-up" id="frames">
+      <div class="sec-head"><span class="sec-label">FRAMES</span></div>
+      <div class="frames-grid">
+        <div class="frame-card"><video autoplay loop muted playsinline preload="none"><source data-src="vd/v1.mp4" type="video/mp4"></video></div>
+        <div class="frame-card"><video autoplay loop muted playsinline preload="none"><source data-src="vd/v2.mp4" type="video/mp4"></video></div>
+        <div class="frame-card"><video autoplay loop muted playsinline preload="none"><source data-src="vd/v7.mp4" type="video/mp4"></video></div>
+        <div class="frame-card"><img data-src="images/i2.jpeg" alt="Frame"></div>
+        <div class="frame-card"><img data-src="images/i3.jpeg" alt="Frame"></div>
+        <div class="frame-card"><img data-src="images/i4.jpeg" alt="Frame"></div>
+        <div class="frame-card"><img data-src="images/i5.jpeg" alt="Frame"></div>
+        <div class="frame-card"><img data-src="images/i6.jpeg" alt="Frame"></div>
+        <div class="frame-card"><img data-src="images/i7.jpeg" alt="Frame"></div>
+        <div class="frame-card"><img data-src="images/i8.jpeg" alt="Frame"></div>
+        <div class="frame-card"><img data-src="images/i9.jpeg" alt="Frame"></div>
+        <div class="frame-card"><img data-src="images/i10.jpeg" alt="Frame"></div>
+      </div>
     </div>
   </div>
 
-  <div class="fade-up" id="about"><div class="about-contact"><div><div class="about-head"><span class="sec-label">ABOUT</span></div><div class="about-text"><p>Azeem Mohammad is a cinematographer based in Hyderabad, India. His work explores intimacy, memory, and time — often through natural light and grounded realism.</p><p>Each frame is guided by a commitment to visual honesty, translating story into imagery that breathes. He asks how light itself can carry emotion — favouring restraint over spectacle, and texture over polish.</p><p style="font-style:italic;color:rgba(255,255,255,.34)">Working between India and the UK.</p></div></div><div class="contact-items" id="contact"><div class="c-line" style="border:none; padding:0; margin-bottom:.6rem;"><span class="sec-label">CONTACT</span></div><div class="c-line"><div class="c-label">EMAIL</div><a href="mailto:azeem.mohd@gmail.com" class="c-val">azeem.mohd@gmail.com →</a></div><div class="c-line"><div class="c-label">BASED</div><div class="c-val">Hyderabad, India / United Kingdom</div></div><div class="c-line"><div class="c-label">SOCIAL</div><div class="socials"><a href="#" target="_blank">INSTAGRAM</a><a href="#" target="_blank">VIMEO</a></div></div><div class="c-line"><div class="c-label">OPEN TO</div><div class="c-val" style="font-size:.74rem">Feature Film · Short Film · Commercial · Collaborations</div></div></div></div></div></div>
+  <div class="wrap">
+    <div class="fade-up" id="about">
+      <div class="about-contact">
+        <div>
+          <div class="about-head"><span class="sec-label">ABOUT</span></div>
+          <div class="about-text">
+            <p>Azeem Mohammad is a cinematographer based in Hyderabad, India. His work explores intimacy, memory, and time — often through natural light and grounded realism.</p>
+            <p>Each frame is guided by a commitment to visual honesty, translating story into imagery that breathes. He asks how light itself can carry emotion — favouring restraint over spectacle, and texture over polish.</p>
+            <p style="font-style:italic;color:rgba(255,255,255,.34)">Working between India and the UK.</p>
+          </div>
+        </div>
+        <div class="contact-items" id="contact">
+          <div class="c-line" style="border:none;padding:0;margin-bottom:.6rem;"><span class="sec-label">CONTACT</span></div>
+          <div class="c-line"><div class="c-label">EMAIL</div><a href="mailto:azeem.mohd@gmail.com" class="c-val">azeem.mohd@gmail.com →</a></div>
+          <div class="c-line"><div class="c-label">BASED</div><div class="c-val">Hyderabad, India / United Kingdom</div></div>
+          <div class="c-line"><div class="c-label">SOCIAL</div><div class="socials"><a href="#" target="_blank">INSTAGRAM</a><a href="#" target="_blank">VIMEO</a></div></div>
+          <div class="c-line"><div class="c-label">OPEN TO</div><div class="c-val" style="font-size:.74rem">Feature Film · Short Film · Commercial · Collaborations</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <div class="marquee"><div class="marquee-inner"><span>Natural Light</span><span class="mdot">·</span><span>Camera Operation</span><span class="mdot">·</span><span>Lens Design</span><span class="mdot">·</span><span>Colour Grading</span><span class="mdot">·</span><span>Visual Storytelling</span><span class="mdot">·</span><span>Feature Film</span><span class="mdot">·</span><span>Short Film</span><span class="mdot">·</span><span>Hyderabad / India</span><span class="mdot">·</span></div></div>
+  <div class="marquee">
+    <div class="marquee-inner">
+      <span>Natural Light</span><span class="mdot">·</span><span>Camera Operation</span><span class="mdot">·</span><span>Lens Design</span><span class="mdot">·</span><span>Colour Grading</span><span class="mdot">·</span><span>Visual Storytelling</span><span class="mdot">·</span><span>Feature Film</span><span class="mdot">·</span><span>Short Film</span><span class="mdot">·</span><span>Hyderabad / India</span><span class="mdot">·</span><span>Natural Light</span><span class="mdot">·</span><span>Camera Operation</span><span class="mdot">·</span><span>Lens Design</span><span class="mdot">·</span><span>Colour Grading</span><span class="mdot">·</span><span>Visual Storytelling</span><span class="mdot">·</span><span>Feature Film</span><span class="mdot">·</span><span>Short Film</span><span class="mdot">·</span><span>Hyderabad / India</span><span class="mdot">·</span>
+    </div>
+  </div>
 
-  <footer><span>AZEEM MOHAMMAD</span><div class="foot-links"><a href="#" target="_blank">INSTAGRAM</a><a href="#" target="_blank">VIMEO</a><a href="mailto:azeem.mohd@gmail.com">EMAIL</a></div><span>© 2025</span></footer>
+  <footer>
+    <span>AZEEM MOHAMMAD</span>
+    <div class="foot-links"><a href="#" target="_blank">INSTAGRAM</a><a href="#" target="_blank">VIMEO</a><a href="mailto:azeem.mohd@gmail.com">EMAIL</a></div>
+    <span>© 2025</span>
+  </footer>
 
   <a href="#contact" class="cta-float" id="cta-float"><span class="cta-text">Let's work</span><span class="cta-arrow">→</span></a>
 </main>
 </div>
 
 <script>
-// High-performance script with custom cursor and optimized loading
 (function(){
-  // Custom Cursor Logic
-  const cursorDot = document.querySelector('.cursor-dot');
-  const cursorRing = document.querySelector('.cursor-ring');
-  let mouseX = 0, mouseY = 0;
-  let ringX = 0, ringY = 0;
-  
-  if (cursorDot && cursorRing && window.innerWidth > 900) {
-    // Track mouse position
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      cursorDot.style.left = mouseX + 'px';
-      cursorDot.style.top = mouseY + 'px';
-    });
-    
-    // Smooth ring follow with lerp
-    function animateRing() {
-      ringX += (mouseX - ringX) * 0.15;
-      ringY += (mouseY - ringY) * 0.15;
-      cursorRing.style.left = ringX + 'px';
-      cursorRing.style.top = ringY + 'px';
-      requestAnimationFrame(animateRing);
-    }
-    animateRing();
-    
-    // Hover effect on interactive elements
-    const interactiveElements = document.querySelectorAll('a, button, .fc-card, .frame-card, .sec-link, .cta-float, .snav');
-    interactiveElements.forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        document.body.classList.add('hover-active');
-        cursorDot.style.width = '12px';
-        cursorDot.style.height = '12px';
-        cursorRing.style.width = '56px';
-        cursorRing.style.height = '56px';
-        cursorRing.style.borderColor = 'rgba(255,208,96,0.8)';
-        cursorRing.style.background = 'rgba(255,208,96,0.08)';
-      });
-      el.addEventListener('mouseleave', () => {
-        document.body.classList.remove('hover-active');
-        cursorDot.style.width = '8px';
-        cursorDot.style.height = '8px';
-        cursorRing.style.width = '40px';
-        cursorRing.style.height = '40px';
-        cursorRing.style.borderColor = 'rgba(255,208,96,0.5)';
-        cursorRing.style.background = 'none';
-      });
-    });
-    
-    // Hide cursor when leaving window
-    document.addEventListener('mouseleave', () => {
-      cursorDot.style.opacity = '0';
-      cursorRing.style.opacity = '0';
-    });
-    document.addEventListener('mouseenter', () => {
-      cursorDot.style.opacity = '1';
-      cursorRing.style.opacity = '1';
-    });
-  }
+  'use strict';
 
-  // Simple loader dismiss
+  /* ─── FILM DATA ─────────────────────────────────────── */
+  const FILMS = [
+    {
+      title: "#90's Middle Class Biopic",
+      tagline: "A nostalgic trip down memory lane, delving into the everyday life of a middle-class family.",
+      year: "2024",
+      type: "TV Series",
+      director: "Aditya Haasan",
+      streaming: ["Netflix"],
+      imdb: "https://www.imdb.com/title/tt29764006/?ref_=ext_shr_lnk",
+      trailerYT: "https://youtu.be/7zzlOolbhFY?si=AVn_Xm4Eqvq50dTy", // Add YouTube video ID if available e.g. "dQw4w9WgXcQ"
+      poster: "images/poster-90s.jpg",
+      dop: "Director of Photography"
+    },
+    {
+      title: "Goodachari 2",
+      tagline: "The spy returns",
+      year: "2026",
+      type: "Feature Film",
+      director: "Sashi Kiran Tikka",
+      producer: "Bunny Vas",
+      studio: "GA2 Pictures",
+      streaming: ["In Theatres"],
+      imdb: "https://www.imdb.com/",
+      trailerYT: "",
+      poster: "images/poster-g2.png",
+      dop: "Director of Photography"
+    },
+    {
+      title: "EPIC",
+      tagline: "An epic saga",
+      year: "2026",
+      type: "Feature Film",
+      director: "TBA",
+      producer: "TBA",
+      studio: "TBA",
+      streaming: ["Coming Soon"],
+      imdb: "https://www.imdb.com/",
+      trailerYT: "",
+      poster: "images/poster-epic.png",
+      dop: "Cinematographer"
+    },
+    {
+      title: "Kadaseela Biriyani",
+      tagline: "A tale of love and longing",
+      year: "2021",
+      type: "Feature Film",
+      director: "Muthukumaran Rajagopalan",
+      producer: "Chandru Krishnamurthy",
+      studio: "Sky Nine Pictures",
+      streaming: ["Netflix"],
+      imdb: "https://www.imdb.com/title/tt13614116/",
+      trailerYT: "F6f_UGv2XyE",
+      poster: "images/kb.jpg",
+      dop: "Director of Photography"
+    },
+    {
+      title: "Theatre",
+      tagline: "Behind the curtain",
+      year: "2025",
+      type: "Feature Film",
+      director: "TBA",
+      producer: "TBA",
+      studio: "TBA",
+      streaming: ["Coming Soon"],
+      imdb: "https://www.imdb.com/",
+      trailerYT: "",
+      poster: "images/th.jpg",
+      dop: "Cinematographer"
+    },
+    {
+      title: "Sin",
+      tagline: "Where darkness lives",
+      year: "2020",
+      type: "TV Series",
+      director: "Prashanth Varma",
+      producer: "Sridhar Lagadapati",
+      studio: "Lagadapati Productions",
+      streaming: ["ZEE5"],
+      imdb: "https://www.imdb.com/",
+      trailerYT: "",
+      poster: "images/sin.png",
+      dop: "Cinematographer"
+    },
+    {
+      title: "Bro",
+      tagline: "Brothers in arms",
+      year: "2021",
+      type: "Feature Film",
+      director: "TBA",
+      producer: "TBA",
+      studio: "TBA",
+      streaming: ["TBA"],
+      imdb: "https://www.imdb.com/",
+      trailerYT: "",
+      poster: "images/bro.jpg",
+      dop: "Director of Photography"
+    }
+  ];
+
+  /* ─── CUSTOM CURSOR ─────────────────────────────────── */
+  const dot  = document.querySelector('.cursor-dot');
+  const ring = document.querySelector('.cursor-ring');
+  if (dot && ring && window.matchMedia('(pointer:fine)').matches && window.innerWidth > 900) {
+    let mx=0, my=0, rx=0, ry=0, raf;
+    document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; dot.style.left=mx+'px'; dot.style.top=my+'px'; }, {passive:true});
+    function tick(){
+      rx += (mx-rx)*.15; ry += (my-ry)*.15;
+      ring.style.left=rx+'px'; ring.style.top=ry+'px';
+      raf = requestAnimationFrame(tick);
+    }
+    tick();
+    const interactive = 'a,button,.fc-card,.frame-card,.sec-link,.cta-float,.snav,.mm-close,.mm-btn,.imdb-badge,.mm-platform';
+    document.addEventListener('mouseover', e => {
+      if(e.target.closest(interactive)) document.body.classList.add('hover-active');
+    });
+    document.addEventListener('mouseout', e => {
+      if(e.target.closest(interactive)) document.body.classList.remove('hover-active');
+    });
+    document.addEventListener('mouseleave', ()=>{ dot.style.opacity='0'; ring.style.opacity='0'; });
+    document.addEventListener('mouseenter', ()=>{ dot.style.opacity='1'; ring.style.opacity='1'; });
+  } else if (dot && ring) { dot.remove(); ring.remove(); }
+
+  /* ─── LOADER ────────────────────────────────────────── */
   const loader = document.getElementById('intro-loader');
   const ctaBtn = document.getElementById('cta-float');
   setTimeout(() => {
-    if(loader) { loader.classList.add('done'); setTimeout(() => { if(loader) loader.remove(); }, 700); }
-    if(ctaBtn) ctaBtn.classList.add('visible');
-  }, 1500);
+    loader && loader.classList.add('done');
+    ctaBtn && ctaBtn.classList.add('visible');
+    setTimeout(() => loader && loader.remove(), 700);
+  }, 1400);
 
-  // Mobile nav
+  /* ─── MOBILE NAV ────────────────────────────────────── */
   const topnav = document.getElementById('topnav');
   const burger = document.getElementById('burger');
-  const mm = document.getElementById('mobile-menu');
-  window.addEventListener('scroll', () => topnav?.classList.toggle('scrolled', scrollY > 60), { passive:true });
-  if(burger) burger.addEventListener('click', () => { const o = mm.classList.toggle('open'); burger.classList.toggle('open', o); document.body.style.overflow = o ? 'hidden' : ''; });
-  document.querySelectorAll('.mlink').forEach(l => l.addEventListener('click', () => { mm.classList.remove('open'); if(burger) burger.classList.remove('open'); document.body.style.overflow = ''; }));
+  const mm_nav = document.getElementById('mobile-menu');
+  window.addEventListener('scroll', () => topnav?.classList.toggle('scrolled', scrollY>60), {passive:true});
+  burger?.addEventListener('click', () => {
+    const o = mm_nav.classList.toggle('open');
+    burger.classList.toggle('open', o);
+    document.body.style.overflow = o ? 'hidden' : '';
+  });
+  mm_nav?.querySelectorAll('a').forEach(l => l.addEventListener('click', () => {
+    mm_nav.classList.remove('open'); burger?.classList.remove('open'); document.body.style.overflow='';
+  }));
 
-  // Active nav highlight
+  /* ─── ACTIVE NAV ────────────────────────────────────── */
   const sections = ['hero','credits','frames','about','contact'];
   const snavLinks = document.querySelectorAll('.snav');
-  function setActive() {
-    let current = 'hero';
+  function setActive(){
+    let current='hero';
     sections.forEach(id => {
-      const el = document.getElementById(id);
-      if (el && el.getBoundingClientRect().top <= window.innerHeight * 0.45) current = id;
+      const el=document.getElementById(id);
+      if(el && el.getBoundingClientRect().top <= window.innerHeight*.45) current=id;
     });
-    snavLinks.forEach(a => { const href = a.getAttribute('href').replace('#',''); a.classList.toggle('active', href === current); });
+    snavLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href').replace('#','')=== current);
+    });
   }
-  window.addEventListener('scroll', setActive, { passive:true }); setActive();
+  window.addEventListener('scroll', setActive, {passive:true});
+  setActive();
 
-  // Fade-up observer
+  /* ─── FADE-UP ────────────────────────────────────────── */
   const fadeIO = new IntersectionObserver(entries => {
-    entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); fadeIO.unobserve(e.target); } });
-  }, { threshold:.1 });
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); fadeIO.unobserve(e.target); } });
+  }, {threshold:.08, rootMargin:'0px 0px -40px 0px'});
   document.querySelectorAll('.fade-up').forEach(el => fadeIO.observe(el));
 
-  // Film credits scroll counter
+  /* ─── LAZY LOAD IMAGES (IntersectionObserver) ─────── */
+  // Prioritised: load images near viewport with rootMargin buffer
+  const imgIO = new IntersectionObserver((entries, obs) => {
+    entries.forEach(e => {
+      if(!e.isIntersecting) return;
+      const el = e.target;
+      if(el.tagName === 'IMG') {
+        const src = el.dataset.src;
+        if(!src) return;
+        const tmp = new Image();
+        tmp.onload = () => { el.src = src; el.closest('.fc-card,.frame-card')?.classList.add('loaded'); };
+        tmp.onerror = () => { el.closest('.fc-card,.frame-card')?.classList.add('loaded'); };
+        tmp.src = src;
+      } else if(el.tagName === 'SOURCE') {
+        el.src = el.dataset.src;
+        const video = el.parentElement;
+        video.load();
+        video.play().catch(()=>{});
+        video.closest('.frame-card')?.classList.add('loaded');
+      }
+      obs.unobserve(el);
+    });
+  }, {rootMargin:'300px 0px 300px 0px'});
+
+  document.querySelectorAll('img[data-src]').forEach(img => imgIO.observe(img));
+  document.querySelectorAll('source[data-src]').forEach(src => imgIO.observe(src));
+
+  /* ─── FC TRACK COUNTER ──────────────────────────────── */
   const fcTrack = document.getElementById('fc-track');
-  const fcCur = document.querySelector('.fc-cur');
+  const fcCur   = document.querySelector('.fc-cur');
+  const fcTot   = document.querySelector('.fc-tot');
   if(fcTrack && fcCur) {
     const cards = fcTrack.querySelectorAll('.fc-card');
-    const total = cards.length;
-    const totalSpan = document.querySelector('.fc-tot');
-    if(totalSpan) totalSpan.textContent = String(total).padStart(2,'0');
+    if(fcTot) fcTot.textContent = String(cards.length).padStart(2,'0');
     fcTrack.addEventListener('scroll', () => {
-      const cardW = cards[0]?.offsetWidth || 1;
-      const idx = Math.round(fcTrack.scrollLeft / cardW) + 1;
-      fcCur.textContent = String(Math.min(idx, total)).padStart(2,'0');
-    }, { passive:true });
+      const w = cards[0]?.offsetWidth || 1;
+      const idx = Math.round(fcTrack.scrollLeft / w) + 1;
+      fcCur.textContent = String(Math.min(idx, cards.length)).padStart(2,'0');
+    }, {passive:true});
   }
 
-  // Smooth scroll for anchor links
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      const target = document.querySelector(this.getAttribute('href'));
-      if(target) {
+  /* ─── SMOOTH SCROLL ─────────────────────────────────── */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', function(e){
+      const t = document.querySelector(this.getAttribute('href'));
+      if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth',block:'start'}); }
+    });
+  });
+
+  /* ─── MOVIE MODAL ───────────────────────────────────── */
+  const overlay   = document.getElementById('mm-overlay');
+  const modal     = document.getElementById('mm-modal');
+  const panel     = document.getElementById('mm-panel');
+  const closeBtn  = document.getElementById('mm-close');
+  const content   = document.getElementById('mm-content');
+  const toast     = document.getElementById('share-toast');
+  let activeFilm  = null;
+  let toastTimer  = null;
+
+  function buildModalHTML(film) {
+    const trailer = film.trailerYT
+      ? `<iframe src="https://www.youtube.com/embed/${film.trailerYT}?rel=0&modestbranding=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+      : `<div class="mm-trailer-placeholder">
+           <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M10 8l6 4-6 4V8z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+           <p>Trailer not yet available</p>
+         </div>`;
+
+    const platforms = film.streaming.map(p =>
+      `<span class="mm-platform">${p}</span>`
+    ).join('');
+
+    return `
+      <div class="mm-hero">
+        <img class="mm-hero-img" src="${film.poster}" alt="${film.title}" loading="eager">
+        <div class="mm-hero-overlay"></div>
+        <span class="mm-hero-badge">${film.type} · ${film.year}</span>
+      </div>
+      <div class="mm-body">
+        <div class="mm-top">
+          <div class="mm-title-block">
+            <h2 class="mm-title">${film.title}</h2>
+            <p class="mm-tagline">${film.tagline}</p>
+          </div>
+          <div class="mm-actions">
+            <a href="${film.imdb}" target="_blank" rel="noopener" class="imdb-badge" title="View on IMDb">
+              <svg viewBox="0 0 40 20" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="20" fill="#f5c518" rx="3"/><text x="3" y="15" font-family="Arial Black,sans-serif" font-size="13" font-weight="900" fill="#000">IMDb</text></svg>
+            </a>
+            <button class="mm-btn" id="mm-share-btn" title="Share">
+              <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98" stroke-linecap="round"/></svg>
+              Share
+            </button>
+          </div>
+        </div>
+
+        <div class="mm-rule"></div>
+
+        <div class="mm-meta-grid">
+          <div class="mm-meta-item">
+            <div class="mm-meta-label">Directed by</div>
+            <div class="mm-meta-value">${film.director}</div>
+          </div>
+          <div class="mm-meta-item">
+            <div class="mm-meta-label">Produced by</div>
+            <div class="mm-meta-value">${film.producer}</div>
+          </div>
+          <div class="mm-meta-item">
+            <div class="mm-meta-label">Production</div>
+            <div class="mm-meta-value">${film.studio}</div>
+          </div>
+          <div class="mm-meta-item">
+            <div class="mm-meta-label">Year</div>
+            <div class="mm-meta-value gold">${film.year}</div>
+          </div>
+          <div class="mm-meta-item">
+            <div class="mm-meta-label">Azeem's Role</div>
+            <div class="mm-meta-value gold">${film.dop}</div>
+          </div>
+        </div>
+
+        <div class="mm-streaming">
+          <div class="mm-streaming-label">Streaming Now On</div>
+          <div class="mm-platforms">${platforms}</div>
+        </div>
+
+        <div class="mm-trailer-section">
+          <div class="mm-trailer-label">Official Trailer</div>
+          <div class="mm-trailer-wrap">${trailer}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  function openModal(filmIdx) {
+    const film = FILMS[filmIdx];
+    if(!film) return;
+    activeFilm = filmIdx;
+    content.innerHTML = buildModalHTML(film);
+    document.body.style.overflow = 'hidden';
+    overlay.classList.add('open');
+    requestAnimationFrame(() => {
+      modal.classList.add('open');
+      panel.scrollTop = 0;
+    });
+
+    // Wire share button
+    document.getElementById('mm-share-btn')?.addEventListener('click', () => shareFilm(film));
+  }
+
+  function closeModal() {
+    modal.classList.remove('open');
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    // Remove iframes to stop playback
+    setTimeout(() => {
+      content.innerHTML = '';
+      activeFilm = null;
+    }, 450);
+  }
+
+  function shareFilm(film) {
+    const text = `${film.title} (${film.year}) — Cinematography by Azeem Mohammad`;
+    const url = window.location.href;
+    if(navigator.share) {
+      navigator.share({ title: film.title, text, url }).catch(()=>{});
+    } else {
+      navigator.clipboard.writeText(url + ' — ' + text).then(() => showToast('Link copied to clipboard')).catch(() => showToast('Share: ' + url));
+    }
+  }
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
+  }
+
+  // Attach click events to fc-cards
+  document.querySelectorAll('.fc-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const idx = parseInt(card.dataset.film, 10);
+      if(!isNaN(idx)) openModal(idx);
+    });
+    card.addEventListener('keydown', e => {
+      if(e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const idx = parseInt(card.dataset.film, 10);
+        if(!isNaN(idx)) openModal(idx);
       }
     });
   });
-  
-  // Preload images in viewport only (Intersection Observer for lazy loading)
-  const lazyImages = document.querySelectorAll('img[loading="lazy"]');
-  const imageObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if(entry.isIntersecting) {
-        const img = entry.target;
-        img.loading = 'eager';
-        imageObserver.unobserve(img);
-      }
-    });
-  }, { rootMargin: '200px' });
-  lazyImages.forEach(img => imageObserver.observe(img));
+
+  closeBtn?.addEventListener('click', closeModal);
+  overlay.addEventListener('click', closeModal);
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && activeFilm !== null) closeModal(); });
+
+  // Prevent panel clicks from closing modal
+  panel?.addEventListener('click', e => e.stopPropagation());
+
 })();
 </script>
 </body>
