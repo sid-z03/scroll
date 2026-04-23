@@ -256,7 +256,7 @@ body.ch #cursor-ring { width:48px; height:48px; border-color:rgba(201,165,90,.6)
   background-image: url('images/t1.png');
   background-size: cover;
   background-position: center center;
-  opacity: .55;
+  opacity: .85;
   transform-origin: center center;
   animation: kenBurns 22s ease-in-out infinite alternate;
   will-change: transform;
@@ -269,8 +269,12 @@ body.ch #cursor-ring { width:48px; height:48px; border-color:rgba(201,165,90,.6)
   100% { transform: scale(1.02) translate(8px,  -10px);  }
 }
 .hero-bg::after {
-  content: ''; position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(110deg, rgba(5,5,5,.82) 0%, rgba(5,5,5,.45) 48%, rgba(5,5,5,.04) 100%);
+  background: linear-gradient(
+    110deg,
+    rgba(5,5,5,.65) 0%,   /* was .82 */
+    rgba(5,5,5,.35) 48%,  /* was .45 */
+    rgba(5,5,5,.02) 100%  /* was .04 */
+  );
 }
 
 .hero-grain {
@@ -776,10 +780,10 @@ footer {
     <div class="scroll-cue"><div class="scroll-cue-line"></div><span class="scroll-cue-text">SCROLL</span></div>
   </section>
 
-  <!-- SHOWREEL - VIMEO EMBED (fix lag + reliable playback) -->
-  <div class="wrap"><div class="fade-up" id="showreel"><div class="sec-head"><span class="sec-label">SHOWREEL</span></div>
-    <div class="reel-wrap"><div class="vimeo-wrapper"><iframe src="https://vimeo.com/1185745228?share=copy&fl=sv&fe=ci" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div>
-    <p class="reel-caption">CINEMATOGRAPHY SHOWREEL</p></div></div>
+<!-- SHOWREEL - VIMEO EMBED (fixed URL) -->
+<div class="wrap"><div class="fade-up" id="showreel"><div class="sec-head"><span class="sec-label">SHOWREEL</span></div>
+  <div class="reel-wrap"><div class="vimeo-wrapper"><iframe src="https://player.vimeo.com/video/1185745228?autoplay=1&loop=1&title=0&byline=0&portrait=0&background=1&muted=1&dnt=1" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div>
+  <p class="reel-caption">CINEMATOGRAPHY SHOWREEL</p></div></div>
 
   <!-- FILM CREDITS HEADER -->
   <div class="wrap"><div class="fade-up"><div class="sec-head" id="credits"><span class="sec-label">FILM CREDITS</span><a href="#" class="sec-link">VIEW ALL WORK</a></div></div></div>
