@@ -233,8 +233,8 @@ body.hover-active .cursor-ring { width: 56px; height: 56px; border-color: rgba(2
 .frame-card img, .frame-card video { width:100%; height:100%; object-fit:cover; transition:transform .5s ease; display:block; }
 .frame-card:hover img, .frame-card:hover video { transform:scale(1.06); }
 
-/* ABOUT / CONTACT */
-.about-contact { display:grid; grid-template-columns:1fr 1fr; gap:clamp(2rem,5vw,5rem); padding-top:clamp(28px,4.5vw,48px); border-top:1px solid var(--border); margin-bottom:clamp(44px,7vw,88px); }
+/* ABOUT / CONTACT — updated to 3 column */
+.about-contact { display:grid; grid-template-columns:1fr 1fr 1fr; gap:clamp(2rem,4vw,4rem); padding-top:clamp(28px,4.5vw,48px); border-top:1px solid var(--border); margin-bottom:clamp(44px,7vw,88px); }
 .about-head { margin-bottom:clamp(16px,2.5vw,24px); }
 .about-text p { font-size:clamp(.78rem,.9vw,.88rem); line-height:1.78; color:rgba(255,255,255,.58); margin-bottom:1rem; }
 .contact-items { display:flex; flex-direction:column; gap:1.1rem; }
@@ -245,6 +245,66 @@ body.hover-active .cursor-ring { width: 56px; height: 56px; border-color: rgba(2
 .socials { display:flex; gap:1.6rem; margin-top:.3rem; }
 .socials a { font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.36); transition:color .2s; }
 .socials a:hover { color:rgba(255,255,255,.8); }
+
+/* SOCIAL ICONS BAR — gold, centered below form */
+.social-icons-bar {
+  display:flex; justify-content:center; align-items:center;
+  gap:12px; margin-top:24px; padding-top:20px;
+  border-top:1px solid var(--border);
+}
+.social-icon-link {
+  display:flex; align-items:center; justify-content:center;
+  width:44px; height:44px;
+  border:1px solid rgba(201,165,90,.3);
+  border-radius:2px;
+  color:var(--gold-mid);
+  transition:border-color .25s, background .25s, transform .2s, color .25s;
+}
+.social-icon-link:hover {
+  border-color:var(--gold-bright);
+  background:rgba(255,208,96,.08);
+  transform:translateY(-2px);
+  color:var(--gold-bright);
+}
+.social-icon-link svg { width:18px; height:18px; fill:currentColor; }
+.social-icon-imdb { width:auto; padding:0 10px; }
+.imdb-text-logo {
+  font-family:'Josefin Sans',sans-serif; font-weight:700;
+  font-size:.72rem; letter-spacing:.08em; color:inherit;
+  white-space:nowrap;
+}
+
+/* MESSAGE FORM */
+.msg-form-section {}
+.msg-form-head { margin-bottom:clamp(16px,2.5vw,24px); }
+.msg-form { display:flex; flex-direction:column; gap:14px; }
+.msg-input, .msg-textarea {
+  width:100%; background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:2px; padding:11px 14px;
+  font-family:'Josefin Sans',sans-serif; font-size:.78rem;
+  font-weight:300; color:rgba(255,255,255,.8);
+  letter-spacing:.06em;
+  transition:border-color .25s, background .25s;
+  outline:none; resize:none;
+}
+.msg-input::placeholder, .msg-textarea::placeholder { color:rgba(255,255,255,.25); }
+.msg-input:focus, .msg-textarea:focus { border-color:rgba(201,165,90,.45); background:rgba(255,255,255,.06); }
+.msg-textarea { min-height:100px; }
+.msg-btn {
+  align-self:flex-start; background:transparent;
+  border:1px solid rgba(201,165,90,.4); border-radius:2px;
+  padding:10px 24px; font-family:'Josefin Sans',sans-serif;
+  font-size:.58rem; font-weight:500; letter-spacing:.28em;
+  text-transform:uppercase; color:rgba(255,255,255,.72);
+  cursor:pointer; transition:border-color .25s, background .25s, color .25s;
+  position:relative; overflow:hidden;
+}
+.msg-btn:hover { border-color:var(--gold-mid); background:rgba(201,165,90,.08); color:#fff; }
+.msg-btn:disabled { opacity:.5; cursor:not-allowed; }
+.msg-status { font-size:.6rem; letter-spacing:.18em; text-transform:uppercase; margin-top:4px; min-height:16px; }
+.msg-status.ok { color:rgba(100,220,130,.75); }
+.msg-status.err { color:rgba(220,100,100,.75); }
 
 /* MARQUEE */
 .marquee { overflow:hidden; white-space:nowrap; padding:10px 0; border-top:1px solid rgba(255,255,255,.04); border-bottom:1px solid rgba(255,255,255,.04); }
@@ -262,6 +322,10 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
 .fade-up.visible { opacity:1; transform:translateY(0); }
 
 /* RESPONSIVE */
+@media (max-width:1100px) {
+  .about-contact { grid-template-columns:1fr 1fr; }
+  .msg-form-section { grid-column:1/-1; }
+}
 @media (max-width:900px) {
   :root { --sidenav-w:0px; --fc-card-w:80vw; }
   .sidenav { display:none; }
@@ -277,6 +341,7 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
 @media (max-width:480px) {
   .mm-gallery-grid { grid-template-columns:repeat(2,1fr); }
   .frames-grid { grid-template-columns:1fr; }
+  .about-contact { grid-template-columns:1fr; }
 }
 </style>
 </head>
@@ -400,10 +465,12 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
     </div>
   </div>
 
-  <!-- ABOUT + CONTACT -->
+  <!-- ABOUT + CONTACT + MESSAGE -->
   <div class="wrap">
     <div class="fade-up" id="about">
       <div class="about-contact">
+
+        <!-- ABOUT -->
         <div>
           <div class="about-head"><span class="sec-label">ABOUT</span></div>
           <div class="about-text">
@@ -412,6 +479,8 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
             <p style="font-style:italic;color:rgba(255,255,255,.34)">Working between India and the UK.</p>
           </div>
         </div>
+
+        <!-- CONTACT -->
         <div class="contact-items" id="contact">
           <div class="c-line" style="border:none;padding:0;margin-bottom:.6rem;"><span class="sec-label">CONTACT</span></div>
           <div class="c-line"><div class="c-label">EMAIL</div><a href="mailto:azeem.dop09@gmail.com" class="c-val">azeem.dop09@gmail.com →</a></div>
@@ -419,6 +488,41 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
           <div class="c-line"><div class="c-label">SOCIAL</div><div class="socials"><a href="https://www.instagram.com/az_dop" target="_blank">INSTAGRAM</a><a href="https://vimeo.com/user5599169" target="_blank">VIMEO</a></div></div>
           <div class="c-line"><div class="c-label">OPEN TO</div><div class="c-val">Feature Film · Short Film · Commercial · Collaborations</div></div>
         </div>
+
+        <!-- SEND A MESSAGE -->
+        <div class="msg-form-section">
+          <div class="msg-form-head"><span class="sec-label">SEND A MESSAGE</span></div>
+          <form class="msg-form" id="msg-form" novalidate>
+            <input class="msg-input" type="text" id="msg-name" placeholder="Your Name" autocomplete="name" required>
+            <input class="msg-input" type="email" id="msg-email" placeholder="Your Email" autocomplete="email" required>
+            <input class="msg-input" type="text" id="msg-subject" placeholder="Subject">
+            <textarea class="msg-textarea" id="msg-body" placeholder="Your message…" rows="5" required></textarea>
+            <button class="msg-btn" type="submit" id="msg-btn">Send Message →</button>
+            <div class="msg-status" id="msg-status"></div>
+          </form>
+
+          <!-- GOLD SOCIAL ICONS -->
+          <div class="social-icons-bar">
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/az_dop" target="_blank" class="social-icon-link" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <!-- Vimeo -->
+            <a href="https://vimeo.com/user5599169" target="_blank" class="social-icon-link" aria-label="Vimeo">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.977 6.416c-.105 2.338-1.739 5.543-4.894 9.609-3.268 4.247-6.026 6.37-8.29 6.37-1.409 0-2.578-1.294-3.553-3.881L5.322 11.4C4.603 8.816 3.834 7.522 3.01 7.522c-.179 0-.806.378-1.881 1.132L0 7.197c1.185-1.044 2.351-2.084 3.501-3.128C5.08 2.701 6.266 1.984 7.055 1.91c1.867-.18 3.016 1.1 3.447 3.838.465 2.953.789 4.789.971 5.507.539 2.45 1.131 3.674 1.776 3.674.502 0 1.256-.796 2.265-2.385 1.004-1.589 1.54-2.797 1.612-3.628.144-1.371-.395-2.061-1.614-2.061-.574 0-1.167.121-1.777.391 1.186-3.868 3.434-5.757 6.762-5.637 2.473.06 3.628 1.664 3.48 4.807z"/></svg>
+            </a>
+            <!-- IMDb — text logo for clarity -->
+            <a href="https://www.imdb.com/name/nm12609373/" target="_blank" class="social-icon-link social-icon-imdb" aria-label="IMDb">
+              <span class="imdb-text-logo">IMDb</span>
+            </a>
+            <!-- Email -->
+            <a href="mailto:azeem.dop09@gmail.com" class="social-icon-link" aria-label="Email">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            </a>
+          </div>
+
+        </div>
+
       </div>
     </div>
   </div>
@@ -480,7 +584,7 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
       studio: "Sky Nine Pictures",
       streaming: ["Netflix"],
       imdb: "https://www.imdb.com/title/tt29764006/",
-      trailerYT: "https://youtu.be/7zzlOolbhFY?si=dKuPg_HhgxOOl-Jd",
+      trailerYT: "7zzlOolbhFY",
       poster: "images/poster-90s.jpg",
       dop: "Director of Photography",
       gallery: ["images/91.png", "images/92.png", "images/93.png", "images/e4.png"]
@@ -505,7 +609,7 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
       director: "Karthik Thupurani",
       streaming: ["aha", "Sony LIV"],
       imdb: "https://www.imdb.com/title/tt15295220/",
-      trailerYT: "https://youtu.be/_y5fIAI_Pp0?si=onw6dYBnvTPQBoNI",
+      trailerYT: "_y5fIAI_Pp0",
       poster: "images/bro.png",
       dop: "Director of Photography",
       gallery: ["images/b1.png", "images/b2.png", "images/b3.png", "images/b4.png"]
@@ -517,7 +621,7 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
       director: "Ishanth Kalidindi",
       streaming: ["Netflix"],
       imdb: "https://www.imdb.com/title/tt13614116/",
-      trailerYT: "https://vimeo.com/316158559?fl=pl&fe=sh",
+      trailerVimeo: "316158559",
       poster: "images/kb.jpg",
       dop: "Director of Photography",
       gallery: ["images/kb1.png", "images/kb2.png", "images/kb3.png", "images/kb4.png"]
@@ -552,18 +656,17 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
       ring.style.top  = ry + 'px';
       requestAnimationFrame(tick);
     })();
-    document.querySelectorAll('a, button, .fc-card, .frame-card, .cta-float, .mm-close, .mm-gallery-img, .imdb-badge').forEach(el => {
+    document.querySelectorAll('a, button, .fc-card, .frame-card, .cta-float, .mm-close, .mm-gallery-img, .imdb-badge, .social-icon-link, .msg-input, .msg-textarea').forEach(el => {
       el.addEventListener('mouseenter', () => document.body.classList.add('hover-active'));
       el.addEventListener('mouseleave', () => document.body.classList.remove('hover-active'));
     });
-    // Delegated: covers dynamically injected modal elements
     document.addEventListener('mouseover', e => {
-      if (e.target.closest('.mm-close, .mm-gallery-img, .imdb-badge, a, button')) {
+      if (e.target.closest('.mm-close, .mm-gallery-img, .imdb-badge, a, button, .social-icon-link')) {
         document.body.classList.add('hover-active');
       }
     });
     document.addEventListener('mouseout', e => {
-      if (e.target.closest('.mm-close, .mm-gallery-img, .imdb-badge, a, button')) {
+      if (e.target.closest('.mm-close, .mm-gallery-img, .imdb-badge, a, button, .social-icon-link')) {
         document.body.classList.remove('hover-active');
       }
     });
@@ -573,8 +676,6 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
 
   /* ─── LOADER ─────────────────────────────────────────────── */
   const loader = document.getElementById('intro-loader');
-
-  // Dismiss loader on window load, with a 3s safety fallback
   function dismissLoader() {
     if (!loader) return;
     loader.classList.add('done');
@@ -592,13 +693,11 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
   /* ─── MOBILE NAV ─────────────────────────────────────────── */
   const burger = document.getElementById('burger');
   const mmNav  = document.getElementById('mobile-menu');
-
   burger && burger.addEventListener('click', () => {
     const open = mmNav.classList.toggle('open');
     burger.classList.toggle('open', open);
     document.body.style.overflow = open ? 'hidden' : '';
   });
-
   mmNav && mmNav.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
       mmNav.classList.remove('open');
@@ -610,7 +709,6 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
   /* ─── ACTIVE NAV ─────────────────────────────────────────── */
   const sections  = ['hero', 'credits', 'frames', 'about', 'contact'];
   const snavLinks = document.querySelectorAll('.snav');
-
   function setActive() {
     let current = 'hero';
     sections.forEach(id => {
@@ -647,7 +745,6 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
   const fcTrack = document.getElementById('fc-track');
   const fcCur   = document.querySelector('.fc-cur');
   const fcTot   = document.querySelector('.fc-tot');
-
   if (fcTrack && fcCur) {
     const cards = fcTrack.querySelectorAll('.fc-card');
     if (fcTot) fcTot.textContent = String(cards.length).padStart(2, '0');
@@ -676,14 +773,18 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
   let activeFilm = null;
 
   function buildModalHTML(film) {
-    // Clean YouTube ID extraction
-    let vid = film.trailerYT || '';
-    if (vid.includes('youtu.be'))    vid = vid.split('/').pop().split('?')[0];
-    if (vid.includes('youtube.com')) vid = (vid.split('v=')[1] || '').split('&')[0];
-
-    const trailerHTML = vid
-      ? `<iframe src="https://www.youtube.com/embed/${vid}?rel=0&modestbranding=1" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
-      : `<div class="mm-trailer-placeholder">Trailer coming soon</div>`;
+    let trailerHTML = '';
+    if (film.trailerYT) {
+      // Extract clean YouTube video ID
+      let vid = film.trailerYT;
+      if (vid.includes('youtu.be'))    vid = vid.split('/').pop().split('?')[0];
+      if (vid.includes('youtube.com')) vid = (vid.split('v=')[1] || '').split('&')[0];
+      trailerHTML = `<iframe src="https://www.youtube.com/embed/${vid}?rel=0&modestbranding=1" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    } else if (film.trailerVimeo) {
+      trailerHTML = `<iframe src="https://player.vimeo.com/video/${film.trailerVimeo}?title=0&byline=0&portrait=0" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+    } else {
+      trailerHTML = `<div class="mm-trailer-placeholder">Trailer coming soon</div>`;
+    }
 
     const platformsHTML = film.streaming
       ? film.streaming.map(p => `<span class="mm-platform">${p}</span>`).join('')
@@ -760,9 +861,49 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
   const workBtn = document.getElementById('cta-float');
   if (workBtn) {
     workBtn.addEventListener('click', () => {
-      window.location.href = "mailto:azeem.dop09@gmail.com?subject=Let's%20work%20together&body=Hello%20Azeem,%0A%0AI%20saw%20your%20portfolio%20and%20would%20love%20to%20collaborate.";
+      document.getElementById('msg-form') && document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
     });
     setTimeout(() => workBtn.classList.add('visible'), 1400);
+  }
+
+  /* ─── CONTACT FORM ───────────────────────────────────────── */
+  const msgForm   = document.getElementById('msg-form');
+  const msgBtn    = document.getElementById('msg-btn');
+  const msgStatus = document.getElementById('msg-status');
+
+  if (msgForm) {
+    msgForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name    = document.getElementById('msg-name').value.trim();
+      const email   = document.getElementById('msg-email').value.trim();
+      const subject = document.getElementById('msg-subject').value.trim();
+      const body    = document.getElementById('msg-body').value.trim();
+
+      if (!name || !email || !body) {
+        msgStatus.textContent = 'Please fill in your name, email and message.';
+        msgStatus.className = 'msg-status err';
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        msgStatus.textContent = 'Please enter a valid email address.';
+        msgStatus.className = 'msg-status err';
+        return;
+      }
+
+      const sub  = subject || 'Portfolio Enquiry';
+      const mail = `Hello Azeem,\n\nMy name is ${name}.\n\n${body}\n\nBest,\n${name}`;
+      const href = `mailto:azeem.dop09@gmail.com?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(mail)}`;
+      window.location.href = href;
+
+      msgStatus.textContent = 'Opening your email client…';
+      msgStatus.className = 'msg-status ok';
+      msgBtn.disabled = true;
+      setTimeout(() => {
+        msgStatus.textContent = '';
+        msgBtn.disabled = false;
+        msgForm.reset();
+      }, 3500);
+    });
   }
 
 })();
