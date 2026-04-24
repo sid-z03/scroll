@@ -567,7 +567,6 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
   const FILMS = [
     {
       title: "EPIC",
-      
       year: "2026",
       type: "Film",
       director: "Aditya Haasan",
@@ -589,7 +588,7 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
       studio: "Sky Nine Pictures",
       streaming: ["Netflix"],
       imdb: "https://www.imdb.com/title/tt29764006/",
-      trailerYT: "https://youtu.be/7zzlOolbhFY?si=7ppX2vzY41OpPET0",
+      trailerYT: "https://youtu.be/7zzlOolbhFY",
       poster: "images/poster-90s.jpg",
       dop: "Director of Photography",
       gallery: ["images/91.png", "images/92.png", "images/93.png", "images/e4.png"]
@@ -626,7 +625,7 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
       director: "Nishanth Kalidindi",
       streaming: ["Netflix"],
       imdb: "https://www.imdb.com/title/tt13614116/",
-      trailerVimeo: "https://vimeo.com/316158559?fl=pl&fe=sh",
+      trailerVimeo: "https://vimeo.com/316158559",
       poster: "images/kb.jpg",
       dop: "Director of Photography",
       gallery: ["images/kb1.png", "images/kb2.png", "images/kb3.png", "images/kb4.png"]
@@ -639,7 +638,6 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
       imdb: "https://www.imdb.com/title/tt22979360/",
       poster: "images/th.jpg",
       dop: "Cinematographer",
-      
     }
   ];
 
@@ -779,32 +777,31 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
 
   function buildModalHTML(film) {
     let trailerHTML = '';
-   // Handle YouTube trailers (full URL or just ID)
-if (film.trailerYT) {
-  let embedUrl = film.trailerYT;
-  if (embedUrl.includes('youtu.be')) {
-    let vid = embedUrl.split('/').pop().split('?')[0];
-    embedUrl = `https://www.youtube.com/embed/${vid}`;
-  } else if (embedUrl.includes('youtube.com/watch')) {
-    let vid = embedUrl.split('v=')[1]?.split('&')[0];
-    embedUrl = `https://www.youtube.com/embed/${vid}`;
-  } else if (embedUrl.includes('youtube.com/embed')) {
-    // Already an embed URL
-  } else {
-    // Assume it's just a video ID
-    embedUrl = `https://www.youtube.com/embed/${embedUrl}`;
-  }
-  trailerHTML = `<iframe src="${embedUrl}?rel=0&modestbranding=1&enablejsapi=1" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-} 
-// Handle Vimeo trailers (full URL or just ID)
-else if (film.trailerVimeo) {
-  let vimeoId = film.trailerVimeo;
-  // Extract ID from full Vimeo URL if needed
-  if (vimeoId.includes('vimeo.com')) {
-    vimeoId = vimeoId.split('/').pop().split('?')[0];
-  }
-  trailerHTML = `<iframe src="https://player.vimeo.com/video/${vimeoId}?title=0&byline=0&portrait=0" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
-}
+    // Handle YouTube trailers (full URL or just ID)
+    if (film.trailerYT) {
+      let embedUrl = film.trailerYT;
+      if (embedUrl.includes('youtu.be')) {
+        let vid = embedUrl.split('/').pop().split('?')[0];
+        embedUrl = `https://www.youtube.com/embed/${vid}`;
+      } else if (embedUrl.includes('youtube.com/watch')) {
+        let vid = embedUrl.split('v=')[1]?.split('&')[0];
+        embedUrl = `https://www.youtube.com/embed/${vid}`;
+      } else if (embedUrl.includes('youtube.com/embed')) {
+        // Already an embed URL
+      } else {
+        // Assume it's just a video ID
+        embedUrl = `https://www.youtube.com/embed/${embedUrl}`;
+      }
+      trailerHTML = `<iframe src="${embedUrl}?rel=0&modestbranding=1&enablejsapi=1" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    } 
+    // Handle Vimeo trailers (full URL or just ID)
+    else if (film.trailerVimeo) {
+      let vimeoId = film.trailerVimeo;
+      // Extract ID from full Vimeo URL if needed
+      if (vimeoId.includes('vimeo.com')) {
+        vimeoId = vimeoId.split('/').pop().split('?')[0];
+      }
+      trailerHTML = `<iframe src="https://player.vimeo.com/video/${vimeoId}?title=0&byline=0&portrait=0" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
     } else {
       trailerHTML = `<div class="mm-trailer-placeholder">Trailer coming soon</div>`;
     }
