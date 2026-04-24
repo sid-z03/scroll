@@ -776,35 +776,30 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
   let activeFilm = null;
 
   function buildModalHTML(film) {
-    let trailerHTML = '';
-    // Handle YouTube trailers (full URL or just ID)
-    if (film.trailerYT) {
-      let embedUrl = film.trailerYT;
-      if (embedUrl.includes('youtu.be')) {
-        let vid = embedUrl.split('/').pop().split('?')[0];
-        embedUrl = `https://www.youtube.com/embed/${vid}`;
-      } else if (embedUrl.includes('youtube.com/watch')) {
-        let vid = embedUrl.split('v=')[1]?.split('&')[0];
-        embedUrl = `https://www.youtube.com/embed/${vid}`;
-      } else if (embedUrl.includes('youtube.com/embed')) {
-        // Already an embed URL
-      } else {
-        // Assume it's just a video ID
-        embedUrl = `https://www.youtube.com/embed/${embedUrl}`;
-      }
-      trailerHTML = `<iframe src="${embedUrl}?rel=0&modestbranding=1&enablejsapi=1" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-    } 
-    // Handle Vimeo trailers (full URL or just ID)
-    else if (film.trailerVimeo) {
-      let vimeoId = film.trailerVimeo;
-      // Extract ID from full Vimeo URL if needed
-      if (vimeoId.includes('vimeo.com')) {
-        vimeoId = vimeoId.split('/').pop().split('?')[0];
-      }
-      trailerHTML = `<iframe src="https://player.vimeo.com/video/${vimeoId}?title=0&byline=0&portrait=0" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
-    } else {
-      trailerHTML = `<div class="mm-trailer-placeholder">Trailer coming soon</div>`;
-    }
+  const trailerHTML = (() => {
+  if (film.trailerYT) {
+    const id = film.trailerYT.includes('youtu') 
+      ? film.trailerYT.split('/').pop().split('?')[0] 
+      : film.trailerYT;
+    return `<iframe src="https://www.youtube.com/embed/${id}?rel=0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+  }
+  if (film.trailerVimeo) {
+    const id = film.trailerVimeo.includes('vimeo.com') 
+      ? film.trailerVimeo.split('/').pop().split('?')[0] 
+      : film.trailerVimeo;
+    return `<iframe src="https://player.vimeo.com/video/${id}?title=0&byline=0&portrait=0" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+  }
+  if (film.trailerLink) {
+    return `<div class="mm-trailer-placeholder" style="flex-direction:column;gap:14px;">
+      <span>Embedding disabled by publisher</span>
+      <a href="${film.trailerLink}" target="_blank" rel="noopener" 
+         style="font-size:.6rem;letter-spacing:.2em;color:var(--gold-mid);border:1px solid rgba(201,165,90,.4);padding:8px 20px;border-radius:2px;text-transform:uppercase;">
+        Watch Trailer ↗
+      </a>
+    </div>`;
+  }
+  return `<div class="mm-trailer-placeholder">Trailer coming soon</div>`;
+})();
 
     const platformsHTML = film.streaming
       ? film.streaming.map(p => `<span class="mm-platform">${p}</span>`).join('')
