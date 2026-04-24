@@ -206,7 +206,7 @@ body.hover-active .cursor-ring { width: 56px; height: 56px; border-color: rgba(2
 .imdb-badge { display:inline-flex; align-items:center; gap:7px; padding:7px 14px; background:#f5c518; border-radius:2px; font-size:.6rem; font-weight:700; color:#000; text-decoration:none; letter-spacing:.1em; transition:opacity .2s; }
 .imdb-badge:hover { opacity:.88; }
 
-/* TRAILER - replaced embed box with clean clickable link for Kadaseela and 90s */
+/* TRAILER / GLIMPSE SECTION */
 .mm-trailer-section { margin-top:28px; }
 .mm-trailer-label { font-size:.5rem; letter-spacing:.28em; text-transform:uppercase; color:rgba(255,255,255,.3); margin-bottom:12px; }
 .mm-trailer-wrap { position:relative; width:100%; background:#111; border-radius: 2px; }
@@ -215,6 +215,7 @@ body.hover-active .cursor-ring { width: 56px; height: 56px; border-color: rgba(2
   background: rgba(255,255,255,.03); border: 1px solid rgba(201,165,90,.3);
   padding: 18px 24px; border-radius: 4px; transition: all 0.2s;
   text-decoration: none;
+  cursor: pointer;
 }
 .trailer-link-card:hover { background: rgba(201,165,90,.08); border-color: var(--gold-mid); transform: translateY(-2px); }
 .trailer-link-card span:first-child { 
@@ -335,7 +336,7 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
     { title:"#90's A Middle Class Biopic", tagline:"A nostalgic trip down memory lane, delving into the everyday life of a middle-class family.", year:"2024", type:"TV Series", director:"Aditya Haasan", producer:"Chandru Krishnamurthy", studio:"Sky Nine Pictures", streaming:["Netflix"], imdb:"https://www.imdb.com/title/tt29764006/", trailerLink:"https://youtu.be/7zzlOolbhFY", poster:"images/poster-90s.jpg", dop:"Director of Photography", gallery:["images/91.png","images/92.png","images/93.png","images/e4.png"] },
     { title:"Goodachari 2", tagline:"The spy returns.", year:"2026", type:"Film", director:"Vinay Kumar Sirigineedi", producer:"People Media Factory", studio:"People Media Factory", streaming:["In Theatres"], imdb:"https://www.imdb.com/title/tt11306406/", poster:"images/g2.png", dop:"Director of Photography" },
     { title:"#Bro", year:"2021", type:"Film", director:"Karthik Thupurani", streaming:["aha","Sony LIV"], imdb:"https://www.imdb.com/title/tt15295220/", trailerYT:"_y5fIAI_Pp0", poster:"images/bro.png", dop:"Director of Photography", gallery:["images/b1.png","images/b2.png","images/b3.png","images/b4.png"] },
-    { title:"Kadaseela Biriyani", year:"2021", type:"Feature Film", director:"Nishanth Kalidindi", streaming:["Netflix"], imdb:"https://www.imdb.com/title/tt13614116/", trailerLink:"https://vimeo.com/316158559", poster:"images/kb.jpg", dop:"Director of Photography", gallery:["images/kb1.png","images/kb2.png","images/kb3.png","images/kb4.png"] },
+    { title:"Kadaseela Biriyani", year:"2021", type:"Feature Film", director:"Nishanth Kalidindi", streaming:["Netflix"], imdb:"https://www.imdb.com/title/tt13614116/", glimpseLink:"https://vimeo.com/316158559", poster:"images/kb.jpg", dop:"Director of Photography", gallery:["images/kb1.png","images/kb2.png","images/kb3.png","images/kb4.png"] },
     { title:"Theatre", year:"2025", type:"Film", director:"Nishanth Kalidindi", imdb:"https://www.imdb.com/title/tt22979360/", poster:"images/th.jpg", dop:"Cinematographer" }
   ];
 
@@ -371,8 +372,17 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
 
   const overlay=document.getElementById('mm-overlay'), modal=document.getElementById('mm-modal'), closeBtn=document.getElementById('mm-close'), content=document.getElementById('mm-content');
   let activeFilm=null;
+  
   function buildTrailer(film){
-    if((film.title === "#90's A Middle Class Biopic" || film.title === "Kadaseela Biriyani") && film.trailerLink){
+    // Special handling for Kadaseela Biriyani — use "Glimpse / Making" label
+    if(film.title === "Kadaseela Biriyani" && film.glimpseLink){
+      return `<div class="trailer-link-card" onclick="window.open('${film.glimpseLink}', '_blank')">
+          <span>▶ Watch</span>
+          <span class="trailer-arrow">↗</span>
+        </div>`;
+    }
+    // For 90s biopic, standard trailer link
+    if(film.title === "#90's A Middle Class Biopic" && film.trailerLink){
       return `<div class="trailer-link-card" onclick="window.open('${film.trailerLink}', '_blank')">
           <span>▶ Watch Trailer</span>
           <span class="trailer-arrow">↗</span>
@@ -386,13 +396,17 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
       let id = film.trailerVimeo.includes('vimeo.com') ? film.trailerVimeo.split('/').pop().split('?')[0] : film.trailerVimeo;
       return `<div class="standard-embed"><iframe src="https://player.vimeo.com/video/${id}?title=0&byline=0&portrait=0" allow="autoplay; fullscreen" allowfullscreen></iframe></div>`;
     }
-    return `<div style="padding:40px;text-align:center;color:rgba(255,255,255,.3);">Trailer not available</div>`;
+    return `<div style="padding:40px;text-align:center;color:rgba(255,255,255,.3);">Additional content coming soon</div>`;
   }
+  
   function buildModalHTML(film){
     const platformsHTML = film.streaming ? film.streaming.map(p=>`<span class="mm-platform">${p}</span>`).join('') : '<span class="mm-platform">Coming Soon</span>';
     const galleryHTML = film.gallery && film.gallery.length ? `<div class="mm-gallery"><div class="mm-gallery-title">STILLS</div><div class="mm-gallery-grid">${film.gallery.map(src=>`<div class="mm-gallery-img"><img src="${src}" alt="Still from ${film.title}" loading="lazy"></div>`).join('')}</div></div>` : '';
-    return `<div class="mm-body" style="padding-top:clamp(28px,4vw,52px);"><h2 class="mm-title">${film.title}</h2>${film.tagline?`<p class="mm-tagline">${film.tagline}</p>`:''}<div class="mm-rule"></div><div class="mm-meta-grid"><div><div class="mm-meta-label">Director</div><div class="mm-meta-value">${film.director||'TBA'}</div></div>${film.producer?`<div><div class="mm-meta-label">Producer</div><div class="mm-meta-value">${film.producer}</div></div>`:''}${film.studio?`<div><div class="mm-meta-label">Production</div><div class="mm-meta-value">${film.studio}</div></div>`:''}<div><div class="mm-meta-label">Year</div><div class="mm-meta-value gold">${film.year}</div></div><div><div class="mm-meta-label">Role</div><div class="mm-meta-value gold">${film.dop}</div></div><div><div class="mm-meta-label">Type</div><div class="mm-meta-value">${film.type}</div></div></div><div class="mm-streaming"><div class="mm-streaming-label">Available On</div><div class="mm-platforms">${platformsHTML}</div></div>${galleryHTML}<div class="mm-trailer-section"><div class="mm-trailer-label">Trailer</div><div class="mm-trailer-wrap">${buildTrailer(film)}</div></div><div style="margin-top:24px;text-align:center;"><a href="${film.imdb}" target="_blank" rel="noopener" class="imdb-badge">IMDb ↗</a></div></div>`;
+    // For Kadaseela, change section label
+    const trailerLabel = (film.title === "Kadaseela Biriyani") ? "Video" : "Trailer";
+    return `<div class="mm-body" style="padding-top:clamp(28px,4vw,52px);"><h2 class="mm-title">${film.title}</h2>${film.tagline?`<p class="mm-tagline">${film.tagline}</p>`:''}<div class="mm-rule"></div><div class="mm-meta-grid"><div><div class="mm-meta-label">Director</div><div class="mm-meta-value">${film.director||'TBA'}</div></div>${film.producer?`<div><div class="mm-meta-label">Producer</div><div class="mm-meta-value">${film.producer}</div></div>`:''}${film.studio?`<div><div class="mm-meta-label">Production</div><div class="mm-meta-value">${film.studio}</div></div>`:''}<div><div class="mm-meta-label">Year</div><div class="mm-meta-value gold">${film.year}</div></div><div><div class="mm-meta-label">Role</div><div class="mm-meta-value gold">${film.dop}</div></div><div><div class="mm-meta-label">Type</div><div class="mm-meta-value">${film.type}</div></div></div><div class="mm-streaming"><div class="mm-streaming-label">Available On</div><div class="mm-platforms">${platformsHTML}</div></div>${galleryHTML}<div class="mm-trailer-section"><div class="mm-trailer-label">${trailerLabel}</div><div class="mm-trailer-wrap">${buildTrailer(film)}</div></div><div style="margin-top:24px;text-align:center;"><a href="${film.imdb}" target="_blank" rel="noopener" class="imdb-badge">IMDb ↗</a></div></div>`;
   }
+  
   function openModal(idx){ const film=FILMS[idx]; if(!film)return; activeFilm=idx; content.innerHTML=buildModalHTML(film); document.body.style.overflow='hidden'; overlay.classList.add('open'); modal.classList.add('open'); }
   function closeModal(){ modal.classList.remove('open'); overlay.classList.remove('open'); document.body.style.overflow=''; setTimeout(()=>{ content.innerHTML=''; activeFilm=null; },350); }
   document.querySelectorAll('.fc-card').forEach(card=>{ card.addEventListener('click',()=>{ const idx=parseInt(card.dataset.film,10); if(!isNaN(idx)) openModal(idx); }); });
