@@ -44,7 +44,7 @@ a { text-decoration:none; color:inherit; }
 .cursor-dot {
   position: fixed; width: 8px; height: 8px;
   background: linear-gradient(135deg, #ffd060, #c9a040);
-  border-radius: 50%; pointer-events: none; z-index: 9999;
+  border-radius: 50%; pointer-events: none; z-index: 99999;
   transform: translate(-50%, -50%);
   transition: width .2s ease, height .2s ease;
   box-shadow: 0 0 8px rgba(255,208,96,0.6);
@@ -52,10 +52,11 @@ a { text-decoration:none; color:inherit; }
 .cursor-ring {
   position: fixed; width: 40px; height: 40px;
   border: 1.5px solid rgba(255,208,96,0.5);
-  border-radius: 50%; pointer-events: none; z-index: 9998;
+  border-radius: 50%; pointer-events: none; z-index: 99998;
   transform: translate(-50%, -50%);
   transition: width .25s ease, height .25s ease;
 }
+.movie-modal * { cursor: none; }
 body.hover-active .cursor-dot { width: 12px; height: 12px; background: #ffd060; }
 body.hover-active .cursor-ring { width: 56px; height: 56px; border-color: rgba(255,208,96,0.8); background: rgba(255,208,96,0.08); }
 
@@ -554,9 +555,20 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
       ring.style.top  = ry + 'px';
       requestAnimationFrame(tick);
     })();
-    document.querySelectorAll('a, button, .fc-card, .frame-card, .cta-float').forEach(el => {
+    document.querySelectorAll('a, button, .fc-card, .frame-card, .cta-float, .mm-close, .mm-gallery-img, .imdb-badge').forEach(el => {
       el.addEventListener('mouseenter', () => document.body.classList.add('hover-active'));
       el.addEventListener('mouseleave', () => document.body.classList.remove('hover-active'));
+    });
+    // Delegated: covers dynamically injected modal elements
+    document.addEventListener('mouseover', e => {
+      if (e.target.closest('.mm-close, .mm-gallery-img, .imdb-badge, a, button')) {
+        document.body.classList.add('hover-active');
+      }
+    });
+    document.addEventListener('mouseout', e => {
+      if (e.target.closest('.mm-close, .mm-gallery-img, .imdb-badge, a, button')) {
+        document.body.classList.remove('hover-active');
+      }
     });
   } else if (dot && ring) {
     dot.remove(); ring.remove();
@@ -692,11 +704,7 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
       </div>` : '';
 
     return `
-      <div class="mm-hero">
-        <img class="mm-hero-img" src="${film.poster}" alt="${film.title}">
-        <div class="mm-hero-overlay"></div>
-      </div>
-      <div class="mm-body">
+      <div class="mm-body" style="padding-top:clamp(28px,4vw,52px);">
         <h2 class="mm-title">${film.title}</h2>
         ${film.tagline ? `<p class="mm-tagline">${film.tagline}</p>` : ''}
         <div class="mm-rule"></div>
