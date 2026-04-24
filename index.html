@@ -196,8 +196,8 @@ body.hover-active .cursor-ring { width: 56px; height: 56px; border-color: rgba(2
 /* GALLERY STYLES */
 .mm-gallery { margin-top: 30px; }
 .mm-gallery-title { font-size: .52rem; letter-spacing: .28em; text-transform: uppercase; color: rgba(255,255,255,.3); margin-bottom: 15px; }
-.mm-gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.mm-gallery-img { aspect-ratio: 16/9; overflow: hidden; border-radius: 4px; cursor: pointer; }
+.mm-gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.mm-gallery-img { aspect-ratio: 3/2; overflow: hidden; border-radius: 4px; cursor: pointer; }
 .mm-gallery-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
 .mm-gallery-img:hover img { transform: scale(1.05); }
 
@@ -388,7 +388,7 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
     //{ title: "Major", tagline: "Based on the life of Major Sandeep Unnikrishnan", year: "2022", type: "Film", director: "Sashi Kiran Tikka", producer: "Mahesh Babu", studio: "Sony Pictures", streaming: ["Netflix"], imdb: "https://www.imdb.com/title/tt9851854/", trailerYT: "LbTN2dOJcbQ", poster: "images/ma.jpg", dop: "Cinematographer", gallery: ["images/ma.jpg", "images/ma.jpg", "images/ma.jpg"] },
     //{ title: "Evaru", tagline: "A gripping crime thriller", year: "2019", type: "Film", director: "Venkat Ramji", producer: "Sreekar Prasad", studio: "Prasad Productions", streaming: ["Netflix"], imdb: "https://www.imdb.com/title/tt10545484/", trailerYT: "TfW6lil5uyc", poster: "images/evr.jpg", dop: "Cinematographer", gallery: ["images/evr.jpg", "images/evr.jpg", "images/evr.jpg"] },
     { title: "Goodachari 2", tagline: "The spy returns", year: "2026", type: "Film", director: "Vinay Kumar Sirigineedi", producer: "People Media Factory", studio: "People Media Factory", streaming: ["In Theatres"], imdb: "https://www.imdb.com/title/tt11306406/", trailerYT: "", poster: "images/g2.png", dop: "Director of Photography", gallery: ["images/g2.png", "images/g2.png", "images/g2.png"] },
-    { title: "#Bro", year: "2021", type: "Film", director: "Karthik Thupurani", streaming: ["aha, Sony liv"], imdb: "https://www.imdb.com/title/tt15295220/?ref_=ext_shr_lnk", trailerYT: "https://youtu.be/_y5fIAI_Pp0?si=AmaeLgkWT4quhw9c", poster: "images/bro.png", dop: "Director of Photography", gallery: ["images/bro.jpg"] }
+    { title: "#Bro", year: "2021", type: "Film", director: "Karthik Thupurani", streaming: ["aha, Sony liv"], imdb: "https://www.imdb.com/title/tt15295220/?ref_=ext_shr_lnk", trailerYT: "https://youtu.be/_y5fIAI_Pp0?si=AmaeLgkWT4quhw9c", poster: "images/bro.png", dop: "Director of Photography", gallery: ["images/bro.jpg"] },
     { title: "Kadaseela Biriyani", year: "2021", type: "Feature Film", director: "Ishanth Kalidindi", streaming: ["Netflix"], imdb: "https://www.imdb.com/title/tt13614116/", trailerYT: "https://vimeo.com/316158559?fl=pl&fe=sh", poster: "images/kb.jpg", dop: "Director of Photography", gallery: ["images/kb.jpg", "images/kb.jpg", "images/kb.jpg"] },
     { title: "Theatre", year: "2025", type: "Film", director: "Nishanth Kalidindi", imdb: "https://www.imdb.com/title/tt22979360/", poster: "images/th.jpg", dop: "Cinematographer", gallery: ["images/th.jpg", "images/th.jpg", "images/th.jpg"] },
    
@@ -409,7 +409,9 @@ footer { padding:clamp(16px,2.5vw,24px) clamp(24px,4.5vw,64px); border-top:1px s
 
   // Loader
   const loader = document.getElementById('intro-loader');
-  setTimeout(() => { loader && loader.classList.add('done'); setTimeout(() => loader && loader.remove(), 700); }, 1000);
+window.addEventListener('load', () => {
+  loader && loader.classList.add('done');
+  setTimeout(() => loader && loader.remove(), 700);
 
   // Mobile nav
   const burger = document.getElementById('burger');
